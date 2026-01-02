@@ -60,7 +60,7 @@ export default function EmployeeForm() {
         await new Promise(resolve => setTimeout(resolve, 1500))
 
         setIsLoading(false)
-        navigate('/employees')
+        navigate('/admin/employees')
     }
 
     return (
@@ -69,7 +69,7 @@ export default function EmployeeForm() {
                 {/* Header */}
                 <div className="flex items-center gap-4 mb-6">
                     <button
-                        onClick={() => navigate('/employees')}
+                        onClick={() => navigate('/admin/employees')}
                         className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
                     >
                         <ArrowLeft size={24} />
@@ -210,7 +210,7 @@ export default function EmployeeForm() {
                     <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200">
                         <Button
                             variant="secondary"
-                            onClick={() => navigate('/employees')}
+                            onClick={() => navigate('/admin/employees')}
                             type="button"
                         >
                             Bekor qilish

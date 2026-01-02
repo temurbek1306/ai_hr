@@ -15,7 +15,11 @@ import Layout from '../components/Layout'
 import Input from '../components/Input'
 import Button from '../components/Button'
 
-export default function Profile() {
+interface ProfileProps {
+    role?: 'admin' | 'user'
+}
+
+export default function Profile({ role = 'admin' }: ProfileProps) {
     const [activeTab, setActiveTab] = useState('personal')
     const [isLoading, setIsLoading] = useState(false)
 
@@ -34,7 +38,7 @@ export default function Profile() {
     }
 
     return (
-        <Layout>
+        <Layout role={role}>
             <div className="max-w-4xl mx-auto space-y-6">
                 <h1 className="text-2xl font-display font-bold text-gray-900">Mening Profilim</h1>
 

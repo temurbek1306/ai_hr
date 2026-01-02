@@ -63,7 +63,7 @@ export default function Employees() {
                     </div>
                     <Button
                         icon={<Plus size={20} />}
-                        onClick={() => navigate('/employees/new')}
+                        onClick={() => navigate('/admin/employees/new')}
                     >
                         Yangi Xodim
                     </Button>
@@ -150,7 +150,7 @@ export default function Employees() {
                                 transition={{ delay: index * 0.05 }}
                                 whileHover={{ y: -4 }}
                                 className="group bg-white border border-gray-200 rounded-2xl p-6 hover:border-primary-500 hover:shadow-lg transition-all duration-300 cursor-pointer"
-                                onClick={() => navigate(`/employees/${employee.id}/edit`)}
+                                onClick={() => navigate(`/admin/employees/${employee.id}/edit`)}
                             >
                                 <div className="flex items-start gap-4">
                                     <img
@@ -206,7 +206,7 @@ export default function Employees() {
                                             animate={{ opacity: 1 }}
                                             transition={{ delay: index * 0.03 }}
                                             className="hover:bg-gray-50 cursor-pointer transition-colors"
-                                            onClick={() => navigate(`/employees/${employee.id}/edit`)}
+                                            onClick={() => navigate(`/admin/employees/${employee.id}/edit`)}
                                         >
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center gap-3">

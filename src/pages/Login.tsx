@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { LogIn, Mail, Lock, Sparkles, Bot } from 'lucide-react'
+import { LogIn, Mail, Lock, Sparkles, Bot, User } from 'lucide-react'
 
 export default function Login() {
     const navigate = useNavigate()
@@ -161,27 +161,46 @@ export default function Login() {
                                 </a>
                             </div>
 
-                            {/* Submit Button */}
-                            <button
-                                type="submit"
-                                disabled={isLoading}
-                                className="btn btn-primary w-full relative overflow-hidden group"
-                            >
-                                <span className="relative z-10 flex items-center justify-center gap-2">
-                                    {isLoading ? (
-                                        <>
+                            {/* Submit Buttons */}
+                            <div className="space-y-3">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setIsLoading(true)
+                                        setTimeout(() => navigate('/admin/dashboard'), 1000)
+                                    }}
+                                    disabled={isLoading}
+                                    className="btn btn-primary w-full relative overflow-hidden group"
+                                >
+                                    <span className="relative z-10 flex items-center justify-center gap-2">
+                                        {isLoading ? (
                                             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                            Yuklanmoqda...
-                                        </>
-                                    ) : (
-                                        <>
+                                        ) : (
                                             <LogIn className="w-5 h-5" />
-                                            Kirish
-                                        </>
-                                    )}
-                                </span>
-                                <div className="absolute inset-0 bg-gradient-to-r from-primary-400 to-secondary-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                            </button>
+                                        )}
+                                        Admin sifatida kirish
+                                    </span>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setIsLoading(true)
+                                        setTimeout(() => navigate('/user/dashboard'), 1000)
+                                    }}
+                                    disabled={isLoading}
+                                    className="w-full py-3 rounded-xl bg-white border border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 hover:border-gray-300 transition-all flex items-center justify-center gap-2"
+                                >
+                                    <span className="relative z-10 flex items-center justify-center gap-2">
+                                        {isLoading ? (
+                                            <div className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                                        ) : (
+                                            <User className="w-5 h-5" />
+                                        )}
+                                        Xodim sifatida kirish
+                                    </span>
+                                </button>
+                            </div>
 
                             {/* Demo Credentials */}
                             <div className="mt-6 p-4 glass rounded-xl">

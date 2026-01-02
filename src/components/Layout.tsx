@@ -4,30 +4,49 @@ import { motion } from 'framer-motion'
 import {
     LayoutDashboard,
     Users,
-    UserPlus,
     LogOut,
     Menu,
     X,
-    User
+    User,
+    Book,
+    BarChart,
+    Settings,
+    Target,
+    MessageSquare,
+    FileText
 } from 'lucide-react'
 import BackgroundPattern from './BackgroundPattern'
 import ITParkLogo from './ITParkLogo'
 
 interface LayoutProps {
     children: ReactNode
+    role?: 'admin' | 'user'
 }
 
-export default function Layout({ children }: LayoutProps) {
+export default function Layout({ children, role = 'admin' }: LayoutProps) {
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const location = useLocation()
     const navigate = useNavigate()
 
-    const navigation = [
-        { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-        { name: 'Xodimlar', href: '/employees', icon: Users },
-        { name: 'Yangi Xodim', href: '/employees/new', icon: UserPlus },
-        { name: 'Profil', href: '/profile', icon: User },
+    const adminNavigation = [
+        { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+        { name: 'Xodimlar', href: '/admin/employees', icon: Users },
+        { name: 'Kontent', href: '/admin/content', icon: Book },
+        { name: 'Analitika', href: '/admin/analytics', icon: BarChart },
+        { name: 'Sozlamalar', href: '/admin/profile', icon: Settings },
     ]
+
+    const userNavigation = [
+        { name: 'Dashboard', href: '/user/dashboard', icon: LayoutDashboard },
+        { name: 'Bilimlar Bazasi', href: '/user/knowledge', icon: Book },
+        { name: 'Testlar', href: '/user/tests', icon: FileText },
+        { name: 'Rivojlanish Rejasi', href: '/user/ipr', icon: Target },
+        { name: 'Natijalarim', href: '/user/results', icon: BarChart },
+        { name: 'Feedback', href: '/user/feedback', icon: MessageSquare },
+        { name: 'Profil', href: '/user/profile', icon: User },
+    ]
+
+    const navigation = role === 'admin' ? adminNavigation : userNavigation
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -39,24 +58,21 @@ export default function Layout({ children }: LayoutProps) {
                 <div className="flex flex-col h-full">
                     {/* Logo */}
                     <div className="p-4 border-b border-gray-200">
-                        <div className="flex items-center gap-2">
-                            <ITParkLogo variant="icon" className="w-10 h-10" />
-                            <div>
-                                <h2 className="font-display font-bold text-lg text-primary-600">
-                                    IT PARK
-                                </h2>
-                                <p className="text-xs text-gray-500">HR Management</p>
-                            </div>
+                        <div className="flex items-center justify-center">
+                            <ITParkLogo className="w-40 h-auto" />
                         </div>
                     </div>
 
                     {/* Navigation */}
-                    <nav className="flex-1 p-3 space-y-1">
+                    <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+                        <div className="mb-2 px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                            {role === 'admin' ? 'Admin Paneli' : 'Xodim Paneli'}
+                        </div>
                         {navigation.map((item) => {
                             const isActive = location.pathname === item.href
                             return (
                                 <Link
-                                    key={item.name}
+                                    key={item.href}
                                     to={item.href}
                                     onClick={() => setSidebarOpen(false)}
                                     className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ${isActive
@@ -74,13 +90,13 @@ export default function Layout({ children }: LayoutProps) {
                     {/* User Profile */}
                     <div className="p-3 border-t border-gray-200">
                         <div className="flex items-center gap-2 p-2.5 rounded-lg bg-gray-50 group">
-                            <Link to="/profile" className="flex items-center gap-2 flex-1 hover:bg-gray-100 rounded-lg transition-colors">
+                            <Link to={role === 'admin' ? '/admin/profile' : '/user/profile'} className="flex items-center gap-2 flex-1 hover:bg-gray-100 rounded-lg transition-colors">
                                 <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-400 to-secondary-400 flex items-center justify-center text-white font-semibold shadow-sm text-sm group-hover:shadow-md transition-all">
-                                    A
+                                    {role === 'admin' ? 'A' : 'U'}
                                 </div>
                                 <div className="flex-1">
-                                    <p className="font-medium text-sm text-gray-900">Admin</p>
-                                    <p className="text-xs text-gray-500">admin@aihr.uz</p>
+                                    <p className="font-medium text-sm text-gray-900">{role === 'admin' ? 'Admin' : 'User'}</p>
+                                    <p className="text-xs text-gray-500">{role}@aihr.uz</p>
                                 </div>
                             </Link>
                             <button
