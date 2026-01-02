@@ -8,10 +8,10 @@ import {
     LogOut,
     Menu,
     X,
-    Bot,
     User
 } from 'lucide-react'
 import BackgroundPattern from './BackgroundPattern'
+import ITParkLogo from './ITParkLogo'
 
 interface LayoutProps {
     children: ReactNode
@@ -40,14 +40,12 @@ export default function Layout({ children }: LayoutProps) {
                     {/* Logo */}
                     <div className="p-4 border-b border-gray-200">
                         <div className="flex items-center gap-2">
-                            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center shadow-md">
-                                <Bot className="w-5 h-5 text-white" />
-                            </div>
+                            <ITParkLogo variant="icon" className="w-10 h-10" />
                             <div>
-                                <h2 className="font-display font-bold text-base gradient-text">
-                                    AI HR
+                                <h2 className="font-display font-bold text-lg text-primary-600">
+                                    IT PARK
                                 </h2>
-                                <p className="text-xs text-gray-500">Admin Panel</p>
+                                <p className="text-xs text-gray-500">HR Management</p>
                             </div>
                         </div>
                     </div>

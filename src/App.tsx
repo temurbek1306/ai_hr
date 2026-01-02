@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-
+import ITParkLogo from './components/ITParkLogo'
 
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
@@ -13,11 +13,16 @@ function App() {
         <Router>
             <div className="min-h-screen">
                 {/* Animated background */}
-                <div className="fixed inset-0 -z-10">
-                    <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-blue-50" />
-                    <div className="absolute top-0 -left-4 w-72 h-72 bg-primary-400 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-float" />
-                    <div className="absolute top-0 -right-4 w-72 h-72 bg-secondary-400 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-float animation-delay-2000" />
-                    <div className="absolute -bottom-8 left-20 w-72 h-72 bg-primary-300 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-float animation-delay-4000" />
+                <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+                    <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-green-50" />
+                    <div className="absolute top-0 -left-4 w-96 h-96 bg-emerald-400 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-float" />
+                    <div className="absolute top-0 -right-4 w-96 h-96 bg-lime-400 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-float animation-delay-2000" />
+                    <div className="absolute -bottom-8 left-20 w-96 h-96 bg-green-300 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-float animation-delay-4000" />
+
+                    {/* IT Park Watermark */}
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-10 select-none pointer-events-none">
+                        <ITParkLogo variant="full" className="w-[80vw] h-auto text-emerald-900/10" />
+                    </div>
                 </div>
 
                 <Routes>

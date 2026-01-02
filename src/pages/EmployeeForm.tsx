@@ -4,12 +4,11 @@ import {
     User,
     Mail,
     Phone,
-    Briefcase,
     Calendar,
-    DollarSign,
     Upload,
     ArrowLeft,
-    Save
+    Save,
+    FileText
 } from 'lucide-react'
 import Layout from '../components/Layout'
 import Input from '../components/Input'
@@ -28,22 +27,13 @@ export default function EmployeeForm() {
         lastName: '',
         email: '',
         phone: '',
-        department: '',
-        position: '',
         status: 'active',
-        salary: '',
-        joinDate: '',
+        videoUrl: '',
+        testUrl: '',
         avatar: null as string | null
     })
 
-    const departments = [
-        { value: 'IT', label: 'IT Department' },
-        { value: 'HR', label: 'HR Department' },
-        { value: 'Marketing', label: 'Marketing' },
-        { value: 'Sales', label: 'Sales' },
-        { value: 'Finance', label: 'Finance' },
-        { value: 'Operations', label: 'Operations' },
-    ]
+
 
     const statuses = [
         { value: 'active', label: 'Faol' },
@@ -181,42 +171,38 @@ export default function EmployeeForm() {
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Ish Ma'lumotlari</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <Select
-                                label="Bo'lim"
-                                options={departments}
-                                value={formData.department}
-                                onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                                required
-                            />
-                            <Input
-                                label="Lavozim"
-                                placeholder="Masalan: Senior Developer"
-                                icon={<Briefcase size={18} />}
-                                value={formData.position}
-                                onChange={(e) => setFormData({ ...formData, position: e.target.value })}
-                                required
-                            />
-                            <Select
+                                className="md:col-span-2"
                                 label="Status"
                                 options={statuses}
                                 value={formData.status}
                                 onChange={(e) => setFormData({ ...formData, status: e.target.value })}
                             />
-                            <Input
-                                label="Maosh"
-                                type="number"
-                                placeholder="0"
-                                icon={<DollarSign size={18} />}
-                                value={formData.salary}
-                                onChange={(e) => setFormData({ ...formData, salary: e.target.value })}
-                            />
-                            <Input
-                                label="Ishga kirgan sana"
-                                type="date"
-                                icon={<Calendar size={18} />}
-                                value={formData.joinDate}
-                                onChange={(e) => setFormData({ ...formData, joinDate: e.target.value })}
-                                required
-                            />
+                            <div className="space-y-1">
+                                <label className="block text-sm font-medium text-gray-700">Video darslik</label>
+                                <div className="border border-gray-200 rounded-lg p-2 bg-gray-50">
+                                    <input
+                                        type="file"
+                                        accept="video/*"
+                                        className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 cursor-pointer"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0]
+                                            if (file) setFormData({ ...formData, videoUrl: file.name })
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            <div className="space-y-1">
+                                <label className="block text-sm font-medium text-gray-700">Test materiali</label>
+                                <Button
+                                    variant="secondary"
+                                    className="w-full justify-center border-dashed"
+                                    icon={<FileText size={18} />}
+                                    onClick={() => alert('Test biriktirish oynasi tez orada ochiladi')}
+                                    type="button"
+                                >
+                                    Test Biriktirish
+                                </Button>
+                            </div>
                         </div>
                     </div>
 
