@@ -88,7 +88,7 @@ export default function AIChatbot() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsOpen(!isOpen)}
-                className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-r from-primary-600 to-green-500 rounded-full shadow-lg flex items-center justify-center text-white hover:shadow-primary-500/50 transition-shadow"
+                className={`fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-r from-primary-600 to-green-500 rounded-full shadow-lg flex items-center justify-center text-white hover:shadow-primary-500/50 transition-shadow ${isOpen ? 'hidden md:flex' : 'flex'}`}
             >
                 {isOpen ? <X className="w-6 h-6" /> : <MessageSquare className="w-6 h-6" />}
             </motion.button>
@@ -101,20 +101,30 @@ export default function AIChatbot() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 20, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
-                        className="fixed bottom-24 right-6 z-50 w-[350px] md:w-[400px] h-[500px] bg-white rounded-2xl shadow-xl border border-gray-100 flex flex-col overflow-hidden"
+                        className="fixed bottom-0 right-0 md:bottom-24 md:right-6 z-40 w-full h-[100dvh] md:w-[400px] md:h-[500px] bg-white md:rounded-2xl shadow-xl border border-gray-100 flex flex-col overflow-hidden"
                     >
                         {/* Header */}
-                        <div className="p-4 bg-gradient-to-r from-primary-600 to-green-500 text-white flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
-                                <Bot className="w-6 h-6" />
+                        <div className="p-4 bg-gradient-to-r from-primary-600 to-green-500 text-white flex items-center justify-between shadow-sm shrink-0">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
+                                    <Bot className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold">HR Yordamchi</h3>
+                                    <p className="text-xs text-primary-100 flex items-center gap-1">
+                                        <span className="w-2 h-2 bg-green-300 rounded-full animate-pulse" />
+                                        Online (AI Powered)
+                                    </p>
+                                </div>
                             </div>
-                            <div>
-                                <h3 className="font-bold">HR Yordamchi</h3>
-                                <p className="text-xs text-primary-100 flex items-center gap-1">
-                                    <span className="w-2 h-2 bg-green-300 rounded-full animate-pulse" />
-                                    Online (AI Powered)
-                                </p>
-                            </div>
+
+                            {/* Close Button (Visible on all, crucial for mobile) */}
+                            <button
+                                onClick={() => setIsOpen(false)}
+                                className="p-2 hover:bg-white/20 rounded-full transition-colors"
+                            >
+                                <X className="w-6 h-6" />
+                            </button>
                         </div>
 
                         {/* Messages Area */}
@@ -129,8 +139,8 @@ export default function AIChatbot() {
                                         {msg.sender === 'user' ? <User className="w-5 h-5" /> : <Bot className="w-5 h-5" />}
                                     </div>
                                     <div className={`max-w-[75%] p-3 rounded-2xl text-sm ${msg.sender === 'user'
-                                            ? 'bg-primary-600 text-white rounded-tr-none'
-                                            : 'bg-white border border-gray-200 text-gray-700 rounded-tl-none shadow-sm'
+                                        ? 'bg-primary-600 text-white rounded-tr-none'
+                                        : 'bg-white border border-gray-200 text-gray-700 rounded-tl-none shadow-sm'
                                         }`}>
                                         {msg.text}
                                         <div className={`text-[10px] mt-1 ${msg.sender === 'user' ? 'text-primary-200' : 'text-gray-400'}`}>
