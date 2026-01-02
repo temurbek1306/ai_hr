@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import AIChatbot from './components/AIChatbot'
 
 
 import Login from './pages/Login'
@@ -77,6 +78,7 @@ function App() {
                         />
                     } />
                 </Routes>
+                <AIChatbot />
             </div>
         </Router>
     )
