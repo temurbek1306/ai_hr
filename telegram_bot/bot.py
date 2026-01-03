@@ -1,22 +1,15 @@
-import os
-from dotenv import load_dotenv
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
-
-load_dotenv()
-
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-
-
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "🤖 AI HR Bot ishlayapti.\n/start buyrug‘i qabul qilindi."
-    )
+from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler
+from handlers.start import start
+from handlers.callback import handle_callback
+from config import BOT_TOKEN
 
 
 def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
+
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CallbackQueryHandler(handle_callback))  # 👈 MUHIM
+
     app.run_polling()
 
 
