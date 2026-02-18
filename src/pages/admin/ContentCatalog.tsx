@@ -7,14 +7,7 @@ import Input from '../../components/Input'
 import { knowledgeService } from '../../services/knowledge.service'
 import { Loader2 } from 'lucide-react'
 
-interface Article {
-    id: string
-    title: string
-    category: string
-    author: string
-    views: number
-    lastUpdated: string
-}
+
 
 export default function ContentCatalog() {
     const navigate = useNavigate()

@@ -8,14 +8,7 @@ import Input from '../../components/Input'
 import { surveyService } from '../../services/survey.service'
 import { Loader2 } from 'lucide-react'
 
-interface Survey {
-    id: string
-    title: string
-    description: string
-    questionsCount: number
-    responses: number
-    status: 'active' | 'closed'
-}
+
 
 export default function SurveyCatalog() {
     const { t } = useTranslation()
