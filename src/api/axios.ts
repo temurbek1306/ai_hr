@@ -2,7 +2,8 @@ import axios from 'axios';
 
 // Axios instance configuration with backend API URL
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://94.241.141.229:8000',
+    // Use relative path by default to allow Netlify proxy to handle HTTPS->HTTP
+    baseURL: import.meta.env.VITE_API_URL || '/',
     headers: {
         'Content-Type': 'application/json',
     },
