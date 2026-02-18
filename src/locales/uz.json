@@ -1,0 +1,367 @@
+{
+    "auth": {
+        "login": {
+            "title": "Tizimga kirish",
+            "subtitle": "Davom etish uchun hisobingizga kiring",
+            "email": "Elektron pochta",
+            "password": "Parol",
+            "forgotPassword": "Parolni unutdingizmi?",
+            "submit": "Kirish",
+            "noAccount": "Hisobingiz yo'qmi?",
+            "register": "Ro'yxatdan o'tish",
+            "welcome": "Xush kelibsiz!",
+            "remember": "Eslab qolish",
+            "heroTitle": "Xodimlarni boshqarish <br /> <span className=\"gradient-text\">yangi darajada</span>",
+            "heroSubtitle": "Sun'iy intellekt yordamida HR jarayonlarini avtomatlashtiring. Vaqtingizni tejang, samaradorlikni oshiring.",
+            "stats": {
+                "employees": "Xodimlar",
+                "companies": "Kompaniyalar",
+                "timeSaved": "Vaqt tejash"
+            },
+            "demo": {
+                "label": "Demo kirish:"
+            }
+        },
+        "register": {
+            "title": "Ro'yxatdan o'tish",
+            "subtitle": "Ma'lumotlaringizni kiriting",
+            "fullName": "F.I.SH",
+            "email": "Elektron pochta",
+            "password": "Parol",
+            "confirmPassword": "Parolni tasdiqlash",
+            "submit": "Ro'yxatdan o'tish",
+            "haveAccount": "Hisobingiz bormi?",
+            "login": "Kirish",
+            "heroTitle": "Bizning jamoaga <br /> <span className=\"gradient-text\">qo'shiling</span>",
+            "heroSubtitle": "O'z karerangizni yangi darajaga olib chiqing. Biz bilan birga HR kelajagini quring.",
+            "stats": {
+                "joinedToday": "Bugun qo'shildi",
+                "openPositions": "Ochiq vakansiyalar"
+            },
+            "errors": {
+                "passwordMismatch": "Parollar mos kelmadi",
+                "generic": "Ro'yxatdan o'tishda xatolik yuz berdi."
+            }
+        }
+    },
+    "roles": {
+        "admin": "Admin",
+        "user": "Foydalanuvchi",
+        "administrator": "Administrator",
+        "employee": "Xodim"
+    },
+    "common": {
+        "adminPanel": "Admin Paneli",
+        "employeePanel": "Xodim Paneli",
+        "welcome": "Xush kelibsiz!",
+        "search": "Qidirish",
+        "save": "Saqlash",
+        "cancel": "Bekor qilish",
+        "add": "Qo'shish",
+        "edit": "Tahrirlash",
+        "delete": "O'chirish",
+        "import": "Import",
+        "export": "Eksport",
+        "actions": "Amallar",
+        "confirmDelete": "Haqiqatan ham o'chirmoqchimisiz?",
+        "loading": "Yuklanmoqda...",
+        "error": "Xatolik yuz berdi",
+        "success": "Muvaffaqiyatli!",
+        "deleted": "O'chirildi",
+        "updated": "Yangilandi",
+        "added": "Qo'shildi"
+    },
+    "employees": {
+        "title": "Xodimlar",
+        "subtitle": "{{count}} ta xodim topildi",
+        "add": "Yangi Xodim",
+        "assign": "Biriktirish",
+        "notFound": "Xodim topilmadi",
+        "empty": {
+            "title": "Xodim topilmadi",
+            "desc": "Qidiruv so'rovini o'zgartiring yoki filtrlarni tozalang"
+        },
+        "table": {
+            "employee": "Xodim",
+            "position": "Lavozim",
+            "department": "Bo'lim",
+            "email": "Email",
+            "phone": "Telefon",
+            "status": "Status"
+        },
+        "form": {
+            "newTitle": "Yangi Xodim",
+            "editTitle": "Xodimni Tahrirlash",
+            "newSubtitle": "Tizimga yangi xodim qo'shish",
+            "editSubtitle": "Xodim ma'lumotlarini o'zgartirish",
+            "firstName": "Ism",
+            "lastName": "Familiya",
+            "startDate": "Ish boshlagan sana",
+            "jobDetails": "Ish Ma'lumotlari",
+            "uploadAvatar": "Rasm yuklash",
+            "change": "O'zgartirish"
+        }
+    },
+    "tests": {
+        "title": "Testlar Katalogi",
+        "subtitle": "Barcha yaratilgan testlar ro'yxati",
+        "add": "Yangi Test",
+        "table": {
+            "title": "Nomi",
+            "questionsCount": "Savollar soni",
+            "duration": "Davomiyligi",
+            "createdAt": "Yaratilgan sana",
+            "status": "Holati"
+        },
+        "status": {
+            "active": "Faol",
+            "draft": "Qoralama"
+        }
+    },
+    "content": {
+        "title": "Bilimlar Bazasi",
+        "description": "Kompaniya ichki bilimlari va o'quv materiallari boshqaruvi",
+        "modules": {
+            "articles": {
+                "title": "Maqolalar",
+                "desc": "Barcha o'quv materiallari"
+            },
+            "editor": {
+                "title": "Muharrir",
+                "desc": "Yangi maqola yozish"
+            },
+            "permissions": {
+                "title": "Ruxsatlar",
+                "desc": "Ko'rish huquqlarini boshqarish"
+            },
+            "stats": {
+                "title": "Statistika",
+                "desc": "O'qilish ko'rsatkichlari"
+            }
+        }
+    },
+    "surveys": {
+        "title": "So'rovnomalar",
+        "description": "Xodimlar fikrini o'rganish va tahlil qilish",
+        "modules": {
+            "catalog": {
+                "title": "Katalog",
+                "desc": "Mavjud so'rovnomalar"
+            },
+            "builder": {
+                "title": "Konstruktor",
+                "desc": "Yangi so'rovnoma yaratish"
+            },
+            "triggers": {
+                "title": "Triggerlar",
+                "desc": "Avtomatik yuborish qoidalari"
+            },
+            "analytics": {
+                "title": "Analitika",
+                "desc": "Javoblarni tahlil qilish"
+            }
+        },
+        "catalog": {
+            "title": "So'rovnomalar Katalogi",
+            "subtitle": "Barcha so'rovnomalar ro'yxati",
+            "add": "Yangi So'rovnoma",
+            "table": {
+                "title": "Nomi",
+                "questions": "Savollar",
+                "responses": "Javoblar",
+                "status": "Holati"
+            },
+            "status": {
+                "active": "Faol",
+                "closed": "Yopilgan"
+            }
+        }
+    },
+    "testing": {
+        "title": "Testlash",
+        "description": "Xodimlarni testlash va bilimlarini tekshirish tizimi",
+        "modules": {
+            "catalog": {
+                "title": "Katalog",
+                "desc": "Barcha testlar to'plami"
+            },
+            "builder": {
+                "title": "Konstruktor",
+                "desc": "Yangi testlar yaratish"
+            },
+            "assignments": {
+                "title": "Tayinlovlar",
+                "desc": "Xodimlarga test belgilash"
+            },
+            "analytics": {
+                "title": "Analitika",
+                "desc": "Test natijalari tahlili"
+            }
+        }
+    },
+    "reports": {
+        "title": "Hisobotlar",
+        "subtitle": "Barcha tizim hisobotlari va tahliliy ma'lumotlar",
+        "filter": "Filtrlar",
+        "new": "Yangi Hisobot",
+        "table": {
+            "name": "Hisobot Nomi",
+            "type": "Turi",
+            "date": "Sana",
+            "size": "Hajmi",
+            "status": "Holati"
+        },
+        "types": {
+            "all": "Barchasi",
+            "performance": "Samaradorlik",
+            "testing": "Testlash",
+            "hr": "HR",
+            "finance": "Moliya",
+            "survey": "So'rovnoma"
+        },
+        "status": {
+            "ready": "Tayyor",
+            "archived": "Arxiv"
+        },
+        "actions": {
+            "download": "Yuklash"
+        }
+    },
+    "calendar": {
+        "title": "Kalendar",
+        "subtitle": "Tadbirlar, ta'tillar va muhim sanalar",
+        "prev": "O'tgan",
+        "next": "Keyingi",
+        "add": "Tadbir Qo'shish",
+        "upcoming": "Yaqin Tadbirlar",
+        "today": "Bugun",
+        "weekDays": {
+            "mon": "Dush",
+            "tue": "Sesh",
+            "wed": "Chor",
+            "thu": "Pay",
+            "fri": "Juma",
+            "sat": "Shan",
+            "sun": "Yak"
+        }
+    },
+    "profile": {
+        "title": "Mening Profilim",
+        "role": "Lavozim",
+        "email": "Elektron pochta",
+        "phone": "Telefon",
+        "department": "Bo'lim",
+        "location": "Manzil",
+        "joined": "Qo'shilgan sana",
+        "edit": "Tahrirlash",
+        "stats": {
+            "projects": "Loyihalar",
+            "tasks": "Vazifalar",
+            "performance": "Samaradorlik"
+        },
+        "tabs": {
+            "overview": "Umumiy",
+            "activity": "Faoliyat",
+            "settings": "Sozlamalar"
+        },
+        "security": {
+            "title": "Parol va Xavfsizlik",
+            "currentPassword": "Joriy Parol",
+            "newPassword": "Yangi Parol",
+            "confirmPassword": "Parolni Tasdiqlang",
+            "updateButton": "Parolni Yangilash"
+        },
+        "notifications": {
+            "title": "Bildirishnoma Sozlamalari",
+            "newEmployee": {
+                "title": "Yangi xodim qo'shilganda",
+                "desc": "Elektron pochta orqali xabar berish"
+            },
+            "application": {
+                "title": "Ariza kelib tushganda",
+                "desc": "Elektron pochta va Push xabarnoma"
+            },
+            "news": {
+                "title": "Tizim yangiliklari",
+                "desc": "Faqat muhim xabarlar"
+            }
+        }
+    },
+    "sidebar": {
+        "dashboard": "Dashboard",
+        "employees": "Xodimlar",
+        "testing": "Testlash",
+        "surveys": "So'rovnomalar",
+        "knowledgeBase": "Bilimlar Bazasi",
+        "reports": "Hisobotlar",
+        "calendar": "Kalendar",
+        "settings": "Sozlamalar",
+        "profile": "Profil",
+        "results": "Natijalar",
+        "ipr": "Rivojlanish rejasi",
+        "feedback": "Aloqa"
+    },
+    "dashboard": {
+        "title": "Admin Dashboard",
+        "subtitle": "Xush kelibsiz! Bu yerda umumiy ma'lumotlarni ko'rishingiz mumkin.",
+        "stats": {
+            "totalEmployees": "Jami xodimlar",
+            "successfulPreTests": "Muvaffaqiyatli pre-testlar",
+            "successfulPostTests": "Muvaffaqiyatli post-testlar",
+            "completedOnboarding": "Onboarding yakunlandi",
+            "qualification": "Malaka Oshirish",
+            "completedSurveys": "Yakunlangan so'rovnomalar",
+            "vsLastMonth": "o'tgan oyga nisbatan"
+        },
+        "chart": {
+            "title": "Haftalik faollik"
+        },
+        "activity": {
+            "title": "So'nggi faoliyat",
+            "viewAll": "Barchasini ko'rish",
+            "newEmployee": "yangi xodim qo'shildi",
+            "profileUpdated": "profil yangilandi",
+            "applicationSent": "ariza yuborildi"
+        },
+        "quickActions": {
+            "title": "Tez Harakatlar",
+            "addEmployee": "Xodim Qo'shish",
+            "search": "Qidirish",
+            "reports": "Hisobotlar",
+            "calendar": "Kalendar"
+        }
+    },
+    "filters": {
+        "title": "Filtrlar:",
+        "period": "Davr:",
+        "department": "Bo'lim:",
+        "status": "Status:",
+        "periods": {
+            "today": "Bugun",
+            "week": "Hafta",
+            "month": "Oy",
+            "year": "Yil"
+        },
+        "departments": {
+            "all": "Barchasi",
+            "education": "Ta'lim",
+            "marketing": "Marketing",
+            "sales": "Sotuv",
+            "finance": "Moliya",
+            "hr": "HR",
+            "it": "IT",
+            "operations": "Operatsiyalar"
+        },
+        "statuses": {
+            "all": "Barchasi",
+            "active": "Faol",
+            "pending": "Kutilmoqda",
+            "completed": "Yakunlangan"
+        }
+    },
+    "time": {
+        "minutesAgo": "{{count}} daqiqa oldin",
+        "hoursAgo": "{{count}} soat oldin",
+        "daysAgo": "{{count}} kun oldin"
+    }
+}

@@ -1,0 +1,115 @@
+﻿============================================================
+TESTING EMPLOYEE LOGIN
+============================================================
+
+ЁЯФР Testing login: admin@gmail.com
+тЬЕ Login successful!
+Response: {
+  "message": "Login successful",
+  "success": true,
+  "status": "OK",
+  "body": {
+    "role": "ROLE_ADMIN",
+    "token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MTQyNDY4OCwiZXhwIjoxNzcxNTExMDg4fQ.vQupnpQ9yhsx9lPCUuKX-Ied_3VFe_vnZh_qT8PByCV5t9uq_YxL1UL_gBhlQ41zW6AqWMersuAJ_DwHEidmLw",
+    "username": "admin@gmail.com"
+  }
+}
+
+ЁЯФР Testing login: employee@gmail.com
+тЬЕ Login successful!
+Response: {
+  "message": "User not found",
+  "success": false,
+  "status": "NOT_FOUND",
+  "body": null
+}
+
+ЁЯУЛ Fetching all employees...
+
+тЬЕ Employees list:
+
+1. null null
+   Email: N/A
+   ID: 91daa41e-50d4-4b97-a5cc-059db8045b3c
+
+2. null null
+   Email: N/A
+   ID: 13bed7bd-6131-4209-95b2-b1f07e7849c2
+
+3. null null
+   Email: N/A
+   ID: 83812f78-e872-40eb-80d8-96055e0991e4
+
+4. null null
+   Email: N/A
+   ID: 16f544c8-76ab-4a34-8465-f4ed228bad13
+
+5. null null
+   Email: N/A
+   ID: aeeb44da-63c2-452f-a8fe-b8ab33907d60
+
+6. null null
+   Email: N/A
+   ID: df673c21-c278-4e16-bb35-b3597126f123
+
+7. null null
+   Email: N/A
+   ID: 3f83b4c9-2df2-4fe2-9c1b-46c72e4728d0
+
+8. Temurbek Gulboyev
+   Email: temurbek@gmail.com
+   ID: cfa20973-310a-4627-afb2-0a8aa9b61488
+
+9. null null
+   Email: N/A
+   ID: 9ad7ac59-2f8c-4cf6-89c5-22ac8e73e5e1
+
+10. null null
+   Email: N/A
+   ID: 0f3e3db3-5aab-476c-ad2a-c2c1e388da33
+
+11. null null
+   Email: N/A
+   ID: 1b26dd59-4bdc-4d09-a366-45669a327472
+
+12. null null
+   Email: N/A
+   ID: e8108f04-e7f4-4164-b0a4-a81d1711cc24
+
+13. null null
+   Email: N/A
+   ID: ae1d788e-f57b-4aca-8c11-551d9efde886
+
+14. null null
+   Email: N/A
+   ID: 3e4de772-23c7-4937-90c0-32e53b8d3d00
+
+15. null null
+   Email: N/A
+   ID: 4516f0e0-e2bf-41d2-a148-cfeb82d11f0b
+
+16. null null
+   Email: N/A
+   ID: c346b959-2a02-4fda-8789-e656c514de86
+
+17. null null
+   Email: N/A
+   ID: 729498ef-8701-4bb8-9e4a-b0cd33d307a8
+
+18. null null
+   Email: azizbek@gmail.com
+   ID: 53dc6f47-699e-48b9-b35c-a92aab85d20d
+
+19. null null
+   Email: N/A
+   ID: 197b0942-a9e8-4f29-9741-d303e548f5e2
+
+20. null null
+   Email: N/A
+   ID: 1924f038-c477-43fa-973d-7ce80630b8ad
+
+21. Azizbek Meliqulov
+   Email: azizbekmeliqulov94@gmail.com
+   ID: fe2404b1-d5ae-412d-8afa-30e5de575ff2
+
+============================================================

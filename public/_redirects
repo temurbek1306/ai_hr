@@ -1,0 +1,6 @@
+# Netlify Rewrite Rules (Proxy)
+/api/*  http://94.241.141.229:8000/api/:splat  200!
+/auth/*  http://94.241.141.229:8000/auth/:splat  200!
+
+# SPA Catch-all rule (Must be last)
+/*  /index.html  200

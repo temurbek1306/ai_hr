@@ -1,0 +1,29 @@
+﻿========================================================================================================================
+                                              USER SECTION API TESTING
+========================================================================================================================
+
+ЁЯФР Authenticating...
+[FAIL] Login                     | POST | /auth/login                                   | Status: 403 | Error: Request failed with status code 403
+тЬЕ Token obtained successfully.
+
+Category                  | Meth | Path                                   | Result
+------------------------------------------------------------------------------------------------------------------------
+[PASS] Profile: Me               | GET  | /api/v1/employees/me                          | Status: 200 | Time: 124ms
+[PASS] Profile: Summary          | GET  | /api/v1/employees/me/summary                  | Status: 200 | Time: 159ms
+[PASS] Profile: Growth           | GET  | /api/v1/employees/me/growth                   | Status: 200 | Time: 176ms
+[PASS] Profile: Notif Settings   | GET  | /api/v1/employees/me/settings/notifications   | Status: 200 | Time: 124ms
+[PASS] Profile: Activities       | GET  | /api/v1/employees/me/activities               | Status: 200 | Time: 116ms
+[PASS] Profile: Feedback Hist    | GET  | /api/v1/employees/me/feedback                 | Status: 200 | Time: 115ms
+[FAIL] Tests: Available          | GET  | /api/v1/tests/available                       | Status: 403 | Error: Request failed with status code 403
+[PASS] Tests: Results            | GET  | /api/v1/employees/me/test-results             | Status: 200 | Time: 120ms
+[PASS] KB: Categories            | GET  | /api/v1/knowledge/categories                  | Status: 200 | Time: 106ms
+[PASS] KB: Articles              | GET  | /api/v1/knowledge/articles                    | Status: 200 | Time: 124ms
+[PASS] Surveys: List             | GET  | /api/v1/surveys                               | Status: 200 | Time: 115ms
+[PASS] Notifications: List       | GET  | /api/v1/notifications                         | Status: 200 | Time: 129ms
+[PASS] Events: List              | GET  | /api/v1/events                                | Status: 200 | Time: 106ms
+[PASS] Onboarding: Materials     | GET  | /api/v1/onboarding/materials                  | Status: 200 | Time: 129ms
+[FAIL] NDA: Current              | GET  | /api/v1/nda/current                           | Status: 403 | Error: Request failed with status code 403
+[PASS] Content: All              | GET  | /api/v1/content                               | Status: 200 | Time: 115ms
+
+========================================================================================================================
+Testing Complete.

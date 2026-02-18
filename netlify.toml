@@ -1,0 +1,24 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Redirect rules to proxy API requests to the HTTP backend
+# This is crucial for fixing the "Mixed Content" error (HTTPS -> HTTP)
+
+[[redirects]]
+  from = "/api/*"
+  to = "http://94.241.141.229:8000/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/auth/*"
+  to = "http://94.241.141.229:8000/auth/:splat"
+  status = 200
+  force = true
+
+# Fallback for React Router (Single Page App)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
