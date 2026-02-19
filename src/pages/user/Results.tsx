@@ -35,14 +35,15 @@ export default function Results() {
                     }
                 }
 
-                setResults(testResults as TestResultItemDto[]);
+                setResults(testResults || []);
 
                 // Calculate statistics from real data
-                if (testResults && testResults.length > 0) {
+                if (Array.isArray(testResults) && testResults.length > 0) {
                     const totalTests = testResults.length;
-                    const passedTests = testResults.filter((r: TestResultItemDto) => r.passed).length;
-                    const averageScore = testResults.reduce((sum: number, r: TestResultItemDto) => sum + (r.score || 0), 0) / totalTests;
-                    const bestScore = Math.max(...testResults.map((r: TestResultItemDto) => r.score || 0));
+                    const passedTests = testResults.filter((r: any) => r.passed).length;
+                    const scores = testResults.map((r: any) => r.score || 0);
+                    const averageScore = scores.reduce((sum: number, s: number) => sum + s, 0) / totalTests;
+                    const bestScore = Math.max(...scores);
 
                     setStats({
                         totalTests,
@@ -61,38 +62,8 @@ export default function Results() {
                 setError(null);
             } catch (error: any) {
                 console.error('Failed to fetch results:', error);
-                // Fallback to mock data
-                const mockResults = [
-                    {
-                        id: '1',
-                        testTitle: 'Xavfsizlik texnikasi',
-                        score: 85,
-                        passed: true,
-                        completedAt: new Date().toISOString(),
-                        totalQuestions: 20,
-                        correctAnswers: 17
-                    },
-                    {
-                        id: '2',
-                        testTitle: 'Korporativ madaniyat',
-                        score: 92,
-                        passed: true,
-                        completedAt: new Date(Date.now() - 86400000).toISOString(),
-                        totalQuestions: 15,
-                        correctAnswers: 14
-                    }
-                ];
-                setResults(mockResults);
-
-                // Calculate stats for mock data
-                setStats({
-                    totalTests: 2,
-                    passedTests: 2,
-                    averageScore: 88,
-                    bestScore: 92
-                });
-
-                // setError('Natijalarni yuklashda xatolik yuz berdi.');
+                setError('Natijalarni yuklashda xatolik yuz berdi. Iltimos, keyinroq urunib ko\'ring.');
+                setResults([]);
             } finally {
                 setIsLoading(false);
             }

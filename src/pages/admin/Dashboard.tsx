@@ -28,13 +28,14 @@ export default function AdminDashboard() {
         const fetchDashboardData = async () => {
             try {
                 setIsLoading(true);
-                // Fetch dashboard data, extended stats, and activities
-                const [dashData, extended, activityData] = await Promise.all([
+                // Fetch dashboard data, summary, extended stats, and activities
+                const [dashData, summaryData, extended, activityData] = await Promise.all([
                     dashboardService.getDashboard(),
+                    dashboardService.getSummary(period, department, status),
                     dashboardService.getExtendedStats(),
                     dashboardService.getActivities()
                 ]);
-                setDashboardData(dashData);
+                setDashboardData({ ...dashData, ...summaryData });
                 setExtendedStats(extended);
                 setActivities(activityData);
                 setError(null);
@@ -102,6 +103,22 @@ export default function AdminDashboard() {
             trend: 'up' as const,
             icon: Calendar,
             color: 'orange' as const,
+        },
+        {
+            title: "Ta'tildagi xodimlar",
+            value: dashboardData?.onLeave?.toString() || '0',
+            change: '0',
+            trend: 'up' as const,
+            icon: Clock,
+            color: 'secondary' as const,
+        },
+        {
+            title: "Shu oyda qo'shilganlar",
+            value: dashboardData?.newThisMonth?.toString() || '0',
+            change: '+2',
+            trend: 'up' as const,
+            icon: UserPlus,
+            color: 'primary' as const,
         },
     ]
 

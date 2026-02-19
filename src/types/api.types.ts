@@ -53,6 +53,7 @@ export interface AdminEmployeeDto {
     startDate: string;
     avatar?: string;
     salary?: number;
+    videoUrl?: string;
 }
 
 export interface AdminEmployeeCreateDto {
@@ -64,6 +65,7 @@ export interface AdminEmployeeCreateDto {
     department: string;
     salary?: number;
     startDate: string;
+    videoUrl?: string;
 }
 
 export interface CreateEmployeeDto {
@@ -131,10 +133,19 @@ export type TestType = 'PRE' | 'POST' | 'QUALIFICATION' | 'GENERAL';
 export interface TestDTO {
     id: string;
     title: string;
+    videoUrl?: string;
     questionsCount?: number;
     duration?: number;
     createdAt?: string;
     status?: string;
+}
+
+export interface TestTakeDto {
+    testId: string;
+    title: string;
+    videoUrl?: string;
+    preparationTime?: number;
+    sessionId?: string;
 }
 
 export interface TestQuestionCreateDto {
@@ -147,14 +158,10 @@ export interface TestCreateDto {
     title: string;
     type: TestType;
     passScore: number;
+    videoUrl?: string;
     questions: TestQuestionCreateDto[];
 }
 
-export interface TestQuestionCreateDto {
-    questionText: string;
-    options: string[];
-    correctAnswer: string;
-}
 
 export interface QuestionDTO {
     id: string;
@@ -167,6 +174,7 @@ export interface TestDetailDto {
     title: string;
     type: TestType;
     passScore: number;
+    videoUrl?: string;
     questions: QuestionDTO[];
 }
 
@@ -264,9 +272,13 @@ export interface KnowledgeArticleDto {
     id: string;
     title: string;
     content: string;
+    type?: 'ARTICLE' | 'VIDEO' | 'AUDIO' | 'PRESENTATION';
+    mediaUrl?: string;
     telegramFileId?: string;
     categoryId: string;
     categoryName?: string;
+    authorId?: string;
+    status?: 'DRAFT' | 'PUBLISHED' | 'ARCHIVED';
     createdAt: string;
 }
 

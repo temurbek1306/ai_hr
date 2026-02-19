@@ -21,7 +21,7 @@ export default function ContentCatalog() {
         setError(null)
         try {
             const response = await knowledgeService.getArticles()
-            setArticles(response.body || [])
+            setArticles(response || [])
         } catch (err: any) {
             setError('Maqolalarni yuklashda xatolik yuz berdi')
             console.error(err)

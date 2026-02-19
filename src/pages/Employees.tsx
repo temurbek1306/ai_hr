@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
-import { Search, Plus, Grid3x3, List, Mail, Phone, Briefcase, Loader2, FileDown, FileUp, ClipboardList } from 'lucide-react'
+import { Search, Plus, Grid3x3, List, Mail, Phone, Briefcase, Loader2, FileDown, FileUp, ClipboardList, Video } from 'lucide-react'
 import Layout from '../components/Layout'
 import Button from '../components/Button'
 import Input from '../components/Input'
@@ -266,9 +266,14 @@ export default function Employees() {
                                         className="w-16 h-16 rounded-xl object-cover ring-2 ring-gray-200 group-hover:ring-primary-500 transition-all"
                                     />
                                     <div className="flex-1 min-w-0">
-                                        <h3 className="font-semibold text-gray-900 mb-1 truncate">
-                                            {employee.firstName} {employee.lastName}
-                                        </h3>
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <h3 className="font-semibold text-gray-900 truncate">
+                                                {employee.firstName} {employee.lastName}
+                                            </h3>
+                                            {(employee as any).videoUrl && (
+                                                <Video size={16} className="text-primary-500 shrink-0" />
+                                            )}
+                                        </div>
                                         <p className="text-sm text-gray-600 mb-2 truncate">{employee.position}</p>
                                         {getStatusBadge(employee.status)}
                                     </div>

@@ -14,8 +14,8 @@ export default function KnowledgeBase() {
         const fetchArticles = async () => {
             try {
                 setIsLoading(true);
-                const response = await knowledgeService.getArticles();
-                setArticles(response.body || []);
+                const articlesData = await knowledgeService.getArticles();
+                setArticles(articlesData || []);
                 setError(null);
             } catch (error: any) {
                 console.error('Failed to fetch articles:', error);
@@ -33,10 +33,12 @@ export default function KnowledgeBase() {
     );
 
     const getIcon = (type: string) => {
-        switch (type?.toLowerCase()) {
-            case 'pdf': return FileText
-            case 'video': return Video
-            case 'audio': return Headphones
+        switch (type?.toUpperCase()) {
+            case 'PDF': return FileText
+            case 'VIDEO': return Video
+            case 'AUDIO': return Headphones
+            case 'ARTICLE': return Book
+            case 'PRESENTATION': return FileText
             default: return Book
         }
     };
@@ -101,13 +103,22 @@ export default function KnowledgeBase() {
                                         </p>
 
                                         <div className="flex items-center gap-3">
-                                            <button className="btn btn-primary flex-1 py-2 text-sm gap-2">
-                                                <Download className="w-4 h-4" />
-                                                Yuklab olish
-                                            </button>
-                                            <button className="btn btn-ghost p-2 border border-gray-100">
-                                                <ExternalLink className="w-4 h-4" />
-                                            </button>
+                                            {item.type === 'VIDEO' || (item.content?.startsWith('http')) ? (
+                                                <a
+                                                    href={item.content}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="btn btn-primary flex-1 py-2 text-sm gap-2"
+                                                >
+                                                    <ExternalLink className="w-4 h-4" />
+                                                    Ko'rish
+                                                </a>
+                                            ) : (
+                                                <button className="btn btn-primary flex-1 py-2 text-sm gap-2">
+                                                    <Download className="w-4 h-4" />
+                                                    Yuklab olish
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
                                     <div className="h-1 bg-gray-100 w-full">

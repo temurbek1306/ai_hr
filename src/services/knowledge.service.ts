@@ -1,6 +1,5 @@
 import api from '../api/axios';
 import type {
-    ApiResponse,
     KnowledgeCategoryDto,
     KnowledgeArticleDto,
     KnowledgeArticleVersionDto,
@@ -40,11 +39,12 @@ export const knowledgeService = {
      * Get all articles (optionally filtered by category)
      * GET /api/v1/knowledge/articles
      */
-    getArticles: async (categoryId?: string): Promise<ApiResponse<KnowledgeArticleDto[]>> => {
+    getArticles: async (categoryId?: string): Promise<KnowledgeArticleDto[]> => {
         try {
             const params = categoryId ? { categoryId } : {};
-            const response = await api.get<ApiResponse<KnowledgeArticleDto[]>>('/api/v1/knowledge/articles', { params });
-            return response.data;
+            const response = await api.get<KnowledgeArticleDto[]>('/api/v1/knowledge/articles', { params });
+            // The API returns a raw array according to Swagger
+            return Array.isArray(response.data) ? response.data : ((response.data as any).body || []);
         } catch (error: any) {
             console.error('Failed to fetch articles:', error);
             throw new Error(error.response?.data?.message || 'Failed to fetch articles');

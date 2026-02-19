@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, ArrowRight, CheckCircle, XCircle, AlertCircle } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CheckCircle, XCircle, AlertCircle, Video, ExternalLink } from 'lucide-react'
 import Layout from '../../components/Layout'
 import QuestionCard from '../../components/QuestionCard'
 import Timer from '../../components/Timer'
@@ -19,6 +19,7 @@ export default function TakeTest() {
     const [showResults, setShowResults] = useState(false)
     const [results, setResults] = useState<any>(null)
     const [, setSessionId] = useState<string | null>(null)
+    const [prepVideoUrl, setPrepVideoUrl] = useState<string | null>(null)
 
     useEffect(() => {
         const startTest = async () => {
@@ -28,36 +29,14 @@ export default function TakeTest() {
                 // Start test session
                 const session = await testService.startSession(id, 'me')
                 // Handle both direct response and ApiResponse wrapper
-                const sessionId = (session as any).sessionId || (session as any).body?.sessionId
-                setSessionId(sessionId)
+                const sessionId = session.body?.sessionId || (session as any).sessionId
+                const videoUrl = session.body?.videoUrl || (session as any).videoUrl
+                setSessionId(sessionId || null)
+                setPrepVideoUrl(videoUrl || null)
 
-                // Fetch test details - we'll need to create a method to get test by ID
-                // For now, using mock data
-                const mockTest: TestDetailDto = {
-                    id: id,
-                    title: 'JavaScript Asoslari',
-                    type: 'GENERAL',
-                    passScore: 70,
-                    questions: [
-                        {
-                            id: '1',
-                            questionText: 'JavaScript qaysi yilda yaratilgan?',
-                            options: ['1995', '1996', '1997', '1998']
-                        },
-                        {
-                            id: '2',
-                            questionText: 'let va const kalit so\'zlari qaysi ES versiyasida qo\'shilgan?',
-                            options: ['ES5', 'ES6', 'ES7', 'ES8']
-                        },
-                        {
-                            id: '3',
-                            questionText: 'JavaScript qaysi turdagi til hisoblanadi?',
-                            options: ['Statik', 'Dinamik', 'Gibrid', 'Kompilyatsiya qilinadigan']
-                        }
-                    ]
-                }
-
-                setTest(mockTest)
+                // Fetch test details
+                const data = await testService.getById(id)
+                setTest(data)
             } catch (error) {
                 console.error('Failed to start test:', error)
                 alert('Testni boshlashda xatolik yuz berdi')
@@ -240,6 +219,29 @@ export default function TakeTest() {
                     <Timer duration={1200} onTimeUp={handleTimeUp} warningThreshold={300} />
                 </div>
 
+                {test && (prepVideoUrl || (test as any).videoUrl) && (
+                    <div className="mb-6 p-4 bg-primary-50 border border-primary-100 rounded-2xl flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center text-primary-600">
+                                <Video size={20} />
+                            </div>
+                            <div>
+                                <h4 className="font-semibold text-gray-900">Video darslik</h4>
+                                <p className="text-sm text-gray-600 truncate">Testni boshlashdan oldin ushbu videoni ko'rish tavsiya etiladi</p>
+                            </div>
+                        </div>
+                        <a
+                            href={prepVideoUrl || (test as any).videoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-primary py-2 px-4 text-sm gap-2 shrink-0"
+                        >
+                            <ExternalLink className="w-4 h-4" />
+                            Ko'rish
+                        </a>
+                    </div>
+                )}
+
                 {/* Question */}
                 <AnimatePresence mode="wait">
                     <QuestionCard
@@ -310,6 +312,6 @@ export default function TakeTest() {
                     )}
                 </div>
             </div>
-        </Layout>
+        </Layout >
     )
 }

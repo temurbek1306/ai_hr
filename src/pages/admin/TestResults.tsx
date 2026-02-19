@@ -108,20 +108,22 @@ export default function TestResults() {
                                 <tr>
                                     <th className="px-6 py-4">Xodim</th>
                                     <th className="px-6 py-4">Topshirilgan Sana</th>
+                                    <th className="px-6 py-4">Sarlavha</th>
                                     <th className="px-6 py-4">Natija</th>
+                                    <th className="px-6 py-4">To'g'ri javoblar</th>
                                     <th className="px-6 py-4">Status</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
                                 {isLoading ? (
                                     <tr>
-                                        <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
+                                        <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
                                             Yuklanmoqda...
                                         </td>
                                     </tr>
                                 ) : displayResults.length === 0 ? (
                                     <tr>
-                                        <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
+                                        <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
                                             Natijalar topilmadi
                                         </td>
                                     </tr>
@@ -130,7 +132,14 @@ export default function TestResults() {
                                         <tr key={res.id || index} className="hover:bg-gray-50 transition-colors">
                                             <td className="px-6 py-4 font-medium text-gray-900">{res.employeeName}</td>
                                             <td className="px-6 py-4 text-gray-600">{res.completedAt}</td>
+                                            <td className="px-6 py-4 text-gray-600">{res.testTitle}</td>
                                             <td className="px-6 py-4 font-semibold text-gray-900">{res.score}%</td>
+                                            <td className="px-6 py-4 text-gray-600">
+                                                {res.correctAnswers !== undefined && res.totalQuestions !== undefined
+                                                    ? `${res.correctAnswers} / ${res.totalQuestions}`
+                                                    : '-'
+                                                }
+                                            </td>
                                             <td className="px-6 py-4">
                                                 <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${res.passed ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                                                     {res.passed ? 'O\'tdi' : 'Yiqildi'}

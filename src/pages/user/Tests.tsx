@@ -17,43 +17,36 @@ export default function Tests() {
         const fetchTests = async () => {
             try {
                 setIsLoading(true);
+                setError(null);
                 const response = await testService.getAvailableTests();
-                // Response is ApiResponse<TestDTO[]>, so we need to access .body
+
+                // response is ApiResponse<TestDTO[]>
                 let testList = response.body;
+
+                if (!testList) {
+                    console.warn('API returned empty body for tests');
+                    setTests([]);
+                    return;
+                }
 
                 if (!Array.isArray(testList)) {
                     console.warn('API returned non-array tests:', testList);
-                    if (testList && typeof testList === 'object' && Array.isArray((testList as any).content)) {
+                    // Check if it's a paginated response with .content
+                    if (typeof testList === 'object' && Array.isArray((testList as any).content)) {
                         testList = (testList as any).content;
+                    } else if (Array.isArray(response)) {
+                        // Handle raw array if wrapper is missing
+                        testList = response as any;
                     } else {
                         throw new Error('Invalid response format: expected array');
                     }
                 }
 
                 setTests(testList || []);
-                setError(null);
             } catch (error: any) {
                 console.error('Failed to fetch tests:', error);
-                // Fallback to mock data for demo purposes
-                setTests([
-                    {
-                        id: '1',
-                        title: 'Xavfsizlik texnikasi',
-                        questionsCount: 10,
-                        duration: 20,
-                        createdAt: new Date().toISOString(),
-                        status: 'active'
-                    },
-                    {
-                        id: '2',
-                        title: 'Korporativ madaniyat',
-                        questionsCount: 15,
-                        duration: 30,
-                        createdAt: new Date().toISOString(),
-                        status: 'active'
-                    }
-                ]);
-                // setError('Testlarni yuklashda xatolik yuz berdi.'); // Suppress error for demo
+                setError('Testlarni yuklashda xatolik yuz berdi. Iltimos, keyinroq urunib ko\'ring.');
+                setTests([]);
             } finally {
                 setIsLoading(false);
             }

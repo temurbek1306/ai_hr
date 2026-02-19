@@ -114,7 +114,11 @@ export default function SurveyCatalog() {
                                                     <button className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors" title="Resultatlar">
                                                         <PieChart size={18} />
                                                     </button>
-                                                    <button className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors" title="Tahrirlash">
+                                                    <button
+                                                        onClick={() => navigate(`/admin/surveys/${survey.id}/edit`)}
+                                                        className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+                                                        title="Tahrirlash"
+                                                    >
                                                         <Edit size={18} />
                                                     </button>
                                                     <button

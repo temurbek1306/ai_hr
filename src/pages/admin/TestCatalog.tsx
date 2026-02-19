@@ -108,7 +108,11 @@ export default function TestCatalog() {
                                             </td>
                                             <td className="px-6 py-4 text-right">
                                                 <div className="flex items-center justify-end gap-2">
-                                                    <button className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors" title="Tahrirlash">
+                                                    <button
+                                                        onClick={() => navigate(`/admin/testing/${test.id}/edit`)}
+                                                        className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+                                                        title="Tahrirlash"
+                                                    >
                                                         <Edit size={18} />
                                                     </button>
                                                     <button

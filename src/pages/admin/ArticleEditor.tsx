@@ -5,7 +5,6 @@ import Layout from '../../components/Layout'
 import Button from '../../components/Button'
 import Input from '../../components/Input'
 import Select from '../../components/Select'
-import { uploadService } from '../../services/upload.service'
 import { knowledgeService } from '../../services/knowledge.service'
 import { profileService } from '../../services/profile.service'
 import { useEffect } from 'react'
@@ -18,7 +17,6 @@ export default function ArticleEditor() {
     const [contentType, setContentType] = useState('article')
     const [mediaUrl, setMediaUrl] = useState('')
     const [isPreview, setIsPreview] = useState(false)
-    const [isUploading, setIsUploading] = useState(false)
     const [authorId, setAuthorId] = useState('admin')
 
     const [categories, setCategories] = useState<any[]>([
@@ -55,22 +53,6 @@ export default function ArticleEditor() {
         fetchProfile()
     }, [])
 
-    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (!file) return
-
-        setIsUploading(true)
-        try {
-            const result = await uploadService.upload(file)
-            setMediaUrl(result.url)
-            alert(`Fayl muvaffaqiyatli yuklandi! URL: ${result.url}`)
-        } catch (error: any) {
-            console.error('File upload error:', error)
-            alert('Fayl yuklashda xatolik: ' + (error.response?.data?.message || error.message))
-        } finally {
-            setIsUploading(false)
-        }
-    }
 
     const handleSave = async () => {
         if (!title) return alert('Maqola sarlavhasini kiriting')
@@ -82,7 +64,8 @@ export default function ArticleEditor() {
             await knowledgeService.createArticle({
                 title,
                 categoryId: category,
-                content: contentType === 'article' ? content : mediaUrl,
+                content: content,
+                mediaUrl: contentType === 'article' ? undefined : mediaUrl,
                 type: contentType.toUpperCase() as any,
                 authorId: authorId,
                 status: 'PUBLISHED'
@@ -154,37 +137,16 @@ export default function ArticleEditor() {
 
                             {contentType !== 'article' && (
                                 <div className="space-y-2">
-                                    <label className="block text-sm font-medium text-gray-700">Fayl Yuklash</label>
-                                    <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:bg-gray-50 transition-colors cursor-pointer">
-                                        <div className="mx-auto w-10 h-10 bg-primary-50 text-primary-600 rounded-full flex items-center justify-center mb-2">
-                                            {contentType === 'video' ? <Video size={20} /> :
-                                                contentType === 'audio' ? <Headphones size={20} /> :
-                                                    <FileText size={20} />}
-                                        </div>
-                                        <p className="text-sm text-gray-600">
-                                            {contentType === 'video' ? 'Video faylni tanlang (MP4, MKV)' :
-                                                contentType === 'audio' ? 'Audio faylni tanlang (MP3, WAV)' :
-                                                    'Prezentatsiya faylini tanlang (PDF, PPTX)'}
-                                        </p>
-                                        <input
-                                            type="file"
-                                            accept={contentType === 'video' ? 'video/*' : contentType === 'audio' ? 'audio/*' : '.pdf,.ppt,.pptx'}
-                                            onChange={handleFileUpload}
-                                            className="hidden"
-                                            id="file-upload"
-                                        />
-                                        <label
-                                            htmlFor="file-upload"
-                                            className="text-primary-600 text-sm font-medium mt-2 hover:underline cursor-pointer inline-block"
-                                        >
-                                            {isUploading ? 'Yuklanmoqda...' : 'Kompyuteridan yuklash'}
-                                        </label>
-                                    </div>
                                     <Input
-                                        placeholder="Yoki faylga havola (URL) kiriting..."
+                                        label={`${contentType === 'video' ? 'Video' : contentType === 'audio' ? 'Audio' : 'Fayl'} havolasi (URL)`}
+                                        placeholder="Havola (URL) kiriting..."
                                         value={mediaUrl}
                                         onChange={(e) => setMediaUrl(e.target.value)}
+                                        icon={contentType === 'video' ? <Video size={20} /> : contentType === 'audio' ? <Headphones size={20} /> : <FileText size={20} />}
                                     />
+                                    <p className="text-xs text-gray-500 italic">
+                                        Eslatma: Hozircha faqat tashqi havolalar (YouTube, Google Drive va h.k.) qo'llab-quvvatlanadi.
+                                    </p>
                                 </div>
                             )}
                         </div>

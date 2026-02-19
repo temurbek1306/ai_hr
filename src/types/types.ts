@@ -10,6 +10,7 @@ export interface Employee {
     avatar?: string
     startDate: string
     salary: number
+    videoUrl?: string
 }
 
 export type Department =

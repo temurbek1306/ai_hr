@@ -8,7 +8,8 @@ import {
     Calendar,
     Upload,
     ArrowLeft,
-    Save
+    Save,
+    Video
 } from 'lucide-react'
 import Layout from '../components/Layout'
 import Input from '../components/Input'
@@ -35,6 +36,7 @@ export default function EmployeeForm() {
         status: 'active' as 'active' | 'inactive' | 'on-leave',
         startDate: new Date().toISOString().split('T')[0],
         avatar: null as string | null,
+        videoUrl: '', // Added for video link
         assignedTestId: '' // Added for assignment
     })
 
@@ -60,6 +62,7 @@ export default function EmployeeForm() {
                     status: (data.status as 'active' | 'inactive' | 'on-leave') || 'active',
                     startDate: data.startDate || new Date().toISOString().split('T')[0],
                     avatar: (data as any).avatar || null,
+                    videoUrl: (data as any).videoUrl || '',
                     assignedTestId: ''
                 })
             })
@@ -103,7 +106,8 @@ export default function EmployeeForm() {
                     position: formData.position,
                     department: formData.department,
                     status: formData.status,
-                    startDate: formData.startDate
+                    startDate: formData.startDate,
+                    videoUrl: formData.videoUrl
                 }
                 await employeeService.update(id, updateData)
                 alert(t('common.updated'))
@@ -116,7 +120,8 @@ export default function EmployeeForm() {
                     phone: formData.phone,
                     position: formData.position,
                     department: formData.department,
-                    startDate: formData.startDate
+                    startDate: formData.startDate,
+                    videoUrl: formData.videoUrl
                 }
                 await employeeService.create(createData)
                 alert(t('common.added'))
@@ -265,16 +270,13 @@ export default function EmployeeForm() {
                                 value={formData.status}
                                 onChange={(e) => setFormData({ ...formData, status: e.target.value as 'active' | 'inactive' | 'on-leave' })}
                             />
-                            <div className="space-y-1">
-                                <label className="block text-sm font-medium text-gray-700">Video darslik (ixtiyoriy)</label>
-                                <div className="border border-gray-200 rounded-lg p-2 bg-gray-50">
-                                    <input
-                                        type="file"
-                                        accept="video/*"
-                                        className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 cursor-pointer"
-                                    />
-                                </div>
-                            </div>
+                            <Input
+                                label="Video darslik havolasi (ixtiyoriy)"
+                                placeholder="YouTube yoki boshqa video havola..."
+                                icon={<Video size={18} />}
+                                value={formData.videoUrl}
+                                onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
+                            />
                             <div className="space-y-1">
                                 <label className="block text-sm font-medium text-gray-700">Test materiali</label>
                                 <Select

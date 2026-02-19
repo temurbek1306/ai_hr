@@ -12,12 +12,14 @@ const api = axios.create({
 // Request interceptor to add token
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            console.log('Adding token to request:', token.substring(0, 10) + '...');
-            config.headers.Authorization = `Bearer ${token}`;
-        } else {
-            console.warn('No token found in localStorage');
+        const url = config.url || '';
+        // Skip token for auth endpoints — they don't need it and a stale token causes "User not found"
+        const isAuthEndpoint = url.includes('/auth/login') || url.includes('/auth/register') || url.includes('/auth/forgot-password');
+        if (!isAuthEndpoint) {
+            const token = localStorage.getItem('token');
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
         }
         return config;
     },
