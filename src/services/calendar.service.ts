@@ -15,7 +15,7 @@ export const calendarService = {
             if (startDate) params.startDate = startDate;
             if (endDate) params.endDate = endDate;
 
-            const response = await api.get<ApiResponse<EventDto[]>>('/api/v1/events', { params });
+            const response = await api.get<ApiResponse<EventDto[]>>('/events', { params });
             return (response.data as any).body || response.data;
         } catch (error: any) {
             console.error('Failed to fetch events:', error);
@@ -34,7 +34,7 @@ export const calendarService = {
                 headers['X-Employee-Id'] = employeeId;
             }
 
-            const response = await api.post<ApiResponse<EventDto>>('/api/v1/events', data, { headers });
+            const response = await api.post<ApiResponse<EventDto>>('/events', data, { headers });
             return (response.data as any).body || response.data;
         } catch (error: any) {
             console.error('Failed to create event:', error);
@@ -48,7 +48,7 @@ export const calendarService = {
      */
     deleteEvent: async (id: string): Promise<void> => {
         try {
-            await api.delete(`/api/v1/events/${id}`);
+            await api.delete(`/events/${id}`);
         } catch (error: any) {
             console.error('Failed to delete event:', error);
             throw new Error(error.response?.data?.message || 'Failed to delete event');

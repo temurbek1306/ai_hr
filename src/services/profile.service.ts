@@ -14,7 +14,7 @@ export const profileService = {
      */
     getMe: async (): Promise<EmployeeProfileDto> => {
         try {
-            const response = await api.get<ApiResponse<EmployeeProfileDto>>('/api/v1/employees/me');
+            const response = await api.get<ApiResponse<EmployeeProfileDto>>('/employees/me');
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch current profile:', error);
@@ -36,7 +36,7 @@ export const profileService = {
      */
     updateMe: async (data: Partial<EmployeeProfileDto>): Promise<EmployeeProfileDto> => {
         try {
-            const response = await api.put<ApiResponse<EmployeeProfileDto>>('/api/v1/employees/me', data);
+            const response = await api.put<ApiResponse<EmployeeProfileDto>>('/employees/me', data);
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to update current profile:', error);
@@ -58,7 +58,7 @@ export const profileService = {
      */
     getOwnActivities: async (): Promise<AdminActivityDto[]> => {
         try {
-            const response = await api.get<ApiResponse<AdminActivityDto[]>>('/api/v1/employees/me/activities');
+            const response = await api.get<ApiResponse<AdminActivityDto[]>>('/employees/me/activities');
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch own activities:', error);
@@ -72,7 +72,7 @@ export const profileService = {
      */
     getOwnSummary: async (): Promise<EmployeeSummaryDTO> => {
         try {
-            const response = await api.get<ApiResponse<EmployeeSummaryDTO>>('/api/v1/employees/me/summary');
+            const response = await api.get<ApiResponse<EmployeeSummaryDTO>>('/employees/me/summary');
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch own summary:', error);
@@ -94,7 +94,7 @@ export const profileService = {
      */
     getOwnTestResults: async (): Promise<TestResultsResponseDto> => {
         try {
-            const response = await api.get<ApiResponse<TestResultsResponseDto>>('/api/v1/employees/me/test-results');
+            const response = await api.get<ApiResponse<TestResultsResponseDto>>('/employees/me/test-results');
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch own test results:', error);
@@ -115,7 +115,7 @@ export const profileService = {
      */
     exportTestResults: async (): Promise<Blob> => {
         try {
-            const response = await api.get('/api/v1/employees/me/export', {
+            const response = await api.get('/employees/me/export', {
                 responseType: 'blob'
             });
             return response.data;
@@ -134,7 +134,7 @@ export const profileService = {
         try {
             const formData = new FormData();
             formData.append('file', file);
-            const response = await api.post<ApiResponse<string>>('/api/v1/employees/me/avatar', formData, {
+            const response = await api.post<ApiResponse<string>>('/employees/me/avatar', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             return response.data.body || (response.data as any);

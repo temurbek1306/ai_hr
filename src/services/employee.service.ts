@@ -16,7 +16,7 @@ export const employeeService = {
      */
     getAll: async (): Promise<AdminEmployeeDto[]> => {
         try {
-            const response = await api.get<ApiResponse<AdminEmployeeDto[]>>('/api/v1/admin/employees');
+            const response = await api.get<ApiResponse<AdminEmployeeDto[]>>('/admin/employees');
             return response.data.body || [];
         } catch (error: any) {
             console.error('Failed to fetch employees:', error);
@@ -30,7 +30,7 @@ export const employeeService = {
      */
     getById: async (id: string): Promise<AdminEmployeeDto> => {
         try {
-            const response = await api.get<ApiResponse<AdminEmployeeDto>>(`/api/v1/admin/employees/${id}`);
+            const response = await api.get<ApiResponse<AdminEmployeeDto>>(`/admin/employees/${id}`);
             return response.data.body as AdminEmployeeDto;
         } catch (error: any) {
             console.error('Failed to fetch employee:', error);
@@ -45,7 +45,7 @@ export const employeeService = {
      */
     create: async (data: AdminEmployeeCreateDto): Promise<AdminEmployeeDto> => {
         try {
-            const response = await api.post<ApiResponse<AdminEmployeeDto>>('/api/v1/admin/employees', data);
+            const response = await api.post<ApiResponse<AdminEmployeeDto>>('/admin/employees', data);
             return response.data.body as AdminEmployeeDto;
         } catch (error: any) {
             console.error('Failed to create employee:', error);
@@ -59,7 +59,7 @@ export const employeeService = {
      */
     update: async (id: string, data: AdminEmployeeCreateDto): Promise<AdminEmployeeDto> => {
         try {
-            const response = await api.put<ApiResponse<AdminEmployeeDto>>(`/api/v1/admin/employees/${id}`, data);
+            const response = await api.put<ApiResponse<AdminEmployeeDto>>(`/admin/employees/${id}`, data);
             return response.data.body as AdminEmployeeDto;
         } catch (error: any) {
             console.error('Failed to update employee:', error);
@@ -74,7 +74,7 @@ export const employeeService = {
      */
     delete: async (id: string): Promise<void> => {
         try {
-            await api.delete(`/api/v1/admin/employees/${id}`);
+            await api.delete(`/admin/employees/${id}`);
         } catch (error: any) {
             console.error('Failed to delete employee:', error);
             throw new Error(error.response?.data?.message || 'Failed to delete employee');
@@ -90,7 +90,7 @@ export const employeeService = {
         try {
             const formData = new FormData();
             formData.append('file', file);
-            const response = await api.post<ApiResponse<any>>('/api/v1/admin/employees/import', formData, {
+            const response = await api.post<ApiResponse<any>>('/admin/employees/import', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -108,7 +108,7 @@ export const employeeService = {
      */
     exportEmployees: async (): Promise<Blob> => {
         try {
-            const response = await api.get('/api/v1/admin/employees/export', {
+            const response = await api.get('/admin/employees/export', {
                 responseType: 'blob',
             });
             return response.data;
@@ -124,7 +124,7 @@ export const employeeService = {
      */
     getStatus: async (id: string): Promise<ApiResponse<any>> => {
         try {
-            const response = await api.get<ApiResponse<any>>(`/api/v1/employees/${id}/status`);
+            const response = await api.get<ApiResponse<any>>(`/employees/${id}/status`);
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch employee status:', error);
@@ -138,7 +138,7 @@ export const employeeService = {
      */
     getProfile: async (id: string): Promise<EmployeeProfileDto> => {
         try {
-            const response = await api.get<ApiResponse<EmployeeProfileDto>>(`/api/v1/employees/${id}/profile`);
+            const response = await api.get<ApiResponse<EmployeeProfileDto>>(`/employees/${id}/profile`);
             return response.data.body as EmployeeProfileDto;
         } catch (error: any) {
             console.error('Failed to fetch employee profile:', error);
@@ -152,7 +152,7 @@ export const employeeService = {
      */
     getSummary: async (id: string): Promise<EmployeeSummaryDTO> => {
         try {
-            const response = await api.get<ApiResponse<EmployeeSummaryDTO>>(`/api/v1/employees/${id}/summary`);
+            const response = await api.get<ApiResponse<EmployeeSummaryDTO>>(`/employees/${id}/summary`);
             return response.data.body as EmployeeSummaryDTO;
         } catch (error: any) {
             console.error('Failed to fetch employee summary:', error);
@@ -166,7 +166,7 @@ export const employeeService = {
      */
     getAssignments: async (id: string): Promise<AssignmentDto[]> => {
         try {
-            const response = await api.get<ApiResponse<AssignmentDto[]>>(`/api/v1/employees/${id}/assignments`);
+            const response = await api.get<ApiResponse<AssignmentDto[]>>(`/employees/${id}/assignments`);
             return response.data.body || [];
         } catch (error: any) {
             console.error('Failed to fetch assignments:', error);
@@ -181,7 +181,7 @@ export const employeeService = {
      */
     createAssignment: async (id: string, data: AssignmentCreateDto): Promise<AssignmentDto> => {
         try {
-            const response = await api.post<ApiResponse<AssignmentDto>>(`/api/v1/admin/employees/${id}/assignments`, data);
+            const response = await api.post<ApiResponse<AssignmentDto>>(`/admin/employees/${id}/assignments`, data);
             return response.data.body as AssignmentDto;
         } catch (error: any) {
             console.error('Failed to create assignment:', error);
@@ -195,7 +195,7 @@ export const employeeService = {
      */
     cleanupGhosts: async (): Promise<ApiResponse<void>> => {
         try {
-            const response = await api.post<ApiResponse<void>>('/api/v1/admin/employees/cleanup-ghosts');
+            const response = await api.post<ApiResponse<void>>('/admin/employees/cleanup-ghosts');
             return response.data;
         } catch (error: any) {
             console.error('Failed to cleanup ghosts:', error);

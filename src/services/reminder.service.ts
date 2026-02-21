@@ -9,7 +9,7 @@ export const reminderService = {
     getReminders: async (employeeId?: string): Promise<ReminderDto[]> => {
         try {
             const params = employeeId ? { employeeId } : {};
-            const response = await api.get<ReminderDto[]>('/api/v1/reminders', { params });
+            const response = await api.get<ReminderDto[]>('/reminders', { params });
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch reminders:', error);
@@ -23,7 +23,7 @@ export const reminderService = {
      */
     createReminder: async (data: Omit<ReminderDto, 'id' | 'sent'>): Promise<ReminderDto> => {
         try {
-            const response = await api.post<ReminderDto>('/api/v1/reminders', data);
+            const response = await api.post<ReminderDto>('/reminders', data);
             return response.data;
         } catch (error: any) {
             console.error('Failed to create reminder:', error);
@@ -37,7 +37,7 @@ export const reminderService = {
      */
     markAsSent: async (id: string): Promise<ReminderDto> => {
         try {
-            const response = await api.post<ReminderDto>(`/api/v1/reminders/${id}/sent`);
+            const response = await api.post<ReminderDto>(`/reminders/${id}/sent`);
             return response.data;
         } catch (error: any) {
             console.error('Failed to mark reminder as sent:', error);

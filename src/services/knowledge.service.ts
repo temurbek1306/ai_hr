@@ -13,7 +13,7 @@ export const knowledgeService = {
      */
     getCategories: async (): Promise<KnowledgeCategoryDto[]> => {
         try {
-            const response = await api.get<KnowledgeCategoryDto[]>('/api/v1/knowledge/categories');
+            const response = await api.get<KnowledgeCategoryDto[]>('/knowledge/categories');
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch categories:', error);
@@ -27,7 +27,7 @@ export const knowledgeService = {
      */
     createCategory: async (data: KnowledgeCategoryDto): Promise<KnowledgeCategoryDto> => {
         try {
-            const response = await api.post<KnowledgeCategoryDto>('/api/v1/knowledge/categories', data);
+            const response = await api.post<KnowledgeCategoryDto>('/knowledge/categories', data);
             return response.data;
         } catch (error: any) {
             console.error('Failed to create category:', error);
@@ -42,7 +42,7 @@ export const knowledgeService = {
     getArticles: async (categoryId?: string): Promise<KnowledgeArticleDto[]> => {
         try {
             const params = categoryId ? { categoryId } : {};
-            const response = await api.get<KnowledgeArticleDto[]>('/api/v1/knowledge/articles', { params });
+            const response = await api.get<KnowledgeArticleDto[]>('/knowledge/articles', { params });
             // The API returns a raw array according to Swagger
             return Array.isArray(response.data) ? response.data : ((response.data as any).body || []);
         } catch (error: any) {
@@ -57,7 +57,7 @@ export const knowledgeService = {
      */
     createArticle: async (data: KnowledgeArticleDto): Promise<KnowledgeArticleDto> => {
         try {
-            const response = await api.post<KnowledgeArticleDto>('/api/v1/knowledge/articles', data);
+            const response = await api.post<KnowledgeArticleDto>('/knowledge/articles', data);
             return response.data;
         } catch (error: any) {
             console.error('Failed to create article:', error);
@@ -71,7 +71,7 @@ export const knowledgeService = {
      */
     updateArticle: async (articleId: string, data: KnowledgeArticleDto): Promise<KnowledgeArticleDto> => {
         try {
-            const response = await api.put<KnowledgeArticleDto>(`/api/v1/knowledge/articles/${articleId}`, data);
+            const response = await api.put<KnowledgeArticleDto>(`/knowledge/articles/${articleId}`, data);
             return response.data;
         } catch (error: any) {
             console.error('Failed to update article:', error);
@@ -85,7 +85,7 @@ export const knowledgeService = {
      */
     getVersions: async (articleId: string): Promise<KnowledgeArticleVersionDto[]> => {
         try {
-            const response = await api.get<KnowledgeArticleVersionDto[]>(`/api/v1/knowledge/articles/${articleId}/versions`);
+            const response = await api.get<KnowledgeArticleVersionDto[]>(`/knowledge/articles/${articleId}/versions`);
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch article versions:', error);
@@ -99,7 +99,7 @@ export const knowledgeService = {
      */
     setPermissions: async (data: KnowledgePermissionDto): Promise<string> => {
         try {
-            const response = await api.post<string>('/api/v1/knowledge/permissions', data);
+            const response = await api.post<string>('/knowledge/permissions', data);
             return response.data;
         } catch (error: any) {
             console.error('Failed to set permissions:', error);

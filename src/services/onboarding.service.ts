@@ -11,7 +11,7 @@ export const onboardingService = {
      */
     getMaterials: async (): Promise<OnboardingMaterialDTO[]> => {
         try {
-            const response = await api.get<OnboardingMaterialDTO[]>('/api/v1/onboarding/materials');
+            const response = await api.get<OnboardingMaterialDTO[]>('/onboarding/materials');
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch onboarding materials:', error);
@@ -25,7 +25,7 @@ export const onboardingService = {
      */
     getMaterialById: async (id: string): Promise<OnboardingMaterialDTO> => {
         try {
-            const response = await api.get<OnboardingMaterialDTO>(`/api/v1/onboarding/materials/${id}`);
+            const response = await api.get<OnboardingMaterialDTO>(`/onboarding/materials/${id}`);
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch onboarding material:', error);
@@ -39,7 +39,7 @@ export const onboardingService = {
      */
     createMaterial: async (data: OnboardingMaterialDTO): Promise<OnboardingMaterialDTO> => {
         try {
-            const response = await api.post<OnboardingMaterialDTO>('/api/v1/onboarding/materials', data);
+            const response = await api.post<OnboardingMaterialDTO>('/onboarding/materials', data);
             return response.data;
         } catch (error: any) {
             console.error('Failed to create onboarding material:', error);
@@ -53,7 +53,7 @@ export const onboardingService = {
      */
     updateMaterial: async (id: string, data: OnboardingMaterialDTO): Promise<OnboardingMaterialDTO> => {
         try {
-            const response = await api.put<OnboardingMaterialDTO>(`/api/v1/onboarding/materials/${id}`, data);
+            const response = await api.put<OnboardingMaterialDTO>(`/onboarding/materials/${id}`, data);
             return response.data;
         } catch (error: any) {
             console.error('Failed to update onboarding material:', error);
@@ -67,7 +67,7 @@ export const onboardingService = {
      */
     deleteMaterial: async (id: string): Promise<void> => {
         try {
-            await api.delete(`/api/v1/onboarding/materials/${id}`);
+            await api.delete(`/onboarding/materials/${id}`);
         } catch (error: any) {
             console.error('Failed to delete onboarding material:', error);
             throw new Error(error.response?.data?.message || 'Failed to delete onboarding material');
@@ -80,7 +80,7 @@ export const onboardingService = {
      */
     getEmployeeMaterials: async (employeeId: string): Promise<OnboardingMaterialDTO[]> => {
         try {
-            const response = await api.get<OnboardingMaterialDTO[]>(`/api/v1/employees/${employeeId}/onboarding/materials`);
+            const response = await api.get<OnboardingMaterialDTO[]>(`/employees/${employeeId}/onboarding/materials`);
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch employee materials:', error);
@@ -94,7 +94,7 @@ export const onboardingService = {
      */
     saveProgress: async (employeeId: string, progress: OnboardingProgressDTO): Promise<OnboardingProgressDTO> => {
         try {
-            const response = await api.post<OnboardingProgressDTO>(`/api/v1/employees/${employeeId}/onboarding/progress`, progress);
+            const response = await api.post<OnboardingProgressDTO>(`/employees/${employeeId}/onboarding/progress`, progress);
             return response.data;
         } catch (error: any) {
             console.error('Failed to save onboarding progress:', error);
@@ -108,7 +108,7 @@ export const onboardingService = {
      */
     completeOnboarding: async (employeeId: string): Promise<string> => {
         try {
-            const response = await api.post<string>(`/api/v1/employees/${employeeId}/onboarding/complete`);
+            const response = await api.post<string>(`/employees/${employeeId}/onboarding/complete`);
             return response.data;
         } catch (error: any) {
             console.error('Failed to complete onboarding:', error);

@@ -14,7 +14,7 @@ export const dashboardService = {
      */
     getDashboard: async (): Promise<AdminDashboardDto> => {
         try {
-            const response = await api.get<ApiResponse<AdminDashboardDto>>('/api/v1/admin/dashboard');
+            const response = await api.get<ApiResponse<AdminDashboardDto>>('/admin/dashboard');
             return response.data.body!;
         } catch (error: any) {
             console.error('Failed to fetch dashboard data:', error);
@@ -33,7 +33,7 @@ export const dashboardService = {
             if (department) params.department = department;
             if (status) params.status = status;
 
-            const response = await api.get<ApiResponse<AdminDashboardSummaryDto>>('/api/v1/admin/dashboard/summary', { params });
+            const response = await api.get<ApiResponse<AdminDashboardSummaryDto>>('/admin/dashboard/summary', { params });
             return response.data.body!;
         } catch (error: any) {
             console.error('Failed to fetch dashboard summary:', error);
@@ -47,7 +47,7 @@ export const dashboardService = {
      */
     getExtendedStats: async (): Promise<AdminDashboardExtendedDto> => {
         try {
-            const response = await api.get<ApiResponse<AdminDashboardExtendedDto>>('/api/v1/admin/dashboard/extended-stats');
+            const response = await api.get<ApiResponse<AdminDashboardExtendedDto>>('/admin/dashboard/extended-stats');
             return response.data.body!;
         } catch (error: any) {
             console.error('Failed to fetch extended stats:', error);
@@ -61,7 +61,7 @@ export const dashboardService = {
      */
     getActivities: async (): Promise<AdminActivityDto[]> => {
         try {
-            const response = await api.get<ApiResponse<AdminActivityDto[]>>('/api/v1/admin/activities');
+            const response = await api.get<ApiResponse<AdminActivityDto[]>>('/admin/activities');
             return response.data.body || [];
         } catch (error: any) {
             console.error('Failed to fetch activities:', error);

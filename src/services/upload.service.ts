@@ -11,7 +11,7 @@ export const uploadService = {
             const formData = new FormData();
             formData.append('file', file);
 
-            const response = await api.post<UploadResponseDto>('/api/v1/upload/api/v1/upload', formData, {
+            const response = await api.post<UploadResponseDto>('/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

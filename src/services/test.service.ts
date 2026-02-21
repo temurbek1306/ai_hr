@@ -17,7 +17,7 @@ export type { TestCreateDto, TestDTO, TestQuestionCreateDto, TestDetailDto, Test
 export const testService = {
     getAll: async (): Promise<TestDTO[]> => {
         try {
-            const response = await api.get<ApiResponse<TestDTO[]>>('/api/v1/tests');
+            const response = await api.get<ApiResponse<TestDTO[]>>('/tests');
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch tests:', error);
@@ -31,7 +31,7 @@ export const testService = {
      */
     getById: async (testId: string): Promise<TestDetailDto> => {
         try {
-            const response = await api.get<ApiResponse<TestDetailDto>>(`/api/v1/admin/tests/${testId}`);
+            const response = await api.get<ApiResponse<TestDetailDto>>(`/admin/tests/${testId}`);
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error(`Failed to fetch test ${testId}:`, error);
@@ -45,7 +45,7 @@ export const testService = {
      */
     getForTake: async (testId: string): Promise<TestTakeDto> => {
         try {
-            const response = await api.get<ApiResponse<TestTakeDto>>(`/api/v1/tests/${testId}/take`);
+            const response = await api.get<ApiResponse<TestTakeDto>>(`/tests/${testId}/take`);
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error(`Failed to fetch test for take ${testId}:`, error);
@@ -60,7 +60,7 @@ export const testService = {
      */
     getAvailableTests: async (): Promise<ApiResponse<TestDTO[]>> => {
         try {
-            const response = await api.get<ApiResponse<TestDTO[]>>('/api/v1/tests/available');
+            const response = await api.get<ApiResponse<TestDTO[]>>('/tests/available');
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch available tests:', error);
@@ -70,7 +70,7 @@ export const testService = {
 
     createTest: async (testData: TestCreateDto): Promise<TestDetailDto> => {
         try {
-            const response = await api.post<ApiResponse<TestDetailDto>>('/api/v1/admin/tests', testData);
+            const response = await api.post<ApiResponse<TestDetailDto>>('/admin/tests', testData);
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to create test:', error);
@@ -80,7 +80,7 @@ export const testService = {
 
     updateTest: async (testId: string, testData: TestCreateDto): Promise<TestDetailDto> => {
         try {
-            const response = await api.put<ApiResponse<TestDetailDto>>(`/api/v1/admin/tests/${testId}`, testData);
+            const response = await api.put<ApiResponse<TestDetailDto>>(`/admin/tests/${testId}`, testData);
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to update test:', error);
@@ -90,7 +90,7 @@ export const testService = {
 
     deleteTest: async (testId: string): Promise<string> => {
         try {
-            const response = await api.delete<ApiResponse<string>>(`/api/v1/admin/tests/${testId}`);
+            const response = await api.delete<ApiResponse<string>>(`/admin/tests/${testId}`);
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to delete test:', error);
@@ -100,7 +100,7 @@ export const testService = {
 
     getTestAnalytics: async (testId: string): Promise<TestAnalyticsDto> => {
         try {
-            const response = await api.get<ApiResponse<TestAnalyticsDto>>(`/api/v1/tests/${testId}/analytics`);
+            const response = await api.get<ApiResponse<TestAnalyticsDto>>(`/tests/${testId}/analytics`);
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch test analytics:', error);
@@ -115,7 +115,7 @@ export const testService = {
     startSession: async (testId: string, employeeId?: string): Promise<ApiResponse<TestTakeDto>> => {
         try {
             const params = employeeId ? { employeeId } : {};
-            const response = await api.post<ApiResponse<TestTakeDto>>(`/api/v1/tests/${testId}/start`, {}, { params });
+            const response = await api.post<ApiResponse<TestTakeDto>>(`/tests/${testId}/start`, {}, { params });
             return response.data;
         } catch (error: any) {
             console.error('Failed to start test session:', error);
@@ -129,7 +129,7 @@ export const testService = {
      */
     submitAnswer: async (sessionId: string, answerData: TestAnswerDTO): Promise<ApiResponse<string>> => {
         try {
-            const response = await api.post<ApiResponse<string>>(`/api/v1/tests/${sessionId}/answer`, answerData);
+            const response = await api.post<ApiResponse<string>>(`/tests/${sessionId}/answer`, answerData);
             return response.data;
         } catch (error: any) {
             console.error('Failed to submit answer:', error);
@@ -143,7 +143,7 @@ export const testService = {
      */
     submitAnswersBulk: async (sessionId: string, answers: Record<string, string>): Promise<ApiResponse<string>> => {
         try {
-            const response = await api.post<ApiResponse<string>>(`/api/v1/tests/${sessionId}/answers-bulk`, { answers });
+            const response = await api.post<ApiResponse<string>>(`/tests/${sessionId}/answers-bulk`, { answers });
             return response.data;
         } catch (error: any) {
             console.error('Failed to submit answers in bulk:', error);
@@ -157,7 +157,7 @@ export const testService = {
      */
     submitTest: async (testId: string, submitData: TestSubmitRequestDto): Promise<ApiResponse<any>> => {
         try {
-            const response = await api.post<ApiResponse<any>>(`/api/v1/tests/${testId}/submit`, submitData);
+            const response = await api.post<ApiResponse<any>>(`/tests/${testId}/submit`, submitData);
             return response.data;
         } catch (error: any) {
             console.error('Failed to submit test:', error);
@@ -171,7 +171,7 @@ export const testService = {
      */
     finishSession: async (sessionId: string): Promise<ApiResponse<string>> => {
         try {
-            const response = await api.post<ApiResponse<string>>(`/api/v1/tests/${sessionId}/finish`);
+            const response = await api.post<ApiResponse<string>>(`/tests/${sessionId}/finish`);
             return response.data;
         } catch (error: any) {
             console.error('Failed to finish test session:', error);
@@ -181,7 +181,7 @@ export const testService = {
 
     getResults: async (testId: string): Promise<TestResultsResponseDto> => {
         try {
-            const response = await api.get<ApiResponse<TestResultsResponseDto>>(`/api/v1/tests/${testId}/results`);
+            const response = await api.get<ApiResponse<TestResultsResponseDto>>(`/tests/${testId}/results`);
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch test results:', error);
@@ -195,7 +195,7 @@ export const testService = {
      */
     getVideoInfo: async (): Promise<ApiResponse<any>> => {
         try {
-            const response = await api.get<ApiResponse<any>>('/api/v1/tests/video-info');
+            const response = await api.get<ApiResponse<any>>('/tests/video-info');
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch video info:', error);

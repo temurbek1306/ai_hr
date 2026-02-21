@@ -8,7 +8,7 @@ export const permissionService = {
      */
     getAll: async (): Promise<RolePermissionDto[]> => {
         try {
-            const response = await api.get<RolePermissionDto[]>('/api/v1/admin/permissions');
+            const response = await api.get<RolePermissionDto[]>('/admin/permissions');
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch permissions:', error);
@@ -22,7 +22,7 @@ export const permissionService = {
      */
     update: async (role: string, data: RolePermissionDto): Promise<RolePermissionDto> => {
         try {
-            const response = await api.put<RolePermissionDto>(`/api/v1/admin/permissions/${role}`, data);
+            const response = await api.put<RolePermissionDto>(`/admin/permissions/${role}`, data);
             return response.data;
         } catch (error: any) {
             console.error('Failed to update permissions:', error);

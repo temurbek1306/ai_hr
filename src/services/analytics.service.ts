@@ -18,7 +18,7 @@ export const analyticsService = {
             if (department) params.department = department;
             if (status) params.status = status;
 
-            const response = await api.get<AnalyticsOverviewDto>('/api/v1/analytics/overview', { params });
+            const response = await api.get<AnalyticsOverviewDto>('/analytics/overview', { params });
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch analytics overview:', error);
@@ -32,7 +32,7 @@ export const analyticsService = {
      */
     getExtended: async (): Promise<AdminDashboardExtendedDto> => {
         try {
-            const response = await api.get<AdminDashboardExtendedDto>('/api/v1/analytics/extended');
+            const response = await api.get<AdminDashboardExtendedDto>('/analytics/extended');
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch extended analytics:', error);
@@ -46,7 +46,7 @@ export const analyticsService = {
      */
     getOnboardingStatus: async (): Promise<OnboardingStatusAnalyticsDto> => {
         try {
-            const response = await api.get<OnboardingStatusAnalyticsDto>('/api/v1/admin/analytics/onboarding-status');
+            const response = await api.get<OnboardingStatusAnalyticsDto>('/admin/analytics/onboarding-status');
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch onboarding status:', error);
@@ -60,7 +60,7 @@ export const analyticsService = {
      */
     getDepartments: async (): Promise<AdminDepartmentAnalyticsDto[]> => {
         try {
-            const response = await api.get<AdminDepartmentAnalyticsDto[]>('/api/v1/admin/analytics/departments');
+            const response = await api.get<AdminDepartmentAnalyticsDto[]>('/admin/analytics/departments');
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch department analytics:', error);
@@ -74,7 +74,7 @@ export const analyticsService = {
      */
     getEmployeeSummary: async (employeeId: string): Promise<any> => {
         try {
-            const response = await api.get(`/api/v1/analytics/employees/${employeeId}/summary`);
+            const response = await api.get(`/analytics/employees/${employeeId}/summary`);
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch employee summary:', error);

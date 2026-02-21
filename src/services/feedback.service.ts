@@ -8,7 +8,7 @@ export const feedbackService = {
      */
     send: async (data: Omit<FeedbackDTO, 'id' | 'status' | 'createdAt'>): Promise<ApiResponse<any>> => {
         try {
-            const response = await api.post<ApiResponse<any>>('/api/v1/feedback', data);
+            const response = await api.post<ApiResponse<any>>('/feedback', data);
             return response.data;
         } catch (error: any) {
             console.error('Failed to send feedback:', error);

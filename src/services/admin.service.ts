@@ -16,7 +16,7 @@ export const adminService = {
      */
     getDashboardSummary: async (): Promise<AdminDashboardSummaryDto> => {
         try {
-            const response = await api.get<ApiResponse<AdminDashboardSummaryDto>>('/api/v1/admin/dashboard/summary');
+            const response = await api.get<ApiResponse<AdminDashboardSummaryDto>>('/admin/dashboard/summary');
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch dashboard summary:', error);
@@ -30,7 +30,7 @@ export const adminService = {
      */
     getDashboard: async (): Promise<AdminDashboardDto> => {
         try {
-            const response = await api.get<ApiResponse<AdminDashboardDto>>('/api/v1/admin/dashboard');
+            const response = await api.get<ApiResponse<AdminDashboardDto>>('/admin/dashboard');
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch dashboard data:', error);
@@ -44,7 +44,7 @@ export const adminService = {
      */
     getExtendedStats: async (): Promise<AdminDashboardExtendedDto> => {
         try {
-            const response = await api.get<ApiResponse<AdminDashboardExtendedDto>>('/api/v1/admin/dashboard/extended-stats');
+            const response = await api.get<ApiResponse<AdminDashboardExtendedDto>>('/admin/dashboard/extended-stats');
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch extended stats:', error);
@@ -58,7 +58,7 @@ export const adminService = {
      */
     getActivities: async (): Promise<AdminActivityDto[]> => {
         try {
-            const response = await api.get<ApiResponse<AdminActivityDto[]>>('/api/v1/admin/activities');
+            const response = await api.get<ApiResponse<AdminActivityDto[]>>('/admin/activities');
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch activities:', error);
@@ -72,7 +72,7 @@ export const adminService = {
      */
     getDepartmentAnalytics: async (): Promise<DepartmentCountDto[]> => {
         try {
-            const response = await api.get<ApiResponse<DepartmentCountDto[]>>('/api/v1/admin/analytics/departments');
+            const response = await api.get<ApiResponse<DepartmentCountDto[]>>('/admin/analytics/departments');
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch department analytics:', error);
@@ -86,7 +86,7 @@ export const adminService = {
      */
     getOnboardingAnalytics: async (): Promise<OnboardingStatusAnalyticsDto> => {
         try {
-            const response = await api.get<ApiResponse<OnboardingStatusAnalyticsDto>>('/api/v1/admin/analytics/onboarding-status');
+            const response = await api.get<ApiResponse<OnboardingStatusAnalyticsDto>>('/admin/analytics/onboarding-status');
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch onboarding analytics:', error);

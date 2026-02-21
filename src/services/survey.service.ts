@@ -10,7 +10,7 @@ import type {
 export const surveyService = {
     getAll: async (): Promise<SurveyDto[]> => {
         try {
-            const response = await api.get<ApiResponse<SurveyDto[]>>('/api/v1/surveys');
+            const response = await api.get<ApiResponse<SurveyDto[]>>('/surveys');
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch surveys:', error);
@@ -24,7 +24,7 @@ export const surveyService = {
      */
     getById: async (id: string): Promise<SurveyDto> => {
         try {
-            const response = await api.get<ApiResponse<SurveyDto>>(`/api/v1/surveys/${id}`);
+            const response = await api.get<ApiResponse<SurveyDto>>(`/surveys/${id}`);
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch survey:', error);
@@ -34,7 +34,7 @@ export const surveyService = {
 
     create: async (data: Omit<SurveyDto, 'id'>): Promise<SurveyDto> => {
         try {
-            const response = await api.post<ApiResponse<SurveyDto>>('/api/v1/surveys', data);
+            const response = await api.post<ApiResponse<SurveyDto>>('/surveys', data);
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to create survey:', error);
@@ -44,7 +44,7 @@ export const surveyService = {
 
     update: async (id: string, data: Omit<SurveyDto, 'id'>): Promise<SurveyDto> => {
         try {
-            const response = await api.put<ApiResponse<SurveyDto>>(`/api/v1/surveys/${id}`, data);
+            const response = await api.put<ApiResponse<SurveyDto>>(`/surveys/${id}`, data);
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to update survey:', error);
@@ -54,7 +54,7 @@ export const surveyService = {
 
     getQuestions: async (surveyId: string): Promise<SurveyQuestionDto[]> => {
         try {
-            const response = await api.get<ApiResponse<SurveyQuestionDto[]>>(`/api/v1/surveys/${surveyId}/questions`);
+            const response = await api.get<ApiResponse<SurveyQuestionDto[]>>(`/surveys/${surveyId}/questions`);
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch survey questions:', error);
@@ -68,7 +68,7 @@ export const surveyService = {
      */
     addQuestion: async (surveyId: string, question: Omit<SurveyQuestionDto, 'id'>): Promise<SurveyQuestionDto> => {
         try {
-            const response = await api.post<ApiResponse<SurveyQuestionDto>>(`/api/v1/surveys/${surveyId}/questions`, question);
+            const response = await api.post<ApiResponse<SurveyQuestionDto>>(`/surveys/${surveyId}/questions`, question);
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to add survey question:', error);
@@ -82,7 +82,7 @@ export const surveyService = {
      */
     submitResponse: async (surveyId: string, response: SurveyResponseDto): Promise<string> => {
         try {
-            const result = await api.post<string>(`/api/v1/surveys/${surveyId}/submit`, response);
+            const result = await api.post<string>(`/surveys/${surveyId}/submit`, response);
             return result.data;
         } catch (error: any) {
             console.error('Failed to submit survey response:', error);
@@ -96,7 +96,7 @@ export const surveyService = {
      */
     submitResponses: async (surveyId: string, response: SurveyResponseDto): Promise<string> => {
         try {
-            const result = await api.post<string>(`/api/v1/surveys/${surveyId}/responses`, response);
+            const result = await api.post<string>(`/surveys/${surveyId}/responses`, response);
             return result.data;
         } catch (error: any) {
             console.error('Failed to submit survey responses:', error);
@@ -106,7 +106,7 @@ export const surveyService = {
 
     getResponses: async (surveyId: string): Promise<SurveyAnswerDetailDto[]> => {
         try {
-            const response = await api.get<ApiResponse<SurveyAnswerDetailDto[]>>(`/api/v1/surveys/${surveyId}/responses`);
+            const response = await api.get<ApiResponse<SurveyAnswerDetailDto[]>>(`/surveys/${surveyId}/responses`);
             return response.data.body || (response.data as any);
         } catch (error: any) {
             console.error('Failed to fetch survey responses:', error);

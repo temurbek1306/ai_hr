@@ -13,7 +13,7 @@ export const reportService = {
      */
     getAll: async (): Promise<ReportDto[]> => {
         try {
-            const response = await api.get<ReportDto[]>('/api/v1/admin/reports');
+            const response = await api.get<ReportDto[]>('/admin/reports');
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch reports:', error);
@@ -27,7 +27,7 @@ export const reportService = {
      */
     generate: async (data: ReportGenerateDto): Promise<ReportDto> => {
         try {
-            const response = await api.post<ReportDto>('/api/v1/admin/reports/generate', data);
+            const response = await api.post<ReportDto>('/admin/reports/generate', data);
             return response.data;
         } catch (error: any) {
             console.error('Failed to generate report:', error);
@@ -41,7 +41,7 @@ export const reportService = {
      */
     downloadReport: async (id: string): Promise<Blob> => {
         try {
-            const response = await api.get(`/api/v1/reports/${id}/download`, {
+            const response = await api.get(`/reports/${id}/download`, {
                 responseType: 'blob'
             });
             return response.data;
@@ -57,7 +57,7 @@ export const reportService = {
      */
     getReports: async (): Promise<any[]> => {
         try {
-            const response = await api.get<any[]>('/api/v1/reports');
+            const response = await api.get<any[]>('/reports');
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch reports:', error);
@@ -72,7 +72,7 @@ export const reportService = {
      */
     getTestsReport: async (): Promise<TestReportResponseDto> => {
         try {
-            const response = await api.get<TestReportResponseDto>('/api/v1/reports/tests');
+            const response = await api.get<TestReportResponseDto>('/reports/tests');
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch test reports:', error);
@@ -89,7 +89,7 @@ export const reportService = {
             const params: any = { startDate, endDate };
             if (department) params.department = department;
 
-            const response = await api.get<EmployeeReportResponseDto>('/api/v1/reports/employees', { params });
+            const response = await api.get<EmployeeReportResponseDto>('/reports/employees', { params });
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch employee report:', error);

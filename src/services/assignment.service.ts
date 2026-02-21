@@ -15,19 +15,19 @@ export interface AssignmentCreateDto {
 export const assignmentService = {
     // Get assignments for an employee
     getAssignments: async (employeeId: string): Promise<AssignmentDto[]> => {
-        const response = await api.get<AssignmentDto[]>(`/api/v1/employees/${employeeId}/assignments`);
+        const response = await api.get<AssignmentDto[]>(`/employees/${employeeId}/assignments`);
         return (response.data as any).body || response.data;
     },
 
     // Create new assignment for an employee
     createAssignment: async (employeeId: string, assignmentData: AssignmentCreateDto): Promise<AssignmentDto> => {
-        const response = await api.post<AssignmentDto>(`/api/v1/employees/${employeeId}/assignments`, assignmentData);
+        const response = await api.post<AssignmentDto>(`/employees/${employeeId}/assignments`, assignmentData);
         return (response.data as any).body || response.data;
     },
 
     // Get assignments for bot (Telegram integration)
     getBotAssignments: async (employeeId: string): Promise<AssignmentDto[]> => {
-        const response = await api.get<AssignmentDto[]>(`/api/v1/bot/assignments?employeeId=${employeeId}`);
+        const response = await api.get<AssignmentDto[]>(`/bot/assignments?employeeId=${employeeId}`);
         return (response.data as any).body || response.data;
     }
 };

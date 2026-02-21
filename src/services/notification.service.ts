@@ -8,7 +8,7 @@ export const notificationService = {
      */
     getNotifications: async (page: number = 0, size: number = 10, unreadOnly: boolean = false): Promise<NotificationPageDto> => {
         try {
-            const response = await api.get<NotificationPageDto>('/api/v1/notifications', {
+            const response = await api.get<NotificationPageDto>('/notifications', {
                 params: { page, size, unreadOnly }
             });
             return response.data;
@@ -24,7 +24,7 @@ export const notificationService = {
      */
     markAsRead: async (id: string): Promise<void> => {
         try {
-            await api.put(`/api/v1/notifications/${id}/read`);
+            await api.put(`/notifications/${id}/read`);
         } catch (error: any) {
             console.error('Failed to mark notification as read:', error);
             throw new Error(error.response?.data?.message || 'Failed to mark notification as read');
