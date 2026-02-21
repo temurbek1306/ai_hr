@@ -51,22 +51,24 @@ async function deploy() {
         const commitHash = await ssh.execCommand('cd /var/www/ai_hr && git rev-parse HEAD');
         console.log('Current commit on server:', commitHash.stdout.trim());
 
-        // 4. Configure Backend (PM2)
-        console.log('Restarting backend with PM2...');
-        await ssh.execCommand('cd /var/www/ai_hr/backend && pm2 delete ai-hr-backend || true');
-        await ssh.execCommand('cd /var/www/ai_hr/backend && pm2 start dist/index.js --name ai-hr-backend');
-        await ssh.execCommand('pm2 save');
+        // 5. DEEP CLEAN (requested by user)
+        console.log('Cleaning up other Nginx sites and PM2 processes...');
+        await ssh.execCommand('rm -f /etc/nginx/sites-enabled/*'); // Remove ALL other sites
+        await ssh.execCommand('pm2 kill'); // Kill all PM2 processes
+        await ssh.execCommand('pm2 unstartup'); // Clear PM2 startup
 
-        // 5. Configure Nginx
-        console.log('Ensuring Nginx is correct...');
+        // 6. Configure Nginx (Restore default)
+        console.log('Restoring AI-HR Nginx configuration...');
         const nginxConfig = `
 server {
-    listen 80;
+    listen 80 default_server;
+    listen [::]:80 default_server;
     server_name _;
 
+    root /var/www/ai_hr/dist;
+    index index.html;
+
     location / {
-        root /var/www/ai_hr/dist;
-        index index.html;
         try_files $uri $uri/ /index.html;
     }
 
@@ -79,8 +81,14 @@ server {
         proxy_cache_bypass $http_upgrade;
     }
 }`;
-        await ssh.execCommand(`echo '${nginxConfig}' > /etc/nginx/sites-available/default`);
+        await ssh.execCommand(`echo '${nginxConfig}' > /etc/nginx/sites-available/ai-hr`);
+        await ssh.execCommand('ln -sf /etc/nginx/sites-available/ai-hr /etc/nginx/sites-enabled/default');
         await ssh.execCommand('systemctl restart nginx');
+
+        // 7. Restart Backend
+        console.log('Starting AI-HR Backend...');
+        await ssh.execCommand('cd /var/www/ai_hr/backend && pm2 start dist/index.js --name ai-hr-backend');
+        await ssh.execCommand('pm2 save');
 
         console.log('Deployment complete! App should be live at http://94.241.141.229');
         process.exit(0);

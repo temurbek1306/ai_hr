@@ -14,7 +14,7 @@ export const authService = {
      */
     login: async (credentials: AuthLogin): Promise<string> => {
         try {
-            const response = await api.post<ApiResponse<LoginResponse>>('/api/v1/auth/login', credentials);
+            const response = await api.post<ApiResponse<LoginResponse>>('/auth/login', credentials);
 
             if (response.data.success && response.data.body) {
                 const { token, role, username } = response.data.body;
@@ -24,7 +24,7 @@ export const authService = {
 
                 // Fetch and cache real employee profile
                 try {
-                    const profileRes = await api.get('/api/v1/employees/me', {
+                    const profileRes = await api.get('/employees/me', {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     const profile = profileRes.data?.body || profileRes.data;
@@ -59,7 +59,7 @@ export const authService = {
      */
     register: async (data: AuthRegister): Promise<ApiResponse<any>> => {
         try {
-            const response = await api.post<ApiResponse<any>>('/api/v1/auth/register', data);
+            const response = await api.post<ApiResponse<any>>('/auth/register', data);
             return response.data;
         } catch (error: any) {
             console.error('Registration error:', error);
@@ -74,7 +74,7 @@ export const authService = {
     forgotPassword: async (email: string): Promise<ApiResponse<any>> => {
         try {
             const request: ForgotPasswordRequest = { email };
-            const response = await api.post<ApiResponse<any>>('/api/v1/auth/forgot-password', request);
+            const response = await api.post<ApiResponse<any>>('/auth/forgot-password', request);
             return response.data;
         } catch (error: any) {
             console.error('Forgot password error:', error);

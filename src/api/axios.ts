@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast';
 
 // Axios instance configuration with backend API URL
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || '/',
+    baseURL: import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/v1` : '/api/v1',
     headers: {
         'Content-Type': 'application/json',
     },
