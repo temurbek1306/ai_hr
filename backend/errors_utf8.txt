@@ -1,0 +1,14 @@
+﻿src/controllers/employee.controller.ts(152,65): error TS2322: Type '{ id: string | string[]; }' is not assignable to type 'FindOptionsWhere<Employee> | FindOptionsWhere<Employee>[] | undefined'.
+  Types of property 'id' are incompatible.
+    Type 'string | string[]' is not assignable to type 'string | FindOperator<string> | undefined'.
+      Type 'string[]' is not assignable to type 'string | FindOperator<string> | undefined'.
+src/controllers/employee.controller.ts(154,17): error TS2322: Type '{ employee: { id: string | string[]; }; }' is not assignable to type 'FindOptionsWhere<TestResult> | FindOptionsWhere<TestResult>[] | undefined'.
+  Types of property 'employee' are incompatible.
+    Type '{ id: string | string[]; }' is not assignable to type 'boolean | Employee | FindOptionsWhere<Employee> | FindOperator<any> | FindOptionsWhere<Employee>[] | EqualOperator<...> | undefined'.
+      Types of property 'id' are incompatible.
+        Type 'string | string[]' is not assignable to type 'string | FindOperator<string> | undefined'.
+          Type 'string[]' is not assignable to type 'string | FindOperator<string> | undefined'.
+src/controllers/test.controller.ts(34,17): error TS2322: Type '{ id: string | string[]; }' is not assignable to type 'FindOptionsWhere<Test> | FindOptionsWhere<Test>[] | undefined'.
+  Types of property 'id' are incompatible.
+    Type 'string | string[]' is not assignable to type 'string | FindOperator<string> | undefined'.
+      Type 'string[]' is not assignable to type 'string | FindOperator<string> | undefined'.

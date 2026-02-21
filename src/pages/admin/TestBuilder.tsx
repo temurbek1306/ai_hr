@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, Plus, Save, Trash2, CheckCircle2, Circle, Square, CheckSquare } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
 import Input from '../../components/Input'
@@ -64,7 +65,7 @@ export default function TestBuilder() {
                     }
                 } catch (error) {
                     console.error('Failed to fetch test for editing:', error)
-                    alert('Test ma\'lumotlarini yuklashda xatolik yuz berdi')
+                    toast.error('Test ma\'lumotlarini yuklashda xatolik yuz berdi')
                 } finally {
                     setIsLoading(false)
                 }
@@ -102,7 +103,7 @@ export default function TestBuilder() {
     }
 
     const handleSaveQuestion = () => {
-        if (!currentQuestion.text) return alert('Savol matnini kiriting')
+        if (!currentQuestion.text) return toast.error('Savol matnini kiriting')
 
         if (editingQuestionId && questions.find(q => q.id === editingQuestionId)) {
             setQuestions(questions.map(q => q.id === editingQuestionId ? currentQuestion : q))
@@ -119,8 +120,8 @@ export default function TestBuilder() {
     }
 
     const handleSaveTest = async () => {
-        if (!title) return alert('Test nomini kiriting')
-        if (questions.length === 0) return alert('Kamida bitta savol qo\'shing')
+        if (!title) return toast.error('Test nomini kiriting')
+        if (questions.length === 0) return toast.error('Kamida bitta savol qo\'shing')
 
         setIsSaving(true)
         try {
@@ -144,11 +145,11 @@ export default function TestBuilder() {
             } else {
                 await testService.createTest(testData)
             }
-            alert('Test muvaffaqiyatli saqlandi!')
+            toast.success('Test muvaffaqiyatli saqlandi!')
             navigate('/admin/testing/catalog')
         } catch (error: any) {
             console.error('Test saqlashda xatolik:', error)
-            alert('Xatolik yuz berdi: ' + (error.response?.data?.message || error.message))
+            toast.error('Xatolik yuz berdi: ' + (error.response?.data?.message || error.message))
         } finally {
             setIsSaving(false)
         }

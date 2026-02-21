@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, Download, Search, Filter } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
 import Input from '../../components/Input'
@@ -63,7 +64,7 @@ export default function TestResults() {
                             <p className="text-gray-500 text-sm">Xodimlarning o'zlashtirish ko'rsatkichlari</p>
                         </div>
                     </div>
-                    <Button variant="secondary" icon={<Download size={20} />} onClick={() => alert('Hisobot yuklanmoqda...')}>
+                    <Button variant="secondary" icon={<Download size={20} />} onClick={() => toast.success('Hisobot yuklanmoqda...')}>
                         Yuklab olish
                     </Button>
                 </div>

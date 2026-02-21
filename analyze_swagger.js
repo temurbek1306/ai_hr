@@ -1,22 +1,25 @@
+import fs from 'fs';
 
-const fs = require('fs');
-const path = require('path');
+const swagger = JSON.parse(fs.readFileSync('api-docs-v3.json', 'utf8'));
 
-const swaggerPath = 'c:/Users/USER/.gemini/antigravity/brain/555452d0-6151-4522-bf49-b566935fd1c6/backend_swagger.json';
+const tags = new Set();
+const paths = Object.keys(swagger.paths);
 
-try {
-    const rawData = fs.readFileSync(swaggerPath);
-    const swagger = JSON.parse(rawData);
-
-    console.log('Swagger Version:', swagger.openapi || swagger.swagger);
-    console.log('Total Paths:', Object.keys(swagger.paths).length);
-    console.log('\n--- API ENDPOINTS ---');
-
-    Object.keys(swagger.paths).sort().forEach(endpoint => {
-        const methods = Object.keys(swagger.paths[endpoint]).map(m => m.toUpperCase()).join(', ');
-        console.log(`${endpoint} [${methods}]`);
+paths.forEach(path => {
+    const methods = Object.keys(swagger.paths[path]);
+    methods.forEach(method => {
+        const operation = swagger.paths[path][method];
+        if (operation.tags) {
+            operation.tags.forEach(tag => tags.add(tag));
+        }
     });
+});
 
-} catch (error) {
-    console.error('Error parsing swagger:', error.message);
-}
+console.log('--- TAGS ---');
+Array.from(tags).sort().forEach(tag => console.log(tag));
+
+console.log('\n--- PATHS ---');
+paths.sort().forEach(path => {
+    const methods = Object.keys(swagger.paths[path]);
+    console.log(`${path} [${methods.join(', ')}]`);
+});

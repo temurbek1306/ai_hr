@@ -26,6 +26,7 @@
             "title": "Ro'yxatdan o'tish",
             "subtitle": "Ma'lumotlaringizni kiriting",
             "fullName": "F.I.SH",
+            "username": "Foydalanuvchi nomi",
             "email": "Elektron pochta",
             "password": "Parol",
             "confirmPassword": "Parolni tasdiqlash",
@@ -99,7 +100,9 @@
             "startDate": "Ish boshlagan sana",
             "jobDetails": "Ish Ma'lumotlari",
             "uploadAvatar": "Rasm yuklash",
-            "change": "O'zgartirish"
+            "change": "O'zgartirish",
+            "videoTutorial": "Yo'riqnoma videosi (YouTube havola)",
+            "assignedTests": "Biriktirilgan testlar"
         }
     },
     "tests": {
@@ -217,7 +220,9 @@
             "testing": "Testlash",
             "hr": "HR",
             "finance": "Moliya",
-            "survey": "So'rovnoma"
+            "survey": "So'rovnoma",
+            "monthly": "Oylik",
+            "general": "Umumiy"
         },
         "status": {
             "ready": "Tayyor",
@@ -321,7 +326,8 @@
             "viewAll": "Barchasini ko'rish",
             "newEmployee": "yangi xodim qo'shildi",
             "profileUpdated": "profil yangilandi",
-            "applicationSent": "ariza yuborildi"
+            "applicationSent": "ariza yuborildi",
+            "noRecentActivity": "Hozircha so'nggi faoliyatlar yo'q"
         },
         "quickActions": {
             "title": "Tez Harakatlar",
@@ -355,6 +361,8 @@
         "statuses": {
             "all": "Barchasi",
             "active": "Faol",
+            "inactive": "Nofaol",
+            "onLeave": "Ta'tilda",
             "pending": "Kutilmoqda",
             "completed": "Yakunlangan"
         }

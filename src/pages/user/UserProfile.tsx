@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { toast } from 'react-hot-toast'
 import { User, Mail, Phone, Calendar, MapPin, Briefcase, Edit2, Save, X, Camera, Lock, Bell, Globe, Loader2 } from 'lucide-react'
 import Layout from '../../components/Layout'
-import { analyticsService } from '../../services/analytics.service'
+import { profileService } from '../../services/profile.service'
 
 export default function UserProfile() {
     const [isEditing, setIsEditing] = useState(false)
@@ -34,7 +35,8 @@ export default function UserProfile() {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const data: any = await analyticsService.getEmployeeSummary('me')
+                setIsLoading(true);
+                const data = await profileService.getProfile();
                 setProfileData({
                     firstName: data.firstName || '',
                     lastName: data.lastName || '',
@@ -42,11 +44,12 @@ export default function UserProfile() {
                     phone: data.phone || '',
                     position: data.position || '',
                     department: data.department || '',
-                    joinDate: data.joinDate || '',
-                    location: data.location || ''
+                    joinDate: (data as any).startDate || '',
+                    location: (data as any).location || ''
                 })
             } catch (error) {
                 console.error('Failed to fetch profile:', error)
+                toast.error('Profil ma\'lumotlarini yuklashda xatolik')
             } finally {
                 setIsLoading(false)
             }
@@ -58,12 +61,42 @@ export default function UserProfile() {
     const handleSave = async () => {
         setIsSaving(true)
         try {
-            // API call to save profile
-            await new Promise(resolve => setTimeout(resolve, 1000)) // Mock delay
+            const updated = await profileService.updateProfile({
+                firstName: profileData.firstName,
+                lastName: profileData.lastName,
+                phone: profileData.phone,
+                location: profileData.location,
+                email: profileData.email
+            } as any);
+
+            setProfileData(prev => ({
+                ...prev,
+                firstName: updated.firstName || prev.firstName,
+                lastName: updated.lastName || prev.lastName,
+                email: updated.email || prev.email,
+                phone: updated.phone || prev.phone,
+                location: (updated as any).location || prev.location
+            }));
+
+            // Sync with Sidebar (localStorage)
+            const userStr = localStorage.getItem('user');
+            if (userStr) {
+                const u = JSON.parse(userStr);
+                localStorage.setItem('user', JSON.stringify({
+                    ...u,
+                    fullName: `${updated.firstName} ${updated.lastName}`.trim(),
+                    firstName: updated.firstName,
+                    email: updated.email
+                }));
+                window.dispatchEvent(new Event('user-profile-updated'));
+            }
+
             setIsEditing(false)
-        } catch (error) {
+            toast.success('Profil muvaffaqiyatli saqlandi')
+        } catch (error: any) {
             console.error('Failed to save profile:', error)
-            alert('Profilni saqlashda xatolik yuz berdi')
+            const msg = error.response?.data?.message || error.message || 'Saqlashda xatolik yuz berdi'
+            toast.error(msg)
         } finally {
             setIsSaving(false)
         }
@@ -71,7 +104,7 @@ export default function UserProfile() {
 
     const handleCancel = () => {
         setIsEditing(false)
-        // Reset form data
+        // Re-fetch is safer than keeping old state
     }
 
     if (isLoading) {

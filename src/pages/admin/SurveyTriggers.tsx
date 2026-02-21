@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Plus, Zap, Clock, Calendar } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
 
@@ -28,7 +29,7 @@ export default function SurveyTriggers() {
                             <p className="text-gray-500 text-sm">Avtomatik so'rovnoma yuborish qoidalari</p>
                         </div>
                     </div>
-                    <Button icon={<Plus size={20} />} onClick={() => alert('Yangi trigger qo\'shish (Mock)')}>
+                    <Button icon={<Plus size={20} />} onClick={() => toast.success('Yangi trigger qo\'shish (Tez kunda)')}>
                         Yangi Trigger
                     </Button>
                 </div>

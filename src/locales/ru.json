@@ -26,6 +26,7 @@
             "title": "Регистрация",
             "subtitle": "Введите ваши данные",
             "fullName": "Ф.И.О",
+            "username": "Имя пользователя",
             "email": "Электронная почта",
             "password": "Пароль",
             "confirmPassword": "Подтвердите пароль",
@@ -321,7 +322,8 @@
             "viewAll": "Посмотреть все",
             "newEmployee": "новый сотрудник добавлен",
             "profileUpdated": "профиль обновлен",
-            "applicationSent": "заявка отправлена"
+            "applicationSent": "заявка отправлена",
+            "noRecentActivity": "Последних действий пока нет"
         },
         "quickActions": {
             "title": "Быстрые действия",
@@ -355,6 +357,8 @@
         "statuses": {
             "all": "Все",
             "active": "Активный",
+            "inactive": "Неактивный",
+            "onLeave": "В отпуске",
             "pending": "В ожидании",
             "completed": "Завершен"
         }

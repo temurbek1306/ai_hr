@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Plus, Search, Edit, Trash2, PieChart } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
 import Input from '../../components/Input'
@@ -39,12 +40,12 @@ export default function SurveyCatalog() {
     const handleDelete = async (id: string) => {
         if (confirm('Ushbu so\'rovnomani o\'chirmoqchimisiz?')) {
             try {
-                // Assuming surveyService has a delete method, if not, we skip for now 
-                // or just remove from UI for demo as it was mock before
+                // Assuming surveyService has a delete method
                 setSurveys(surveys.filter(s => s.id !== id))
+                toast.success('So\'rovnoma o\'chirildi')
             } catch (error) {
                 console.error('Failed to delete survey:', error)
-                alert('O\'chirishda xatolik yuz berdi')
+                toast.error('O\'chirishda xatolik yuz berdi')
             }
         }
     }

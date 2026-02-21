@@ -89,7 +89,7 @@ export default function IPR() {
                                     <motion.div
                                         key={idx}
                                         initial={{ opacity: 0, x: 20 }}
-                                        animate={{ opacity: 1, x: 0 }}
+                                        animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: idx * 0.1 }}
                                         className="card p-5 border-l-4 border-l-primary-500"
                                     >
@@ -103,28 +103,10 @@ export default function IPR() {
                                         </div>
                                     </motion.div>
                                 )) : (
-                                    <>
-                                        <div className="card p-5 border-l-4 border-l-orange-500">
-                                            <h4 className="font-bold text-gray-900 mb-1">Texnik ko'nikmalarni oshirish</h4>
-                                            <p className="text-sm text-gray-500 mb-4">React va TypeScript bo'yicha chuqur bilim olish.</p>
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-xs font-semibold px-2 py-1 bg-orange-50 text-orange-600 rounded">
-                                                    31 Mart
-                                                </span>
-                                                <span className="text-sm font-bold text-gray-700">65%</span>
-                                            </div>
-                                        </div>
-                                        <div className="card p-5 border-l-4 border-l-green-500">
-                                            <h4 className="font-bold text-gray-900 mb-1">Soft Skills: Muloqot</h4>
-                                            <p className="text-sm text-gray-500 mb-4">Jamoada ishlash va effektiv muloqot mashqlari.</p>
-                                            <div className="flex items-center justify-between">
-                                                <span className="text-xs font-semibold px-2 py-1 bg-green-50 text-green-600 rounded">
-                                                    15 Fevral
-                                                </span>
-                                                <span className="text-sm font-bold text-gray-700">40%</span>
-                                            </div>
-                                        </div>
-                                    </>
+                                    <div className="sm:col-span-2 py-12 text-center bg-white/50 rounded-2xl border border-dashed border-gray-200">
+                                        <Target className="w-12 h-12 text-gray-200 mx-auto mb-4" />
+                                        <p className="text-gray-400">Hozircha maqsadlar belgilanmagan</p>
+                                    </div>
                                 )}
                             </div>
 
@@ -134,26 +116,22 @@ export default function IPR() {
                                     Yaqin haftadagi vazifalar
                                 </h3>
                                 <div className="space-y-3">
-                                    <div className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-100">
-                                        <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                                            <BookOpen className="w-5 h-5" />
+                                    {summary?.tasks?.length > 0 ? summary.tasks.map((task: any, idx: number) => (
+                                        <div key={idx} className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-100">
+                                            <div className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                                                <BookOpen className="w-5 h-5" />
+                                            </div>
+                                            <div className="flex-1">
+                                                <p className="font-medium text-gray-900">{task.title}</p>
+                                                <p className="text-xs text-gray-500">{task.description}</p>
+                                            </div>
+                                            {task.completed ? <CheckCircle2 className="w-5 h-5 text-green-500" /> : <Calendar className="w-5 h-5 text-gray-300" />}
                                         </div>
-                                        <div className="flex-1">
-                                            <p className="font-medium text-gray-900">Python asoslarini takrorlash</p>
-                                            <p className="text-xs text-gray-500">2 soatlik kurs</p>
+                                    )) : (
+                                        <div className="py-6 text-center text-gray-400 text-sm">
+                                            Vazifalar mavjud emas
                                         </div>
-                                        <CheckCircle2 className="w-5 h-5 text-gray-300" />
-                                    </div>
-                                    <div className="flex items-center gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors cursor-pointer border border-transparent hover:border-gray-100">
-                                        <div className="w-10 h-10 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
-                                            <Target className="w-5 h-5" />
-                                        </div>
-                                        <div className="flex-1">
-                                            <p className="font-medium text-gray-900">Feedback sessiyasi</p>
-                                            <p className="text-xs text-gray-500">Mentor bilan uchrashuv</p>
-                                        </div>
-                                        <Calendar className="w-5 h-5 text-gray-300" />
-                                    </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

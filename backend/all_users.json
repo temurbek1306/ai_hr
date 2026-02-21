@@ -1,0 +1,14 @@
+[
+  {
+    "id": "857e7495-6217-410d-9dd3-b7a597e5632e",
+    "username": "admin",
+    "email": "admin@ai-hr.com",
+    "role": "ROLE_ADMIN"
+  },
+  {
+    "id": "135a60a6-3acd-45d3-aea4-bef14f52732d",
+    "username": "t@uz.com",
+    "email": "t@uz.com",
+    "role": "ROLE_USER"
+  }
+]

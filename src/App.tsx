@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 import AIChatbot from './components/AIChatbot'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -60,6 +61,7 @@ function AppLayout() {
             </div>
             <Outlet />
             <AIChatbot />
+            <Toaster position="top-right" />
         </div>
     )
 }

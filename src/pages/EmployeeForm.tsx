@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-hot-toast'
 import {
     User,
     Mail,
@@ -9,12 +10,16 @@ import {
     Upload,
     ArrowLeft,
     Save,
-    Video
+    Video,
+    Copy,
+    Check,
+    CheckCircle2
 } from 'lucide-react'
 import Layout from '../components/Layout'
 import Input from '../components/Input'
 import Select from '../components/Select'
 import Button from '../components/Button'
+import Modal from '../components/Modal'
 import { employeeService } from '../services/employee.service'
 import { testService } from '../services/test.service'
 
@@ -37,10 +42,13 @@ export default function EmployeeForm() {
         startDate: new Date().toISOString().split('T')[0],
         avatar: null as string | null,
         videoUrl: '', // Added for video link
-        assignedTestId: '' // Added for assignment
+        assignedTestIds: [] as string[] // Changed to multiple assignments
     })
 
     const [availableTests, setAvailableTests] = useState<{ id: string, title: string }[]>([])
+    const [showSuccessModal, setShowSuccessModal] = useState(false)
+    const [credentials, setCredentials] = useState<{ email: string, username: string, password?: string } | null>(null)
+    const [isCopied, setIsCopied] = useState(false)
 
     useEffect(() => {
         testService.getAll().then(data => {
@@ -51,28 +59,33 @@ export default function EmployeeForm() {
         }).catch(err => console.error('Failed to load tests:', err))
 
         if (isEdit && id) {
-            employeeService.getById(id).then(data => {
+            Promise.all([
+                employeeService.getById(id),
+                employeeService.getAssignments(id)
+            ]).then(([employeeData, assignments]) => {
+                const testAssignments = assignments.filter(a => a.assignmentType === 'TEST');
                 setFormData({
-                    firstName: data.firstName || '',
-                    lastName: data.lastName || '',
-                    email: data.email || '',
-                    phone: data.phone || '',
-                    position: data.position || 'Employee',
-                    department: data.department || 'General',
-                    status: (data.status as 'active' | 'inactive' | 'on-leave') || 'active',
-                    startDate: data.startDate || new Date().toISOString().split('T')[0],
-                    avatar: (data as any).avatar || null,
-                    videoUrl: (data as any).videoUrl || '',
-                    assignedTestId: ''
+                    firstName: employeeData.firstName || '',
+                    lastName: employeeData.lastName || '',
+                    email: employeeData.email || '',
+                    phone: employeeData.phone || '',
+                    position: employeeData.position || 'Employee',
+                    department: employeeData.department || 'General',
+                    status: (employeeData.status as 'active' | 'inactive' | 'on-leave') || 'active',
+                    startDate: employeeData.startDate || new Date().toISOString().split('T')[0],
+                    avatar: (employeeData as any).avatar || null,
+                    videoUrl: (employeeData as any).videoUrl || '',
+                    assignedTestIds: testAssignments.map(a => a.referenceId)
                 })
-            })
+            }).catch(err => console.error('Failed to load employee details or assignments:', err))
         }
+
     }, [id, isEdit])
 
     const statuses = [
         { value: 'active', label: t('filters.statuses.active') },
         { value: 'inactive', label: t('filters.statuses.inactive') },
-        { value: 'on-leave', label: 'Ta\'tilda' },
+        { value: 'on-leave', label: t('filters.statuses.onLeave') || 'Ta\'tilda' },
     ]
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,14 +103,14 @@ export default function EmployeeForm() {
         e.preventDefault()
 
         if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
-            alert('Iltimos, barcha majburiy maydonlarni to\'ldiring')
+            toast.error('Iltimos, barcha majburiy maydonlarni to\'ldiring')
             return
         }
 
         setIsLoading(true)
         try {
             if (isEdit && id) {
-                // Update existing employee - Status is allowed
+                // Update existing employee
                 const updateData = {
                     firstName: formData.firstName,
                     lastName: formData.lastName,
@@ -110,9 +123,24 @@ export default function EmployeeForm() {
                     videoUrl: formData.videoUrl
                 }
                 await employeeService.update(id, updateData)
-                alert(t('common.updated'))
+
+                // Update assignment if selected - separate try-catch so it doesn't block
+                // Update assignments if selected
+                if (formData.assignedTestIds.length > 0) {
+                    try {
+                        await employeeService.createAssignment(id, {
+                            assignmentType: 'TEST',
+                            referenceIds: formData.assignedTestIds
+                        });
+                    } catch (assignErr) {
+                        console.warn('Assignment create warning (non-blocking):', assignErr);
+                    }
+                }
+
+                toast.success(t('common.updated'))
+
             } else {
-                // Create new employee - Status is NOT allowed in AdminEmployeeCreateDto
+                // Create new employee
                 const createData = {
                     firstName: formData.firstName,
                     lastName: formData.lastName,
@@ -123,13 +151,40 @@ export default function EmployeeForm() {
                     startDate: formData.startDate,
                     videoUrl: formData.videoUrl
                 }
-                await employeeService.create(createData)
-                alert(t('common.added'))
+                const response = await employeeService.create(createData)
+                const createdData = (response as any)?.body || response;
+                const newEmployeeId = createdData?.id;
+
+                if (createdData?.username) {
+                    setCredentials({
+                        email: formData.email,
+                        username: createdData.username,
+                        password: createdData.generatedPassword || 'welcome123'
+                    })
+                    setShowSuccessModal(true)
+                    toast.success(t('common.added'))
+                    return; // Don't navigate yet, let them see the modal
+                }
+
+                // Assign test if selected - separate try-catch
+                // Assign tests if selected
+                if (formData.assignedTestIds.length > 0 && newEmployeeId) {
+                    try {
+                        await employeeService.createAssignment(newEmployeeId, {
+                            assignmentType: 'TEST',
+                            referenceIds: formData.assignedTestIds
+                        });
+                    } catch (assignErr) {
+                        console.warn('Assignment create warning (non-blocking):', assignErr);
+                    }
+                }
+                toast.success(t('common.added'))
+                navigate('/admin/employees')
             }
-            navigate('/admin/employees')
         } catch (error: any) {
             console.error('Xatolik:', error)
-            alert('Xatolik yuz berdi: ' + (error.response?.data?.message || error.message))
+            toast.error('Xatolik yuz berdi: ' + (error.response?.data?.message || error.message))
+
         } finally {
             setIsLoading(false)
         }
@@ -271,22 +326,37 @@ export default function EmployeeForm() {
                                 onChange={(e) => setFormData({ ...formData, status: e.target.value as 'active' | 'inactive' | 'on-leave' })}
                             />
                             <Input
-                                label="Video darslik havolasi (ixtiyoriy)"
-                                placeholder="YouTube yoki boshqa video havola..."
+                                label={t('employees.form.videoTutorial')}
+                                placeholder="https://youtube.com/watch?v=..."
                                 icon={<Video size={18} />}
                                 value={formData.videoUrl}
                                 onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
                             />
-                            <div className="space-y-1">
-                                <label className="block text-sm font-medium text-gray-700">Test materiali</label>
-                                <Select
-                                    options={[
-                                        { value: '', label: 'Testni tanlang' },
-                                        ...availableTests.map(t => ({ value: t.id, label: t.title }))
-                                    ]}
-                                    value={formData.assignedTestId}
-                                    onChange={(e) => setFormData({ ...formData, assignedTestId: e.target.value })}
-                                />
+                            <div className="md:col-span-2 space-y-2">
+                                <label className="block text-sm font-medium text-gray-700">{t('employees.form.assignedTests')}</label>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                                    {availableTests.map(test => (
+                                        <label key={test.id} className="flex items-center gap-3 p-2 hover:bg-white rounded-lg transition-colors cursor-pointer group">
+                                            <input
+                                                type="checkbox"
+                                                className="w-5 h-5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 transition-all cursor-pointer"
+                                                checked={formData.assignedTestIds.includes(test.id)}
+                                                onChange={(e) => {
+                                                    const newIds = e.target.checked
+                                                        ? [...formData.assignedTestIds, test.id]
+                                                        : formData.assignedTestIds.filter(id => id !== test.id);
+                                                    setFormData({ ...formData, assignedTestIds: newIds });
+                                                }}
+                                            />
+                                            <span className="text-sm font-medium text-gray-700 group-hover:text-primary-700">
+                                                {test.title}
+                                            </span>
+                                        </label>
+                                    ))}
+                                    {availableTests.length === 0 && (
+                                        <p className="text-sm text-gray-500 italic col-span-full py-2">Testlar topilmadi</p>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -311,6 +381,72 @@ export default function EmployeeForm() {
                     </div>
                 </form>
             </div>
+
+            {/* Success Modal */}
+            <Modal
+                isOpen={showSuccessModal}
+                onClose={() => navigate('/admin/employees')}
+                title="Xodim muvaffaqiyatli qo'shildi!"
+                size="sm"
+            >
+                <div className="space-y-6">
+                    <div className="flex flex-col items-center text-center">
+                        <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
+                            <CheckCircle2 size={40} />
+                        </div>
+                        <p className="text-gray-600">
+                            Xodim profile yaratildi. Quyidagi login ma'lumotlarini xodimga yetkazing:
+                        </p>
+                    </div>
+
+                    <div className="bg-gray-50 rounded-2xl p-4 border border-gray-100 space-y-4">
+                        <div className="space-y-1">
+                            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Email (Login):</label>
+                            <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+                                <span className="font-medium text-gray-900">{credentials?.email}</span>
+                            </div>
+                        </div>
+
+                        <div className="space-y-1">
+                            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Foydalanuvchi nomi:</label>
+                            <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+                                <span className="font-medium text-gray-900">{credentials?.username}</span>
+                            </div>
+                        </div>
+
+                        <div className="space-y-1">
+                            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Boshlang'ich parol:</label>
+                            <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
+                                <span className="font-mono font-bold text-primary-600 text-lg">{credentials?.password}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col gap-3">
+                        <Button
+                            variant="primary"
+                            icon={isCopied ? <Check size={20} /> : <Copy size={20} />}
+                            onClick={() => {
+                                const text = `HR Tizimi Login Ma'lumotlari:\nEmail: ${credentials?.email}\nUsername: ${credentials?.username}\nParol: ${credentials?.password}`;
+                                navigator.clipboard.writeText(text);
+                                setIsCopied(true);
+                                setTimeout(() => setIsCopied(false), 2000);
+                                toast.success('Nusxalandi!');
+                            }}
+                            className="w-full h-12"
+                        >
+                            {isCopied ? 'Nusxalandi' : 'Ma\'lumotlarni nusxalash'}
+                        </Button>
+                        <Button
+                            variant="secondary"
+                            onClick={() => navigate('/admin/employees')}
+                            className="w-full h-12"
+                        >
+                            Xodimlar ro'yxatiga qaytish
+                        </Button>
+                    </div>
+                </div>
+            </Modal>
         </Layout>
     )
 }

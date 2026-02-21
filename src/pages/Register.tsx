@@ -13,6 +13,7 @@ export default function Register() {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
+        username: '',
         email: '',
         phone: '',
         position: '',
@@ -30,7 +31,7 @@ export default function Register() {
 
     const handleNext = (e: React.FormEvent) => {
         e.preventDefault()
-        if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
+        if (!formData.firstName || !formData.lastName || !formData.username || !formData.email || !formData.phone) {
             setError('Iltimos, barcha majburiy maydonlarni to\'ldiring')
             return
         }
@@ -63,28 +64,33 @@ export default function Register() {
             // 1. Register with auth endpoint
             await authService.register({
                 fullName: `${formData.firstName} ${formData.lastName}`,
-                username: formData.email,
+                username: formData.username,
+                email: formData.email,
                 password: formData.password,
                 phoneNumber: formData.phone,
-            })
+            });
+
 
             // 2. Login to get token for profile update
             await authService.login({
-                username: formData.email,
+                username: formData.username,
                 password: formData.password
             })
 
-            // 3. Update profile with extra data
-            await profileService.updateProfile({
-                firstName: formData.firstName,
-                lastName: formData.lastName,
-                phone: formData.phone,
-                position: formData.position,
-                department: formData.department,
-                startDate: formData.startDate,
-                // These might be needed depending on the DTO
-                email: formData.email
-            } as any)
+            // 3. Update profile with extra data (non-blocking)
+            try {
+                await profileService.updateProfile({
+                    firstName: formData.firstName,
+                    lastName: formData.lastName,
+                    phone: formData.phone,
+                    position: formData.position,
+                    department: formData.department,
+                    startDate: formData.startDate,
+                    email: formData.email
+                } as any)
+            } catch (profileErr) {
+                console.warn('Profile update warning (non-blocking):', profileErr)
+            }
 
             setSuccess(true)
             setTimeout(() => navigate('/login'), 2500)
@@ -223,6 +229,21 @@ export default function Register() {
                                                         onChange={(e) => update('lastName', e.target.value)}
                                                     />
                                                 </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-1">
+                                            <label className="block text-xs font-medium text-dark-300">{t('auth.register.username')} *</label>
+                                            <div className="relative">
+                                                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-500" />
+                                                <input
+                                                    type="text"
+                                                    required
+                                                    className={inputClass}
+                                                    placeholder="username"
+                                                    value={formData.username}
+                                                    onChange={(e) => update('username', e.target.value)}
+                                                />
                                             </div>
                                         </div>
 

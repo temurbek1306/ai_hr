@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react'
+import { useState, useEffect, ReactNode } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
@@ -28,8 +28,37 @@ interface LayoutProps {
 export default function Layout({ children, role = 'admin' }: LayoutProps) {
     const { t, i18n } = useTranslation()
     const [sidebarOpen, setSidebarOpen] = useState(false)
+    const [currentUser, setCurrentUser] = useState<{ name: string; email: string } | null>(null)
     const location = useLocation()
     const navigate = useNavigate()
+
+    useEffect(() => {
+        const refreshUser = () => {
+            try {
+                const token = localStorage.getItem('token')
+                const userStr = localStorage.getItem('user')
+                if (userStr) {
+                    const u = JSON.parse(userStr)
+                    setCurrentUser({
+                        name: u.fullName || u.firstName || u.username || (role === 'admin' ? 'Admin' : 'Foydalanuvchi'),
+                        email: u.email || `${u.username || role}@aihr.uz`
+                    })
+                } else if (token) {
+                    const payload = JSON.parse(atob(token.split('.')[1]))
+                    setCurrentUser({
+                        name: payload.username || payload.sub || (role === 'admin' ? 'Admin' : 'Foydalanuvchi'),
+                        email: payload.email || `${payload.username || role}@aihr.uz`
+                    })
+                }
+            } catch {
+                setCurrentUser(null)
+            }
+        }
+
+        refreshUser()
+        window.addEventListener('user-profile-updated', refreshUser)
+        return () => window.removeEventListener('user-profile-updated', refreshUser)
+    }, [role])
 
     const adminNavigation = [
         { name: t('sidebar.dashboard'), href: '/admin/dashboard', icon: LayoutDashboard },
@@ -110,15 +139,23 @@ export default function Layout({ children, role = 'admin' }: LayoutProps) {
                         <div className="flex items-center gap-2 p-2.5 rounded-lg bg-gray-50 group">
                             <Link to={role === 'admin' ? '/admin/profile' : '/user/profile'} className="flex items-center gap-2 flex-1 hover:bg-gray-100 rounded-lg transition-colors">
                                 <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-400 to-secondary-400 flex items-center justify-center text-white font-semibold shadow-sm text-sm group-hover:shadow-md transition-all">
-                                    {role === 'admin' ? 'A' : 'U'}
+                                    {currentUser?.name?.charAt(0)?.toUpperCase() || (role === 'admin' ? 'A' : 'F')}
                                 </div>
-                                <div className="flex-1">
-                                    <p className="font-medium text-sm text-gray-900">{role === 'admin' ? t('roles.admin') : t('roles.user')}</p>
-                                    <p className="text-xs text-gray-500">{role}@aihr.uz</p>
+                                <div className="flex-1 min-w-0">
+                                    <p className="font-medium text-sm text-gray-900 truncate">
+                                        {currentUser?.name || (role === 'admin' ? 'Admin' : 'Foydalanuvchi')}
+                                    </p>
+                                    <p className="text-xs text-gray-500 truncate">
+                                        {currentUser?.email || `${role}@aihr.uz`}
+                                    </p>
                                 </div>
                             </Link>
                             <button
-                                onClick={() => navigate('/login')}
+                                onClick={() => {
+                                    localStorage.removeItem('token')
+                                    localStorage.removeItem('user')
+                                    navigate('/login')
+                                }}
                                 className="text-gray-400 hover:text-red-500 transition-colors p-2 hover:bg-gray-100 rounded-lg"
                                 title="Chiqish"
                             >

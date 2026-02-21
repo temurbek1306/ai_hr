@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { X, Calendar as CalendarIcon, Type, AlignLeft } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 import Button from './Button'
 import Input from './Input'
 import Select from './Select'
@@ -31,7 +32,7 @@ export default function EventModal({ isOpen, onClose, onSave, initialDate }: Eve
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        if (!title || !date) return alert('Iltimos, barcha maydonlarni to\'ldiring')
+        if (!title || !date) return toast.error('Iltimos, barcha maydonlarni to\'ldiring')
 
         onSave({
             title,

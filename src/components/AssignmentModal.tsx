@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { X, Check } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 import Button from './Button'
 import Select from './Select'
 import { employeeService } from '../services/employee.service'
@@ -81,8 +82,8 @@ export default function AssignmentModal({ isOpen, onClose }: AssignmentModalProp
     const materials = fetchedMaterials
 
     const handleAssign = async () => {
-        if (!selectedMaterial) return alert('Materialni tanlang')
-        if (selectedEmployees.length === 0) return alert('Kamida bitta xodimni tanlang')
+        if (!selectedMaterial) return toast.error('Materialni tanlang')
+        if (selectedEmployees.length === 0) return toast.error('Kamida bitta xodimni tanlang')
 
         try {
             // Create assignments for each selected employee
@@ -101,11 +102,11 @@ export default function AssignmentModal({ isOpen, onClose }: AssignmentModalProp
                 )
             )
 
-            alert('Muvaffaqiyatli biriktirildi!')
+            toast.success('Muvaffaqiyatli biriktirildi!')
             onClose()
         } catch (error: any) {
             console.error('Assignment creation error:', error)
-            alert('Xatolik yuz berdi: ' + (error.response?.data?.message || error.message))
+            toast.error('Xatolik yuz berdi: ' + (error.response?.data?.message || error.message))
         }
     }
 

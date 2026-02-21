@@ -26,7 +26,7 @@ export const employeeService = {
 
     /**
      * Get employee by ID (Admin only)
-     * GET /api/v1/admin/employees/{id}
+     * GET /api/v1/admin/employees/{employeeId}
      */
     getById: async (id: string): Promise<AdminEmployeeDto> => {
         try {
@@ -37,6 +37,7 @@ export const employeeService = {
             throw new Error(error.response?.data?.message || 'Failed to fetch employee');
         }
     },
+
 
     /**
      * Create new employee (Admin only)
@@ -54,7 +55,7 @@ export const employeeService = {
 
     /**
      * Update employee (Admin only)
-     * PUT /api/v1/admin/employees/{id}
+     * PUT /api/v1/admin/employees/{employeeId}
      */
     update: async (id: string, data: AdminEmployeeCreateDto): Promise<AdminEmployeeDto> => {
         try {
@@ -66,9 +67,10 @@ export const employeeService = {
         }
     },
 
+
     /**
      * Delete employee (Admin only)
-     * DELETE /api/v1/admin/employees/{id}
+     * DELETE /api/v1/admin/employees/{employeeId}
      */
     delete: async (id: string): Promise<void> => {
         try {
@@ -78,6 +80,7 @@ export const employeeService = {
             throw new Error(error.response?.data?.message || 'Failed to delete employee');
         }
     },
+
 
     /**
      * Import employees from file (Admin only)
@@ -117,7 +120,7 @@ export const employeeService = {
 
     /**
      * Get employee status
-     * GET /api/v1/employees/{id}/status
+     * GET /api/v1/employees/{employeeId}/status
      */
     getStatus: async (id: string): Promise<ApiResponse<any>> => {
         try {
@@ -131,7 +134,7 @@ export const employeeService = {
 
     /**
      * Get employee profile
-     * GET /api/v1/employees/{id}/profile
+     * GET /api/v1/employees/{employeeId}/profile
      */
     getProfile: async (id: string): Promise<EmployeeProfileDto> => {
         try {
@@ -145,7 +148,7 @@ export const employeeService = {
 
     /**
      * Get employee summary with test results
-     * GET /api/v1/employees/{id}/summary
+     * GET /api/v1/employees/{employeeId}/summary
      */
     getSummary: async (id: string): Promise<EmployeeSummaryDTO> => {
         try {
@@ -159,7 +162,7 @@ export const employeeService = {
 
     /**
      * Get employee assignments
-     * GET /api/v1/employees/{id}/assignments
+     * GET /api/v1/employees/{employeeId}/assignments
      */
     getAssignments: async (id: string): Promise<AssignmentDto[]> => {
         try {
@@ -171,17 +174,33 @@ export const employeeService = {
         }
     },
 
+
     /**
      * Create assignment for employee
-     * POST /api/v1/employees/{id}/assignments
+     * POST /api/v1/admin/employees/{employeeId}/assignments
      */
     createAssignment: async (id: string, data: AssignmentCreateDto): Promise<AssignmentDto> => {
         try {
-            const response = await api.post<ApiResponse<AssignmentDto>>(`/api/v1/employees/${id}/assignments`, data);
+            const response = await api.post<ApiResponse<AssignmentDto>>(`/api/v1/admin/employees/${id}/assignments`, data);
             return response.data.body as AssignmentDto;
         } catch (error: any) {
             console.error('Failed to create assignment:', error);
             throw new Error(error.response?.data?.message || 'Failed to create assignment');
         }
+    },
+
+    /**
+     * Cleanup ghost employees
+     * POST /api/v1/admin/employees/cleanup-ghosts
+     */
+    cleanupGhosts: async (): Promise<ApiResponse<void>> => {
+        try {
+            const response = await api.post<ApiResponse<void>>('/api/v1/admin/employees/cleanup-ghosts');
+            return response.data;
+        } catch (error: any) {
+            console.error('Failed to cleanup ghosts:', error);
+            throw new Error(error.response?.data?.message || 'Failed to cleanup ghosts');
+        }
     }
+
 };

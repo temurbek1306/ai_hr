@@ -1,124 +1,122 @@
 import api from '../api/axios';
 import type {
     ApiResponse,
-    ProfileUpdateDto,
-    PasswordChangeDto,
-    NotificationSettingsDto
+    EmployeeProfileDto,
+    EmployeeSummaryDTO,
+    TestResultsResponseDto,
+    AdminActivityDto
 } from '../types/api.types';
 
 export const profileService = {
     /**
-     * Get current user profile
+     * Get current employee profile
      * GET /api/v1/employees/me
      */
-    getProfile: async (): Promise<ApiResponse<any>> => {
+    getMe: async (): Promise<EmployeeProfileDto> => {
         try {
-            const response = await api.get<ApiResponse<any>>('/api/v1/employees/me');
-            return response.data.body;
+            const response = await api.get<ApiResponse<EmployeeProfileDto>>('/api/v1/employees/me');
+            return response.data.body || (response.data as any);
         } catch (error: any) {
-            console.error('Failed to fetch profile:', error);
-            throw new Error(error.response?.data?.message || 'Failed to fetch profile');
+            console.error('Failed to fetch current profile:', error);
+            throw new Error(error.response?.data?.message || 'Failed to fetch current profile');
         }
     },
 
     /**
-     * Update current user profile
+     * Alias for getMe for backward compatibility
+     */
+    getProfile: async (): Promise<EmployeeProfileDto> => {
+        return profileService.getMe();
+    },
+
+
+    /**
+     * Update current employee profile
      * PUT /api/v1/employees/me
      */
-    updateProfile: async (data: ProfileUpdateDto): Promise<ApiResponse<any>> => {
+    updateMe: async (data: Partial<EmployeeProfileDto>): Promise<EmployeeProfileDto> => {
         try {
-            const response = await api.put<ApiResponse<any>>('/api/v1/employees/me', data);
-            return response.data.body;
+            const response = await api.put<ApiResponse<EmployeeProfileDto>>('/api/v1/employees/me', data);
+            return response.data.body || (response.data as any);
         } catch (error: any) {
-            console.error('Failed to update profile:', error);
-            throw new Error(error.response?.data?.message || 'Failed to update profile');
+            console.error('Failed to update current profile:', error);
+            throw new Error(error.response?.data?.message || 'Failed to update current profile');
         }
     },
 
     /**
-     * Change password
-     * POST /api/v1/employees/me/password
+     * Alias for updateMe for backward compatibility
      */
-    changePassword: async (data: PasswordChangeDto): Promise<ApiResponse<any>> => {
-        try {
-            const response = await api.post<ApiResponse<any>>('/api/v1/employees/me/password', data);
-            return response.data.body;
-        } catch (error: any) {
-            console.error('Failed to change password:', error);
-            throw new Error(error.response?.data?.message || 'Failed to change password');
-        }
+    updateProfile: async (data: Partial<EmployeeProfileDto>): Promise<EmployeeProfileDto> => {
+        return profileService.updateMe(data);
     },
 
+
     /**
-     * Update avatar
-     * POST /api/v1/employees/me/avatar
+     * Get own activities
+     * GET /api/v1/employees/me/activities
      */
-    updateAvatar: async (file: File): Promise<ApiResponse<any>> => {
+    getOwnActivities: async (): Promise<AdminActivityDto[]> => {
         try {
-            const formData = new FormData();
-            formData.append('file', file);
-            const response = await api.post<ApiResponse<any>>('/api/v1/employees/me/avatar', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-            return response.data.body;
+            const response = await api.get<ApiResponse<AdminActivityDto[]>>('/api/v1/employees/me/activities');
+            return response.data.body || (response.data as any);
         } catch (error: any) {
-            console.error('Failed to update avatar:', error);
-            throw new Error(error.response?.data?.message || 'Failed to update avatar');
+            console.error('Failed to fetch own activities:', error);
+            throw new Error(error.response?.data?.message || 'Failed to fetch own activities');
         }
     },
 
     /**
-     * Get notification settings
-     * GET /api/v1/employees/me/settings/notifications
+     * Get own summary
+     * GET /api/v1/employees/me/summary
      */
-    getNotificationSettings: async (): Promise<ApiResponse<any>> => {
+    getOwnSummary: async (): Promise<EmployeeSummaryDTO> => {
         try {
-            const response = await api.get<ApiResponse<any>>('/api/v1/employees/me/settings/notifications');
-            return response.data.body;
+            const response = await api.get<ApiResponse<EmployeeSummaryDTO>>('/api/v1/employees/me/summary');
+            return response.data.body || (response.data as any);
         } catch (error: any) {
-            console.error('Failed to fetch notification settings:', error);
-            throw new Error(error.response?.data?.message || 'Failed to fetch notification settings');
+            console.error('Failed to fetch own summary:', error);
+            throw new Error(error.response?.data?.message || 'Failed to fetch own summary');
         }
     },
 
     /**
-     * Update notification settings
-     * PUT /api/v1/employees/me/settings/notifications
+     * Alias for getOwnSummary for backward compatibility
      */
-    updateNotificationSettings: async (data: NotificationSettingsDto): Promise<ApiResponse<any>> => {
-        try {
-            const response = await api.put<ApiResponse<any>>('/api/v1/employees/me/settings/notifications', data);
-            return response.data.body;
-        } catch (error: any) {
-            console.error('Failed to update notification settings:', error);
-            throw new Error(error.response?.data?.message || 'Failed to update notification settings');
-        }
+    getSummary: async (): Promise<EmployeeSummaryDTO> => {
+        return profileService.getOwnSummary();
     },
 
+
     /**
-     * Get user test results
+     * Get own test results
      * GET /api/v1/employees/me/test-results
      */
-    getTestResults: async (): Promise<ApiResponse<any>> => {
+    getOwnTestResults: async (): Promise<TestResultsResponseDto> => {
         try {
-            const response = await api.get<ApiResponse<any>>('/api/v1/employees/me/test-results');
-            return response.data.body;
+            const response = await api.get<ApiResponse<TestResultsResponseDto>>('/api/v1/employees/me/test-results');
+            return response.data.body || (response.data as any);
         } catch (error: any) {
-            console.error('Failed to fetch test results:', error);
-            throw new Error(error.response?.data?.message || 'Failed to fetch test results');
+            console.error('Failed to fetch own test results:', error);
+            throw new Error(error.response?.data?.message || 'Failed to fetch own test results');
         }
     },
 
     /**
-     * Export test results
-     * GET /api/v1/employees/me/test-results/export
+     * Alias for getOwnTestResults for backward compatibility
      */
-    exportTestResults: async (format: string = 'csv'): Promise<string> => {
+    getTestResults: async (): Promise<TestResultsResponseDto> => {
+        return profileService.getOwnTestResults();
+    },
+
+    /**
+     * Export own test results
+     * GET /api/v1/employees/me/export
+     */
+    exportTestResults: async (): Promise<Blob> => {
         try {
-            const response = await api.get<string>('/api/v1/employees/me/test-results/export', {
-                params: { format }
+            const response = await api.get('/api/v1/employees/me/export', {
+                responseType: 'blob'
             });
             return response.data;
         } catch (error: any) {
@@ -127,63 +125,22 @@ export const profileService = {
         }
     },
 
-    /**
-     * Get user summary
-     * GET /api/v1/employees/me/summary
-     */
-    getSummary: async (): Promise<ApiResponse<any>> => {
-        try {
-            const response = await api.get<ApiResponse<any>>('/api/v1/employees/me/summary');
-            return response.data.body;
-        } catch (error: any) {
-            console.error('Failed to fetch summary:', error);
-            throw new Error(error.response?.data?.message || 'Failed to fetch summary');
-        }
-    },
 
     /**
-     * Get growth data
-     * GET /api/v1/employees/me/growth
+     * Update avatar
+     * POST /api/v1/employees/me/avatar
      */
-    getGrowth: async (period: string = '6months'): Promise<ApiResponse<any>> => {
+    updateAvatar: async (file: File): Promise<string> => {
         try {
-            const response = await api.get<ApiResponse<any>>('/api/v1/employees/me/growth', {
-                params: { period }
+            const formData = new FormData();
+            formData.append('file', file);
+            const response = await api.post<ApiResponse<string>>('/api/v1/employees/me/avatar', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
             });
-            return response.data.body;
+            return response.data.body || (response.data as any);
         } catch (error: any) {
-            console.error('Failed to fetch growth data:', error);
-            throw new Error(error.response?.data?.message || 'Failed to fetch growth data');
-        }
-    },
-
-    /**
-     * Get feedback history
-     * GET /api/v1/employees/me/feedback
-     */
-    getFeedbackHistory: async (): Promise<ApiResponse<any>> => {
-        try {
-            const response = await api.get<ApiResponse<any>>('/api/v1/employees/me/feedback');
-            return response.data.body;
-        } catch (error: any) {
-            console.error('Failed to fetch feedback history:', error);
-            throw new Error(error.response?.data?.message || 'Failed to fetch feedback history');
-        }
-    },
-
-    /**
-     * Get recent activities
-     * GET /api/v1/employees/me/activities
-     */
-    getActivities: async (limit: number = 5): Promise<ApiResponse<any>> => {
-        try {
-            const response = await api.get<ApiResponse<any>>('/api/v1/employees/me/activities', {
-                params: { limit }
-            });
-            return response.data.body;
-        } catch (error: any) {
-            console.error('Failed to fetch activities:', error);
-            throw new Error(error.response?.data?.message || 'Failed to fetch activities');
+            console.error('Failed to upload avatar:', error);
+            throw new Error(error.response?.data?.message || 'Failed to upload avatar');
         }
     }
 };

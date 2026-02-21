@@ -21,11 +21,14 @@ export interface AuthLogin {
 
 export interface AuthRegister {
     fullName: string;
-    phoneNumber?: string;
     username: string;
-    age?: number;
+    email: string;
     password: string;
+    phoneNumber?: string;
+    telegramId?: number;
 }
+
+
 
 export interface LoginResponse {
     token: string;
@@ -74,6 +77,7 @@ export interface CreateEmployeeDto {
 }
 
 export interface EmployeeRegisterRequest {
+    email: string;
     username: string;
     telegram_id: number;
     full_name: string;
@@ -105,6 +109,7 @@ export interface EmployeeProfileDto {
     mentorId?: string;
     mentorName?: string;
     mentorContact?: string;
+    videoUrl?: string;
 }
 
 export interface EmployeeSummaryDTO {
@@ -140,13 +145,27 @@ export interface TestDTO {
     status?: string;
 }
 
-export interface TestTakeDto {
-    testId: string;
-    title: string;
-    videoUrl?: string;
-    preparationTime?: number;
-    sessionId?: string;
+export interface TestTakeOptionDto {
+    id: string;
+    text: string;
 }
+
+export interface TestTakeQuestionDto {
+    id: string;
+    text: string;
+    type: string;
+    options: TestTakeOptionDto[];
+}
+
+export interface TestTakeDto {
+    id: string;
+    title: string;
+    duration: number;
+    questions: TestTakeQuestionDto[];
+    videoUrl?: string; // Sourced from TestDTO if needed
+    sessionId?: string; // Custom addition if needed by frontend
+}
+
 
 export interface TestQuestionCreateDto {
     questionText: string;
@@ -480,7 +499,8 @@ export interface AssignmentDto {
 
 export interface AssignmentCreateDto {
     assignmentType: AssignmentType;
-    referenceId: string;
+    referenceId?: string;
+    referenceIds?: string[];
 }
 
 // ============================================================================
@@ -545,7 +565,53 @@ export interface UploadResponseDto {
 // Role & Permission Types
 // ============================================================================
 
+
 export interface RolePermissionDto {
     role: string;
     permissions: Record<string, any>;
 }
+
+// --- Admin & Dashboard DTOs ---
+
+export interface AdminDashboardChartPointDto {
+    date: string;
+    value: number;
+}
+
+export interface AdminDashboardSummaryDto {
+    totalEmployees: number;
+    activeOnboarding: number;
+    completionRate: number;
+    avgTestScore: number;
+}
+
+export interface AdminDashboardDto {
+    summary: AdminDashboardSummaryDto;
+    onboardingChart: AdminDashboardChartPointDto[];
+    departmentStats: DepartmentCountDto[];
+}
+
+export interface DepartmentCountDto {
+    department: string;
+    count: number;
+}
+
+export interface OnboardingStatusAnalyticsDto {
+    completed: number;
+    inProgress: number;
+    pending: number;
+}
+
+export interface AdminActivityDto {
+    id: string;
+    employeeName: string;
+    action: string;
+    timestamp: string;
+    details?: string;
+}
+
+export interface AdminDashboardExtendedDto extends AdminDashboardDto {
+    recentActivities: AdminActivityDto[];
+    topPerformers: EmployeeSummaryDTO[];
+}
+

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Plus, Search, Edit, Trash2, Loader2 } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
 import Input from '../../components/Input'
@@ -40,9 +41,10 @@ export default function TestCatalog() {
             try {
                 await testService.deleteTest(id);
                 setTests(tests.filter(t => t.id !== id));
+                toast.success('Test muvaffaqiyatli o\'chirildi')
             } catch (error) {
                 console.error('Failed to delete test:', error);
-                alert('Testni o\'chirishda xatolik yuz berdi');
+                toast.error('Testni o\'chirishda xatolik yuz berdi');
             }
         }
     };
@@ -98,9 +100,9 @@ export default function TestCatalog() {
                                             <td className="px-6 py-4">
                                                 <div className="font-medium text-gray-900">{test.title}</div>
                                             </td>
-                                            <td className="px-6 py-4 text-gray-600">{test.questionsCount} ta</td>
+                                            <td className="px-6 py-4 text-gray-600">{(test.questions?.length || 0)} ta</td>
                                             <td className="px-6 py-4 text-gray-600">{test.duration} daqiqa</td>
-                                            <td className="px-6 py-4 text-gray-600">{test.createdAt}</td>
+                                            <td className="px-6 py-4 text-gray-600">{new Date(test.createdAt).toLocaleDateString('uz-UZ')}</td>
                                             <td className="px-6 py-4">
                                                 <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${test.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'}`}>
                                                     {test.status === 'active' ? t('tests.status.active') : t('tests.status.draft')}

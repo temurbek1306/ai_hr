@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, Download, PieChart, Loader2 } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
 import { surveyService } from '../../services/survey.service'
@@ -45,7 +46,7 @@ export default function SurveyResults() {
                             <p className="text-gray-500 text-sm">Xodimlar qoniqishi va fikrlari tahlili</p>
                         </div>
                     </div>
-                    <Button variant="secondary" icon={<Download size={20} />} onClick={() => alert('Hisobot yuklanmoqda...')}>
+                    <Button variant="secondary" icon={<Download size={20} />} onClick={() => toast.success('Hisobot yuklanmoqda...')}>
                         Yuklab olish
                     </Button>
                 </div>

@@ -78,17 +78,8 @@ export const analyticsService = {
             return response.data;
         } catch (error: any) {
             console.error('Failed to fetch employee summary:', error);
-            // Return mock data if API fails
-            return {
-                firstName: 'User',
-                lastName: 'Name',
-                email: 'user@aihr.uz',
-                phone: '+998 90 000 00 00',
-                position: 'Employee',
-                department: 'Department',
-                joinDate: new Date().toISOString(),
-                location: 'Tashkent, Uzbekistan'
-            };
+            throw error; // Let the caller handle the error or return empty state
+
         }
     }
 };

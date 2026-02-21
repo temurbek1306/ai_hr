@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
+import { toast } from 'react-hot-toast'
 import { Search, Plus, Grid3x3, List, Mail, Phone, Briefcase, Loader2, FileDown, FileUp, ClipboardList, Video } from 'lucide-react'
 import Layout from '../components/Layout'
 import Button from '../components/Button'
@@ -88,19 +89,19 @@ export default function Employees() {
         if (!file) return
 
         if (!file.name.endsWith('.csv') && !file.name.endsWith('.xlsx')) {
-            alert(t('common.error') || 'Iltimos, .csv yoki .xlsx fayl yuklang')
+            toast.error(t('common.error') || 'Iltimos, .csv yoki .xlsx fayl yuklang')
             return
         }
 
         try {
             await employeeService.importEmployees(file)
-            alert(t('common.success') || 'Muvaffaqiyatli import qilindi!')
+            toast.success(t('common.success') || 'Muvaffaqiyatli import qilindi!')
             // Refresh list
             await fetchEmployees()
         } catch (error: any) {
             console.error('Import failed:', error)
             const errorMsg = error.response?.data?.message || error.message || t('common.unknownError') || 'Noma\'lum xatolik'
-            alert(`${t('common.importError') || 'Import xatoligi'}: ${errorMsg}`)
+            toast.error(`${t('common.importError') || 'Import xatoligi'}: ${errorMsg}`)
         } finally {
             // Reset input
             if (fileInputRef.current) {
@@ -121,7 +122,7 @@ export default function Employees() {
             link.parentNode?.removeChild(link)
         } catch (error) {
             console.error('Export failed:', error)
-            alert('Eksport qilishda xatolik yuz berdi')
+            toast.error('Eksport qilishda xatolik yuz berdi')
         }
     }
 
@@ -311,12 +312,11 @@ export default function Employees() {
                                                 try {
                                                     await employeeService.delete(employee.id)
                                                     await fetchEmployees()
-                                                    alert(t('common.deleted'))
+                                                    toast.success(t('common.deleted'))
                                                 } catch (error: any) {
                                                     console.error('❌ Delete failed:', error)
-                                                    console.error('❌ Error response:', error.response?.data)
                                                     const errorMsg = error.response?.data?.message || error.message || 'Noma\'lum xatolik'
-                                                    alert(`O'chirishda xatolik: ${errorMsg}\n\nStatus: ${error.response?.status || 'N/A'}`)
+                                                    toast.error(`O'chirishda xatolik: ${errorMsg}`)
                                                 }
                                             }
                                         }}

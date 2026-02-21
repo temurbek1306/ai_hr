@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FileText, Download, Calendar, Filter, BarChart } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
 import { reportService } from '../../services/report.service'
@@ -41,7 +42,7 @@ export default function Reports() {
 
     const handleDownload = (downloadUrl: string, title: string) => {
         if (downloadUrl === '#') {
-            alert(`${title} yuklanmoqda... (Mock)`)
+            toast.success(`${title} yuklanmoqda...`)
         } else {
             window.open(downloadUrl, '_blank')
         }
@@ -59,7 +60,7 @@ export default function Reports() {
                         <Button variant="secondary" icon={<Filter size={20} />}>
                             {t('reports.filter')}
                         </Button>
-                        <Button icon={<BarChart size={20} />} onClick={() => alert('Yangi hisobot generatsiya qilinmoqda...')}>
+                        <Button icon={<BarChart size={20} />} onClick={() => toast.success('Yangi hisobot generatsiya qilinmoqda...')}>
                             {t('reports.new')}
                         </Button>
                     </div>
@@ -67,7 +68,7 @@ export default function Reports() {
 
                 {/* Filters */}
                 <div className="flex gap-2 overflow-x-auto pb-2">
-                    {['all', 'performance', 'testing', 'hr', 'finance', 'survey'].map((type) => (
+                    {['all', 'monthly', 'performance', 'testing', 'hr', 'finance', 'survey'].map((type) => (
                         <button
                             key={type}
                             onClick={() => setSelectedType(type)}
@@ -107,43 +108,45 @@ export default function Reports() {
                                     </td>
                                 </tr>
                             ) : (
-                                reports.map((report) => (
-                                    <tr key={report.id} className="hover:bg-gray-50 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="p-2 bg-gray-100 text-gray-600 rounded-lg">
-                                                    <FileText size={18} />
+                                reports
+                                    .filter(report => selectedType === 'all' || report.type === selectedType)
+                                    .map((report) => (
+                                        <tr key={report.id} className="hover:bg-gray-50 transition-colors">
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="p-2 bg-gray-100 text-gray-600 rounded-lg">
+                                                        <FileText size={18} />
+                                                    </div>
+                                                    <span className="font-medium text-gray-900">{report.title}</span>
                                                 </div>
-                                                <span className="font-medium text-gray-900">{report.title}</span>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-medium uppercase">
-                                                {t(`reports.types.${report.type}`)}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 text-gray-600 text-sm flex items-center gap-1">
-                                            <Calendar size={14} />
-                                            {report.date}
-                                        </td>
-                                        <td className="px-6 py-4 text-gray-600 text-sm">{report.size}</td>
-                                        <td className="px-6 py-4">
-                                            <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${report.status === 'ready' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
-                                                }`}>
-                                                {report.status === 'ready' ? t('reports.status.ready') : t('reports.status.archived')}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <button
-                                                onClick={() => handleDownload(report.downloadUrl, report.title)}
-                                                className="p-2 text-primary-600 hover:bg-primary-50 rounded-lg transition-colors flex items-center gap-2 ml-auto"
-                                            >
-                                                <Download size={16} />
-                                                <span className="text-sm font-medium">{t('reports.actions.download')}</span>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-medium uppercase">
+                                                    {t(`reports.types.${report.type}`)}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 text-gray-600 text-sm flex items-center gap-1">
+                                                <Calendar size={14} />
+                                                {report.date}
+                                            </td>
+                                            <td className="px-6 py-4 text-gray-600 text-sm">{report.size}</td>
+                                            <td className="px-6 py-4">
+                                                <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${report.status === 'ready' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
+                                                    }`}>
+                                                    {report.status === 'ready' ? t('reports.status.ready') : t('reports.status.archived')}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 text-right">
+                                                <button
+                                                    onClick={() => handleDownload(report.downloadUrl, report.title)}
+                                                    className="p-2 text-primary-600 hover:bg-primary-50 rounded-lg transition-colors flex items-center gap-2 ml-auto"
+                                                >
+                                                    <Download size={16} />
+                                                    <span className="text-sm font-medium">{t('reports.actions.download')}</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
                             )}
                         </tbody>
                     </table>

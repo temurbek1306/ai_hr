@@ -1,24 +1,26 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { toast } from 'react-hot-toast'
 import { ArrowLeft, ArrowRight, CheckCircle, XCircle, AlertCircle, Video, ExternalLink } from 'lucide-react'
 import Layout from '../../components/Layout'
 import QuestionCard from '../../components/QuestionCard'
 import Timer from '../../components/Timer'
-import { testService, TestDetailDto } from '../../services/test.service'
+import { testService, TestTakeDto } from '../../services/test.service'
 
 export default function TakeTest() {
     const { id } = useParams<{ id: string }>()
     const navigate = useNavigate()
 
-    const [test, setTest] = useState<TestDetailDto | null>(null)
+    const [test, setTest] = useState<TestTakeDto | null>(null)
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
     const [answers, setAnswers] = useState<Record<string, string>>({})
     const [isLoading, setIsLoading] = useState(true)
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [error, setError] = useState<string | null>(null)
     const [showResults, setShowResults] = useState(false)
     const [results, setResults] = useState<any>(null)
-    const [, setSessionId] = useState<string | null>(null)
+    const [sessionId, setSessionId] = useState<string | null>(null)
     const [prepVideoUrl, setPrepVideoUrl] = useState<string | null>(null)
 
     useEffect(() => {
@@ -26,20 +28,22 @@ export default function TakeTest() {
             if (!id) return
 
             try {
-                // Start test session
-                const session = await testService.startSession(id, 'me')
-                // Handle both direct response and ApiResponse wrapper
-                const sessionId = session.body?.sessionId || (session as any).sessionId
-                const videoUrl = session.body?.videoUrl || (session as any).videoUrl
-                setSessionId(sessionId || null)
-                setPrepVideoUrl(videoUrl || null)
+                console.log('🚀 Starting test with ID:', id);
+                const sessionResponse = await testService.startSession(id)
+                console.log('✅ Session started:', sessionResponse);
+                const testData = sessionResponse.body;
 
-                // Fetch test details
-                const data = await testService.getById(id)
-                setTest(data)
-            } catch (error) {
-                console.error('Failed to start test:', error)
-                alert('Testni boshlashda xatolik yuz berdi')
+                if (!testData) {
+                    throw new Error('Test ma\'lumotlari topilmadi');
+                }
+
+                setTest(testData)
+                setSessionId(testData.sessionId || null)
+                setPrepVideoUrl(testData.videoUrl || null)
+            } catch (err: any) {
+                console.error('❌ Failed to start test:', err)
+                const errorDetail = err.response?.data?.message || err.message || 'Noma\'lum xatolik';
+                alert(`Testni boshlashda xatolik yuz berdi: ${errorDetail}\n(ID: ${id})`)
                 navigate('/user/tests')
             } finally {
                 setIsLoading(false)
@@ -49,12 +53,12 @@ export default function TakeTest() {
         startTest()
     }, [id, navigate])
 
-    const handleAnswerSelect = (answer: string) => {
+    const handleAnswerSelect = (optionId: string) => {
         if (!test) return
         const currentQuestion = test.questions[currentQuestionIndex]
         setAnswers(prev => ({
             ...prev,
-            [currentQuestion.id]: answer
+            [currentQuestion.id]: optionId
         }))
     }
 
@@ -83,29 +87,50 @@ export default function TakeTest() {
         }
 
         setIsSubmitting(true)
+        setError(null)
 
         try {
-            const submitData = {
-                employeeId: 'me',
-                answers: Object.entries(answers).map(([questionId, selectedOptionId]) => ({
-                    questionId,
-                    selectedOptionId
-                }))
+            const activeSessionId = sessionId || (test as any).sessionId;
+            if (!activeSessionId) {
+                throw new Error('Test sessiyasi topilmadi. Iltimos, sahifani yangilang.');
             }
 
-            const result = await testService.submitTest(id, submitData)
-            setResults(result)
+            // 1. Submit all answers at once (Bulk)
+            await testService.submitAnswersBulk(activeSessionId, answers);
+
+            // 2. Finish the session
+            await testService.finishSession(activeSessionId);
+
+            // 3. Fetch results
+            const resultsResponse = await testService.getResults(id);
+
+            if (resultsResponse && resultsResponse.results && resultsResponse.results.length > 0) {
+                const sortedResults = [...resultsResponse.results].sort((a, b) =>
+                    new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime()
+                );
+                setResults(sortedResults[0]);
+            } else {
+                setResults({
+                    score: 0,
+                    passed: false,
+                    totalQuestions: test.questions.length,
+                    correctAnswers: 0
+                });
+            }
+
             setShowResults(true)
-        } catch (error) {
-            console.error('Failed to submit test:', error)
-            alert('Testni yuborishda xatolik yuz berdi')
+        } catch (err: any) {
+            console.error('Failed to submit test:', err)
+            const msg = err.response?.data?.message || err.message || 'Noma\'lum xato'
+            setError(msg)
+            toast.error(`Xatolik: ${msg}`)
         } finally {
             setIsSubmitting(false)
         }
     }
 
     const handleTimeUp = () => {
-        alert('Vaqt tugadi! Test avtomatik yakunlanmoqda...')
+        toast.error('Vaqt tugadi! Test avtomatik yakunlanmoqda...')
         handleSubmit()
     }
 
@@ -147,8 +172,7 @@ export default function TakeTest() {
                         animate={{ opacity: 1, scale: 1 }}
                         className="card p-8 text-center"
                     >
-                        <div className={`w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center ${results.passed ? 'bg-green-100' : 'bg-red-100'
-                            }`}>
+                        <div className={`w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center ${results.passed ? 'bg-green-100' : 'bg-red-100'}`}>
                             {results.passed ? (
                                 <CheckCircle className="w-12 h-12 text-green-600" />
                             ) : (
@@ -180,17 +204,11 @@ export default function TakeTest() {
                         </div>
 
                         <div className="flex gap-4 justify-center">
-                            <button
-                                onClick={() => navigate('/user/tests')}
-                                className="btn btn-ghost"
-                            >
+                            <button onClick={() => navigate('/user/tests')} className="btn btn-ghost">
                                 Testlar ro'yxatiga qaytish
                             </button>
                             {!results.passed && (
-                                <button
-                                    onClick={() => window.location.reload()}
-                                    className="btn btn-primary"
-                                >
+                                <button onClick={() => window.location.reload()} className="btn btn-primary">
                                     Qayta topshirish
                                 </button>
                             )}
@@ -216,8 +234,15 @@ export default function TakeTest() {
                             {answeredCount} / {test.questions.length} savolga javob berildi
                         </p>
                     </div>
-                    <Timer duration={1200} onTimeUp={handleTimeUp} warningThreshold={300} />
+                    <Timer duration={test.duration || 1200} onTimeUp={handleTimeUp} warningThreshold={300} />
                 </div>
+
+                {error && (
+                    <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center gap-3 text-red-700 font-medium">
+                        <AlertCircle className="shrink-0" />
+                        <p>{error}</p>
+                    </div>
+                )}
 
                 {test && (prepVideoUrl || (test as any).videoUrl) && (
                     <div className="mb-6 p-4 bg-primary-50 border border-primary-100 rounded-2xl flex items-center justify-between">
@@ -242,15 +267,15 @@ export default function TakeTest() {
                     </div>
                 )}
 
-                {/* Question */}
+                {/* Question Area */}
                 <AnimatePresence mode="wait">
                     <QuestionCard
                         key={currentQuestionIndex}
                         questionNumber={currentQuestionIndex + 1}
                         totalQuestions={test.questions.length}
-                        questionText={currentQuestion.questionText}
+                        questionText={currentQuestion.text}
                         options={currentQuestion.options}
-                        selectedAnswer={answers[currentQuestion.id]}
+                        selectedOptionId={answers[currentQuestion.id]}
                         onAnswerSelect={handleAnswerSelect}
                     />
                 </AnimatePresence>
@@ -287,7 +312,7 @@ export default function TakeTest() {
                         <button
                             onClick={handleSubmit}
                             disabled={isSubmitting}
-                            className="btn btn-primary flex items-center gap-2"
+                            className="btn btn-primary flex items-center gap-2 min-w-[160px] justify-center"
                         >
                             {isSubmitting ? (
                                 <>
@@ -302,16 +327,13 @@ export default function TakeTest() {
                             )}
                         </button>
                     ) : (
-                        <button
-                            onClick={handleNext}
-                            className="btn btn-primary flex items-center gap-2"
-                        >
+                        <button onClick={handleNext} className="btn btn-primary flex items-center gap-2">
                             Keyingi
                             <ArrowRight className="w-4 h-4" />
                         </button>
                     )}
                 </div>
             </div>
-        </Layout >
+        </Layout>
     )
 }

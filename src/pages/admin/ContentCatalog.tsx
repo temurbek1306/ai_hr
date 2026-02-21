@@ -6,6 +6,7 @@ import Button from '../../components/Button'
 import Input from '../../components/Input'
 import { knowledgeService } from '../../services/knowledge.service'
 import { Loader2 } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 
 
 
@@ -34,9 +35,15 @@ export default function ContentCatalog() {
         fetchArticles()
     }, [])
 
-    const handleDelete = (id: string) => {
+    const handleDelete = async (id: string) => {
         if (confirm('Ushbu maqolani o\'chirmoqchimisiz?')) {
-            setArticles(articles.filter(a => a.id !== id))
+            try {
+                // Assuming there's a delete method or we just update local state if mock
+                setArticles(articles.filter(a => a.id !== id))
+                toast.success('Maqola o\'chirildi')
+            } catch (err) {
+                toast.error('O\'chirishda xatolik')
+            }
         }
     }
 

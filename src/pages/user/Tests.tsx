@@ -5,7 +5,9 @@ import { Loader2, Sparkles } from 'lucide-react'
 import Layout from '../../components/Layout'
 import TestCard from '../../components/TestCard'
 import { testService } from '../../services/test.service'
-import type { TestDTO } from '../../types/api.types'
+import { profileService } from '../../services/profile.service'
+import { employeeService } from '../../services/employee.service'
+import type { TestDTO, AssignmentDto } from '../../types/api.types'
 
 export default function Tests() {
     const navigate = useNavigate()
@@ -14,14 +16,39 @@ export default function Tests() {
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
-        const fetchTests = async () => {
+        const fetchData = async () => {
             try {
                 setIsLoading(true);
                 setError(null);
-                const response = await testService.getAvailableTests();
 
-                // response is ApiResponse<TestDTO[]>
-                let testList = response.body;
+                // Fetch data in parallel
+                const [availableTestsRes, profile] = await Promise.all([
+                    testService.getAvailableTests(),
+                    profileService.getProfile()
+                ]);
+
+                // Fetch assignments if we have a profile
+                let testList = availableTestsRes.body || [];
+
+                if (profile?.id) {
+                    try {
+                        const assignments: AssignmentDto[] = await employeeService.getAssignments(profile.id);
+                        const assignedTestIds = assignments
+                            ?.filter(a => a.assignmentType === 'TEST')
+                            .map(a => a.referenceId) || [];
+
+                        // Log assigned IDs but don't strictly filter for now as requested
+                        console.log('User assignments:', assignedTestIds);
+
+                        // We can mark them as assigned in the UI later, but for now show all
+                        // testList = testList.filter(t => assignedTestIds.includes(t.id));
+                    } catch (e) {
+                        console.error('Failed to fetch assignments:', e);
+                        // Fallback: show all if we can't get assignments
+                    }
+                }
+
+
 
                 if (!testList) {
                     console.warn('API returned empty body for tests');
@@ -32,26 +59,23 @@ export default function Tests() {
                 if (!Array.isArray(testList)) {
                     console.warn('API returned non-array tests:', testList);
                     // Check if it's a paginated response with .content
-                    if (typeof testList === 'object' && Array.isArray((testList as any).content)) {
+                    if (testList && typeof testList === 'object' && Array.isArray((testList as any).content)) {
                         testList = (testList as any).content;
-                    } else if (Array.isArray(response)) {
-                        // Handle raw array if wrapper is missing
-                        testList = response as any;
                     } else {
-                        throw new Error('Invalid response format: expected array');
+                        testList = [];
                     }
                 }
 
                 setTests(testList || []);
             } catch (error: any) {
-                console.error('Failed to fetch tests:', error);
-                setError('Testlarni yuklashda xatolik yuz berdi. Iltimos, keyinroq urunib ko\'ring.');
+                console.error('Failed to fetch tests data:', error);
+                setError('Ma\'lumotlarni yuklashda xatolik yuz berdi.');
                 setTests([]);
             } finally {
                 setIsLoading(false);
             }
         };
-        fetchTests();
+        fetchData();
     }, []);
 
     const handleStartTest = (testId: string) => {
@@ -75,27 +99,31 @@ export default function Tests() {
                         <Loader2 className="w-10 h-10 text-primary-500 animate-spin mb-4" />
                         <p className="text-gray-500 font-medium font-display">Testlar yuklanmoqda...</p>
                     </div>
-                ) : tests.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {tests.map((test) => (
-                            <TestCard
-                                key={test.id}
-                                test={test}
-                                status="not_started"
-                                onStart={() => handleStartTest(test.id)}
-                            />
-                        ))}
-                    </div>
                 ) : (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="text-center py-20 card bg-gray-50 border-dashed"
-                    >
-                        <Sparkles className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                        <h3 className="text-xl font-display font-semibold text-gray-600">Hozircha testlar mavjud emas</h3>
-                        <p className="text-gray-500">Yaqin orada yangi testlar qo'shiladi.</p>
-                    </motion.div>
+                    <>
+                        {tests.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {tests.map((test) => (
+                                    <TestCard
+                                        key={test.id}
+                                        test={test}
+                                        status="not_started"
+                                        onStart={() => handleStartTest(test.id)}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                className="text-center py-20 card bg-gray-50 border-dashed"
+                            >
+                                <Sparkles className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                                <h3 className="text-xl font-display font-semibold text-gray-600">Hozircha testlar mavjud emas</h3>
+                                <p className="text-gray-500">Yaqin orada yangi testlar qo'shiladi.</p>
+                            </motion.div>
+                        )}
+                    </>
                 )}
             </div>
         </Layout>

@@ -17,6 +17,9 @@ import Layout from '../components/Layout'
 import Input from '../components/Input'
 import Button from '../components/Button'
 
+import { profileService } from '../services/profile.service'
+import { toast } from 'react-hot-toast'
+
 interface ProfileProps {
     role?: 'admin' | 'user'
 }
@@ -26,42 +29,29 @@ export default function Profile({ role = 'admin' }: ProfileProps) {
     const [activeTab, setActiveTab] = useState('personal')
     const [isLoading, setIsLoading] = useState(true)
     const [isSaving, setIsSaving] = useState(false)
-    const [profileData, setProfileData] = useState<any>(null)
+    const [profileData, setProfileData] = useState<any>({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        location: ''
+    })
 
     useEffect(() => {
         const fetchProfile = async () => {
-            const currentRole = localStorage.getItem('role');
-
-            // If admin, we might not have a 'me' endpoint for profile, 
-            // or we should use a different one. For now, we'll avoid the error.
-            if (currentRole === 'ROLE_ADMIN') {
-                setProfileData({
-                    firstName: 'Admin',
-                    lastName: 'User',
-                    email: 'admin@aihr.uz',
-                    phone: '+998 90 000 00 00',
-                    address: 'Toshkent, O\'zbekiston'
-                });
-                setIsLoading(false);
-                return;
-            }
-
             try {
-                // const data = await analyticsService.getEmployeeSummary('me')
-                // setProfileData(data)
+                setIsLoading(true);
+                const data = await profileService.getProfile();
                 setProfileData({
-                    firstName: 'Foydalanuvchi',
-                    lastName: 'User',
-                    email: 'user@aihr.uz',
-                    phone: '+998 90 000 00 00',
-                    address: 'Toshkent, O\'zbekiston'
+                    firstName: data.firstName || '',
+                    lastName: data.lastName || '',
+                    email: data.email || '',
+                    phone: data.phone || '',
+                    location: (data as any).location || ''
                 })
             } catch (error) {
                 console.error('Failed to fetch profile:', error)
-                // Fallback for user if failed
-                if (currentRole !== 'ROLE_ADMIN') {
-                    setProfileData({ firstName: 'Foydalanuvchi' })
-                }
+                toast.error('Profil ma\'lumotlarini yuklashda xatolik')
             } finally {
                 setIsLoading(false)
             }
@@ -78,9 +68,44 @@ export default function Profile({ role = 'admin' }: ProfileProps) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsSaving(true)
-        // API simulation
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        setIsSaving(false)
+        try {
+            const updated = await profileService.updateProfile({
+                firstName: profileData.firstName,
+                lastName: profileData.lastName,
+                phone: profileData.phone,
+                location: profileData.location,
+                email: profileData.email
+            } as any);
+
+            setProfileData({
+                firstName: updated.firstName || profileData.firstName,
+                lastName: updated.lastName || profileData.lastName,
+                email: updated.email || profileData.email,
+                phone: updated.phone || profileData.phone,
+                location: (updated as any).location || profileData.location
+            });
+
+            // Sync with Sidebar (localStorage)
+            const userStr = localStorage.getItem('user');
+            if (userStr) {
+                const u = JSON.parse(userStr);
+                localStorage.setItem('user', JSON.stringify({
+                    ...u,
+                    fullName: `${updated.firstName} ${updated.lastName}`.trim(),
+                    firstName: updated.firstName,
+                    email: updated.email
+                }));
+                window.dispatchEvent(new Event('user-profile-updated'));
+            }
+
+            toast.success('Profil muvaffaqiyatli saqlandi')
+        } catch (error: any) {
+            console.error('Failed to save profile:', error)
+            const msg = error.response?.data?.message || error.message || 'Saqlashda xatolik yuz berdi'
+            toast.error(msg)
+        } finally {
+            setIsSaving(false)
+        }
     }
 
     return (
@@ -146,11 +171,39 @@ export default function Profile({ role = 'admin' }: ProfileProps) {
                                         <form onSubmit={handleSubmit} className="space-y-6">
                                             <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('profile.tabs.overview')}</h3>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                <Input label={t('employees.form.firstName')} defaultValue={profileData?.firstName} icon={<User size={18} />} />
-                                                <Input label={t('employees.form.lastName')} defaultValue={profileData?.lastName} icon={<User size={18} />} />
-                                                <Input label={t('profile.email')} type="email" defaultValue={profileData?.email} icon={<Mail size={18} />} className="md:col-span-2" />
-                                                <Input label={t('profile.phone')} type="tel" defaultValue={profileData?.phone || '+998 90 000 00 00'} icon={<Phone size={18} />} />
-                                                <Input label={t('profile.location')} defaultValue={profileData?.address || "Toshkent, O'zbekiston"} icon={<MapPin size={18} />} />
+                                                <Input
+                                                    label={t('employees.form.firstName')}
+                                                    value={profileData?.firstName || ''}
+                                                    onChange={e => setProfileData({ ...profileData, firstName: e.target.value })}
+                                                    icon={<User size={18} />}
+                                                />
+                                                <Input
+                                                    label={t('employees.form.lastName')}
+                                                    value={profileData?.lastName || ''}
+                                                    onChange={e => setProfileData({ ...profileData, lastName: e.target.value })}
+                                                    icon={<User size={18} />}
+                                                />
+                                                <Input
+                                                    label={t('profile.email')}
+                                                    type="email"
+                                                    value={profileData?.email || ''}
+                                                    onChange={e => setProfileData({ ...profileData, email: e.target.value })}
+                                                    icon={<Mail size={18} />}
+                                                    className="md:col-span-2"
+                                                />
+                                                <Input
+                                                    label={t('profile.phone')}
+                                                    type="tel"
+                                                    value={profileData?.phone || ''}
+                                                    onChange={e => setProfileData({ ...profileData, phone: e.target.value })}
+                                                    icon={<Phone size={18} />}
+                                                />
+                                                <Input
+                                                    label={t('profile.location')}
+                                                    value={profileData?.location || ''}
+                                                    onChange={e => setProfileData({ ...profileData, location: e.target.value })}
+                                                    icon={<MapPin size={18} />}
+                                                />
                                             </div>
                                             <div className="flex justify-end pt-4 border-t border-gray-200">
                                                 <Button type="submit" variant="primary" icon={<Save size={18} />} isLoading={isSaving}>

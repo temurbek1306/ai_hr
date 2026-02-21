@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowLeft, Plus, Save, Trash2, Star, AlignLeft, CheckSquare } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
 import Input from '../../components/Input'
@@ -47,7 +48,7 @@ export default function SurveyBuilder() {
                     }
                 } catch (error) {
                     console.error('Failed to fetch survey:', error)
-                    alert('Sorovnoma yuklashda xatolik')
+                    toast.error('Sorovnoma yuklashda xatolik')
                 } finally {
                     setIsLoading(false)
                 }
@@ -77,7 +78,7 @@ export default function SurveyBuilder() {
     }
 
     const handleSaveQuestion = () => {
-        if (!currentQuestion.text) return alert('Savol matnini kiriting')
+        if (!currentQuestion.text) return toast.error('Savol matnini kiriting')
 
         if (editingQuestionId && questions.find(q => q.id === editingQuestionId)) {
             setQuestions(questions.map(q => q.id === editingQuestionId ? currentQuestion : q))
@@ -94,8 +95,8 @@ export default function SurveyBuilder() {
     }
 
     const handleSaveSurvey = async () => {
-        if (!title) return alert('So\'rovnoma nomini kiriting')
-        if (questions.length === 0) return alert('Kamida bitta savol qo\'shing')
+        if (!title) return toast.error('So\'rovnoma nomini kiriting')
+        if (questions.length === 0) return toast.error('Kamida bitta savol qo\'shing')
 
         setIsSaving(true)
         try {
@@ -128,11 +129,11 @@ export default function SurveyBuilder() {
                 }
             }
 
-            alert('So\'rovnoma muvaffaqiyatli saqlandi!')
+            toast.success('So\'rovnoma muvaffaqiyatli saqlandi!')
             navigate('/admin/surveys/catalog')
         } catch (error: any) {
             console.error('Survey save failed:', error)
-            alert('Xatolik yuz berdi: ' + (error.response?.data?.message || error.message))
+            toast.error('Xatolik yuz berdi: ' + (error.response?.data?.message || error.message))
         } finally {
             setIsSaving(false)
         }

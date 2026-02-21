@@ -10,17 +10,40 @@ import type {
 export const authService = {
     /**
      * Login with username and password
-     * POST /auth/login or /api/v1/auth/login
+     * POST /api/v1/auth/login
      */
     login: async (credentials: AuthLogin): Promise<string> => {
         try {
-            const response = await api.post<ApiResponse<LoginResponse>>('/auth/login', credentials);
+            const response = await api.post<ApiResponse<LoginResponse>>('/api/v1/auth/login', credentials);
 
             if (response.data.success && response.data.body) {
                 const { token, role, username } = response.data.body;
                 localStorage.setItem('token', token);
                 localStorage.setItem('role', role);
                 if (username) localStorage.setItem('username', username);
+
+                // Fetch and cache real employee profile
+                try {
+                    const profileRes = await api.get('/api/v1/employees/me', {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    const profile = profileRes.data?.body || profileRes.data;
+                    if (profile) {
+                        localStorage.setItem('user', JSON.stringify({
+                            fullName: profile.fullName || profile.firstName || username,
+                            firstName: profile.firstName,
+                            email: profile.email,
+                            username,
+                            role
+                        }));
+                    } else {
+                        localStorage.setItem('user', JSON.stringify({ username, role }));
+                    }
+                } catch {
+                    // fallback: save minimal user info
+                    localStorage.setItem('user', JSON.stringify({ username, role }));
+                }
+
                 return token;
             }
             throw new Error(response.data.message || 'Login failed');
@@ -32,11 +55,11 @@ export const authService = {
 
     /**
      * Register new user
-     * POST /auth/register or /api/v1/auth/register
+     * POST /api/v1/auth/register
      */
     register: async (data: AuthRegister): Promise<ApiResponse<any>> => {
         try {
-            const response = await api.post<ApiResponse<any>>('/auth/register', data);
+            const response = await api.post<ApiResponse<any>>('/api/v1/auth/register', data);
             return response.data;
         } catch (error: any) {
             console.error('Registration error:', error);
@@ -59,6 +82,7 @@ export const authService = {
         }
     },
 
+
     /**
      * Logout current user
      */
@@ -66,6 +90,8 @@ export const authService = {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         localStorage.removeItem('employeeId');
+        localStorage.removeItem('username');
+        localStorage.removeItem('user');
     },
 
     /**

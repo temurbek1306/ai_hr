@@ -1,8 +1,8 @@
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 // Axios instance configuration with backend API URL
 const api = axios.create({
-    // Use relative path by default to allow Netlify proxy to handle HTTPS->HTTP
     baseURL: import.meta.env.VITE_API_URL || '/',
     headers: {
         'Content-Type': 'application/json',
@@ -13,7 +13,6 @@ const api = axios.create({
 api.interceptors.request.use(
     (config) => {
         const url = config.url || '';
-        // Skip token for auth endpoints — they don't need it and a stale token causes "User not found"
         const isAuthEndpoint = url.includes('/auth/login') || url.includes('/auth/register') || url.includes('/auth/forgot-password');
         if (!isAuthEndpoint) {
             const token = localStorage.getItem('token');
@@ -23,20 +22,21 @@ api.interceptors.request.use(
         }
         return config;
     },
-    (error) => {
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle errors (e.g., 401)
+// Response interceptor to handle errors
 api.interceptors.response.use(
     (response) => response,
     (error) => {
+        const message = error.response?.data?.message || error.message || 'Xatolik yuz berdi';
+
         if (error.response?.status === 401) {
-            console.warn('Authentication error:', error.response.status);
-            // localStorage.removeItem('token');
-            // window.location.href = '/login';
+            console.warn('Authentication error: Token expired or invalid');
+        } else if (error.response?.status && error.response.status >= 400) {
+            toast.error(message);
         }
+
         return Promise.reject(error);
     }
 );

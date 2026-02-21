@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react'
+﻿import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { BarChart3, TrendingUp, Award, Download, Calendar, Target, Loader2 } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 import Layout from '../../components/Layout'
 import { profileService } from '../../services/profile.service'
+import { formatDateShort } from '../../utils/dateFormat'
 
 import type { TestResultItemDto } from '../../types/api.types'
 
@@ -22,26 +24,15 @@ export default function Results() {
             try {
                 setIsLoading(true);
                 const response = await profileService.getTestResults();
-                let testResults = response.body;
-
-                // Validate that testResults is actually an array
-                if (!Array.isArray(testResults)) {
-                    console.warn('API returned non-array results:', testResults);
-                    if (testResults && typeof testResults === 'object' && Array.isArray((testResults as any).content)) {
-                        // Handle potential paginated response structure
-                        testResults = (testResults as any).content;
-                    } else {
-                        throw new Error('Invalid response format: expected array');
-                    }
-                }
+                const testResults: TestResultItemDto[] = Array.isArray(response) ? response : (response as any).results;
 
                 setResults(testResults || []);
 
                 // Calculate statistics from real data
-                if (Array.isArray(testResults) && testResults.length > 0) {
+                if (testResults && testResults.length > 0) {
                     const totalTests = testResults.length;
-                    const passedTests = testResults.filter((r: any) => r.passed).length;
-                    const scores = testResults.map((r: any) => r.score || 0);
+                    const passedTests = testResults.filter(r => r.passed).length;
+                    const scores = testResults.map(r => r.score || 0);
                     const averageScore = scores.reduce((sum: number, s: number) => sum + s, 0) / totalTests;
                     const bestScore = Math.max(...scores);
 
@@ -60,8 +51,8 @@ export default function Results() {
                     });
                 }
                 setError(null);
-            } catch (error: any) {
-                console.error('Failed to fetch results:', error);
+            } catch (err: any) {
+                console.error('Failed to fetch results:', err);
                 setError('Natijalarni yuklashda xatolik yuz berdi. Iltimos, keyinroq urunib ko\'ring.');
                 setResults([]);
             } finally {
@@ -84,7 +75,7 @@ export default function Results() {
             link.parentNode?.removeChild(link);
         } catch (error) {
             console.error('Export failed:', error);
-            alert('Eksport qilishda xatolik yuz berdi');
+            toast.error('Eksport qilishda xatolik yuz berdi');
         }
     };
 
@@ -239,7 +230,7 @@ export default function Results() {
                                                     <div className="flex items-center gap-2 text-gray-600">
                                                         <Calendar className="w-4 h-4" />
                                                         <span className="text-sm">
-                                                            {new Date(result.completedAt).toLocaleDateString('uz-UZ')}
+                                                            {formatDateShort(result.completedAt || (result as any).date)}
                                                         </span>
                                                     </div>
                                                 </td>
@@ -255,3 +246,4 @@ export default function Results() {
         </Layout>
     )
 }
+

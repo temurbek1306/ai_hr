@@ -1,5 +1,5 @@
 import api from '../api/axios';
-import type { EventDto } from '../types/api.types';
+import type { ApiResponse, EventDto } from '../types/api.types';
 
 // Export type alias for backward compatibility
 export type CalendarEvent = EventDto;
@@ -15,8 +15,8 @@ export const calendarService = {
             if (startDate) params.startDate = startDate;
             if (endDate) params.endDate = endDate;
 
-            const response = await api.get<EventDto[]>('/api/v1/events', { params });
-            return response.data;
+            const response = await api.get<ApiResponse<EventDto[]>>('/api/v1/events', { params });
+            return (response.data as any).body || response.data;
         } catch (error: any) {
             console.error('Failed to fetch events:', error);
             throw new Error(error.response?.data?.message || 'Failed to fetch events');
@@ -34,8 +34,8 @@ export const calendarService = {
                 headers['X-Employee-Id'] = employeeId;
             }
 
-            const response = await api.post<EventDto>('/api/v1/events', data, { headers });
-            return response.data;
+            const response = await api.post<ApiResponse<EventDto>>('/api/v1/events', data, { headers });
+            return (response.data as any).body || response.data;
         } catch (error: any) {
             console.error('Failed to create event:', error);
             throw new Error(error.response?.data?.message || 'Failed to create event');

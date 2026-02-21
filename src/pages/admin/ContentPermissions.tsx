@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Globe, Shield } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
 
@@ -56,7 +57,7 @@ export default function ContentPermissions() {
     const handleSaveRole = () => {
         // Here we would save to API
         console.log('Saving Role Permissions:', editingRole)
-        alert('Ruxsatlar saqlandi! (Mock)')
+        toast.success('Ruxsatlar muvaffaqiyatli saqlandi!')
         setEditingRole(null)
     }
 

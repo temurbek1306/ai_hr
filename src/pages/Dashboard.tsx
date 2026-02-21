@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
-import { Users, UserPlus, Clock, TrendingUp, BarChart3, Calendar, Bell, Search } from 'lucide-react'
+import { UserPlus, BarChart3, Calendar, Bell, Search } from 'lucide-react'
 import Layout from '../components/Layout'
 import StatCard from '../components/StatCard'
 import RecentActivity from '../components/RecentActivity'
@@ -10,61 +10,9 @@ export default function Dashboard() {
     const { t } = useTranslation()
     const navigate = useNavigate()
 
-    const stats = [
-        {
-            title: t('dashboard.stats.totalEmployees'),
-            value: '248',
-            change: '+12%',
-            trend: 'up' as const,
-            icon: Users,
-            color: 'primary' as const,
-        },
-        {
-            title: 'Yangi Arizalar',
-            value: '18',
-            change: '+5',
-            trend: 'up' as const,
-            icon: UserPlus,
-            color: 'secondary' as const,
-        },
-        {
-            title: 'Kutilmoqda',
-            value: '7',
-            change: '-3',
-            trend: 'down' as const,
-            icon: Clock,
-            color: 'yellow' as const,
-        },
-        {
-            title: 'Bu Oy',
-            value: '32',
-            change: '+18%',
-            trend: 'up' as const,
-            icon: TrendingUp,
-            color: 'green' as const,
-        },
-    ]
+    const stats: any[] = []
 
-    const recentActivities = [
-        {
-            user: 'Alisher Karimov',
-            action: 'yangi xodim qo\'shildi',
-            time: '5 daqiqa oldin',
-            avatar: 'AK',
-        },
-        {
-            user: 'Malika Yusupova',
-            action: 'profil yangilandi',
-            time: '1 soat oldin',
-            avatar: 'MY',
-        },
-        {
-            user: 'Sardor Rahimov',
-            action: 'ariza yuborildi',
-            time: '2 soat oldin',
-            avatar: 'SR',
-        },
-    ]
+    const recentActivities: any[] = []
 
     const quickActions = [
         { icon: UserPlus, label: t('dashboard.quickActions.addEmployee'), color: 'primary', path: '/employees/new' },
@@ -103,7 +51,7 @@ export default function Dashboard() {
 
                 {/* Stats Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {stats.map((stat, index) => (
+                    {stats.length > 0 ? stats.map((stat, index) => (
                         <motion.div
                             key={index}
                             initial={{ opacity: 0, y: 20 }}
@@ -112,7 +60,11 @@ export default function Dashboard() {
                         >
                             <StatCard {...stat} />
                         </motion.div>
-                    ))}
+                    )) : (
+                        <div className="lg:col-span-4 py-8 text-center bg-white/50 rounded-2xl border border-dashed border-gray-200">
+                            <p className="text-gray-400">Statistika mavjud emas</p>
+                        </div>
+                    )}
                 </div>
 
                 {/* Charts & Activity */}

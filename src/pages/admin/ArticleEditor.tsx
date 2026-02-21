@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Save, Eye, Video, Headphones, FileText } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
 import Input from '../../components/Input'
@@ -41,8 +42,8 @@ export default function ArticleEditor() {
         const fetchProfile = async () => {
             try {
                 const response = await profileService.getProfile()
-                if (response.body?.id) {
-                    setAuthorId(response.body.id)
+                if (response?.id) {
+                    setAuthorId(response.id)
                 }
             } catch (error) {
                 console.error('Failed to fetch profile for authorId:', error)
@@ -55,10 +56,10 @@ export default function ArticleEditor() {
 
 
     const handleSave = async () => {
-        if (!title) return alert('Maqola sarlavhasini kiriting')
-        if (!category) return alert('Kategoriyani tanlang')
-        if (contentType === 'article' && !content) return alert('Maqola matnini kiriting')
-        if (contentType !== 'article' && !mediaUrl) return alert('Fayl yuklang yoki havola kiriting')
+        if (!title) return toast.error('Maqola sarlavhasini kiriting')
+        if (!category) return toast.error('Kategoriyani tanlang')
+        if (contentType === 'article' && !content) return toast.error('Maqola matnini kiriting')
+        if (contentType !== 'article' && !mediaUrl) return toast.error('Fayl yuklang yoki havola kiriting')
 
         try {
             await knowledgeService.createArticle({
@@ -71,11 +72,11 @@ export default function ArticleEditor() {
                 status: 'PUBLISHED'
             } as any)
 
-            alert('Maqola muvaffaqiyatli chop etildi!')
+            toast.success('Maqola muvaffaqiyatli chop etildi!')
             navigate('/admin/content')
         } catch (error: any) {
             console.error('Save error:', error)
-            alert('Saqlashda xatolik: ' + error.message)
+            toast.error('Saqlashda xatolik: ' + error.message)
         }
     }
 
