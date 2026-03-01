@@ -23,7 +23,7 @@ export class TestResult {
     @Column({ default: "PENDING" })
     status!: string; // PENDING, COMPLETED
 
-    @ManyToOne(() => Employee, { nullable: true, onDelete: "SET NULL" })
+    @ManyToOne(() => Employee, { nullable: true, onDelete: "CASCADE" })
     employee!: Employee;
 
     @ManyToOne(() => Test, { nullable: true, onDelete: "SET NULL" })

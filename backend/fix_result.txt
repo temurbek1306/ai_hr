@@ -1,0 +1,49 @@
+﻿ЁЯФз Serverga ulanmoqda...
+тЬЕ Ulandi!
+
+=== 1. ESKI JAVA BACKENDNI TOZALASH (port 8000) ===
+Java PID topildi: 2297
+Java jarayoni o'chirildi!
+
+=== 1b. JAVA SYSTEMD XIZMATLARI ===
+Java xizmatlari topilmadi
+
+Barcha ishlab turgan xizmatlar:
+Systemd Java xizmatlari topilmadi
+
+=== 1c. CRONTAB TEKSHIRISH ===
+Crontab toza
+
+=== 2. ESKI FRONTEND NUSXASINI TOZALASH ===
+/var/www/ai-hr o'chirildi
+
+=== 3. BACKEND .ENV YANGILASH ===
+Hozirgi .env: PORT=8000
+JWT_SECRET=ai_hr_secret_key_2026
+NODE_ENV=development
+Yangi .env: PORT=9090
+JWT_SECRET=ai_hr_secret_key_2026
+NODE_ENV=production
+
+=== 4. PM2 BACKEND QAYTA ISHGA TUSHIRISH ===
+тФМтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФР
+тФВ id тФВ name             тФВ namespace   тФВ version тФВ mode    тФВ pid      тФВ uptime тФВ тЖ║    тФВ status    тФВ cpu      тФВ mem      тФВ user     тФВ watching тФВ
+тФЬтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФд
+тФВ 0  тФВ ai-hr-backend    тФВ default     тФВ N/A     тФВ fork    тФВ 16671    тФВ 3s     тФВ 1    тФВ online    тФВ 0%       тФВ 75.3mb   тФВ root     тФВ disabled тФВ
+тФФтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФШ
+
+=== 5. YAKUNIY TEKSHIRUV ===
+Port 8000: тЬЕ BO'SH (TO'G'RI!)
+Port 9090: тЭМ ISHLAMAYAPTI
+Ping test: PONG
+Login test (9090): {"success":true,"body":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc1ODRiNTcxLWVhZWUtNDNlZi05OGZjLWE3MWVlOTYzM2NjMyIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MTcyNT
+Login test (Nginx): {"success":true,"body":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc1ODRiNTcxLWVhZWUtNDNlZi05OGZjLWE3MWVlOTYzM2NjMyIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MTcyNT
+Frontend (Nginx): 200
+
+тЬЕ BARCHA TUZATISHLAR AMALGA OSHIRILDI!
+
+ЁЯУМ XULOSA:
+   - Eski Java backend (port 8000) to'xtatildi
+   - Backend faqat port 9090 da ishlaydi
+   - Nginx тЖТ 9090 ga proxy qiladi
+   - Frontend http://94.241.141.229 da ishlaydi

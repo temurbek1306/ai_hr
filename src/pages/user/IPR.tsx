@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Target, TrendingUp, Award, BookOpen, Loader2, Calendar, CheckCircle2 } from 'lucide-react'
+import { Target, TrendingUp, Award, BookOpen, Loader2, Calendar, CheckCircle2, ArrowLeft } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import Layout from '../../components/Layout'
 import { analyticsService } from '../../services/analytics.service'
 
 export default function IPR() {
+    const navigate = useNavigate()
     const [summary, setSummary] = useState<any>(null)
     const [isLoading, setIsLoading] = useState(true)
 
@@ -25,9 +27,17 @@ export default function IPR() {
     return (
         <Layout role="user">
             <div className="p-4 md:p-8 space-y-8">
-                <header>
-                    <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">Shaxsiy Rivojlanish Rejasi (IPR)</h1>
-                    <p className="text-gray-600">Sizning joriy kvartal uchun belgilangan maqsadlaringiz va o'sish ko'rsatkichlaringiz.</p>
+                <header className="flex items-center gap-4">
+                    <button
+                        onClick={() => navigate('/user/dashboard')}
+                        className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
+                    >
+                        <ArrowLeft size={22} />
+                    </button>
+                    <div>
+                        <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">Shaxsiy Rivojlanish Rejasi (IPR)</h1>
+                        <p className="text-gray-600">Sizning joriy kvartal uchun belgilangan maqsadlaringiz va o'sish ko'rsatkichlaringiz.</p>
+                    </div>
                 </header>
 
                 {isLoading ? (

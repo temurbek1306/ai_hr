@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { BarChart3, TrendingUp, Award, Download, Calendar, Target, Loader2 } from 'lucide-react'
+import { BarChart3, TrendingUp, Award, Download, Calendar, Target, Loader2, ArrowLeft } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import Layout from '../../components/Layout'
 import { profileService } from '../../services/profile.service'
@@ -9,6 +10,7 @@ import { formatDateShort } from '../../utils/dateFormat'
 import type { TestResultItemDto } from '../../types/api.types'
 
 export default function Results() {
+    const navigate = useNavigate()
     const [results, setResults] = useState<TestResultItemDto[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
@@ -83,9 +85,17 @@ export default function Results() {
         <Layout role="user">
             <div className="p-4 md:p-8 space-y-8">
                 <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">Mening Natijalarim</h1>
-                        <p className="text-gray-600">Test natijalari va o'zlashtirish ko'rsatkichlari</p>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => navigate('/user/dashboard')}
+                            className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
+                        >
+                            <ArrowLeft size={22} />
+                        </button>
+                        <div>
+                            <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">Mening Natijalarim</h1>
+                            <p className="text-gray-600">Test natijalari va o'zlashtirish ko'rsatkichlari</p>
+                        </div>
                     </div>
                     <button
                         onClick={handleExport}

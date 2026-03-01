@@ -11,6 +11,7 @@ import { CalendarEvent } from "./entities/CalendarEvent";
 import { Reminder } from "./entities/Reminder";
 import { KnowledgeArticle } from "./entities/KnowledgeArticle";
 import { Assignment } from "./entities/Assignment";
+import { SurveyTrigger } from "./entities/SurveyTrigger";
 
 export const AppDataSource = new DataSource({
     type: "sqlite",
@@ -20,7 +21,8 @@ export const AppDataSource = new DataSource({
     entities: [
         User, Employee, Test, Question, Option,
         TestResult, OnboardingMaterial, Notification,
-        CalendarEvent, Reminder, KnowledgeArticle, Assignment
+        CalendarEvent, Reminder, KnowledgeArticle, Assignment,
+        SurveyTrigger
     ],
     migrations: [],
     subscribers: [],

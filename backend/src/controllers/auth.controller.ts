@@ -111,6 +111,8 @@ export const authController = {
                 { expiresIn: "1d" }
             );
 
+            console.log(`✅ Login successful for user: ${user.username} (${user.role})`);
+
             return res.json({
                 success: true,
                 body: {
@@ -121,7 +123,11 @@ export const authController = {
                 }
             });
         } catch (error) {
-            console.error("Login xatosi:", error);
+            console.error("!!! LOGIN CRITICAL ERROR !!!", {
+                error: error instanceof Error ? error.message : error,
+                stack: error instanceof Error ? error.stack : undefined,
+                body: req.body
+            });
             const message = error instanceof Error ? error.message : "Noma'lum xatolik";
             return res.status(500).json({ success: false, message });
         }

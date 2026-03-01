@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Book, FileText, Video as VideoIcon, Headphones, Search, Loader2, ExternalLink, Download } from 'lucide-react'
+import { Book, FileText, Video as VideoIcon, Headphones, Search, Loader2, ExternalLink, Download, ArrowLeft } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import Layout from '../../components/Layout'
 import { knowledgeService } from '../../services/knowledge.service'
 import { profileService } from '../../services/profile.service'
 import { employeeService } from '../../services/employee.service'
 
 export default function KnowledgeBase() {
+    const navigate = useNavigate()
     const [articles, setArticles] = useState<any[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [searchQuery, setSearchQuery] = useState('')
@@ -78,9 +80,17 @@ export default function KnowledgeBase() {
         <Layout role="user">
             <div className="p-4 md:p-8 space-y-8">
                 <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <h1 className="text-3xl font-display font-bold text-gray-900">Bilimlar Bazasi</h1>
-                        <p className="text-gray-600">O'quv materiallari, qo'llanmalar va foydali hujjatlar.</p>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => navigate('/user/dashboard')}
+                            className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
+                        >
+                            <ArrowLeft size={22} />
+                        </button>
+                        <div>
+                            <h1 className="text-3xl font-display font-bold text-gray-900">Bilimlar Bazasi</h1>
+                            <p className="text-gray-600">O'quv materiallari, qo'llanmalar va foydali hujjatlar.</p>
+                        </div>
                     </div>
 
                     <div className="relative w-full md:w-80">

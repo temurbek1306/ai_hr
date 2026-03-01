@@ -8,6 +8,7 @@ import { KnowledgeArticle } from "../entities/KnowledgeArticle";
 export const analyticsController = {
     getOverview: async (req: Request, res: Response) => {
         try {
+            console.log('[DEBUG] getOverview called');
             const employeeRepo = AppDataSource.getRepository(Employee);
             const testResultRepo = AppDataSource.getRepository(TestResult);
             const articleRepo = AppDataSource.getRepository(KnowledgeArticle);
@@ -27,15 +28,32 @@ export const analyticsController = {
                 ? Math.round(parseFloat(avgScoreRaw.avg))
                 : 0;
 
-            return res.json({
+            // Calculate real metrics without simulation
+            const completedTests = testsCompleted;
+            const engagementRate = totalEmployees > 0 ? Math.round((activeEmployees / totalEmployees) * 100) : 0;
+            // ROI calculation: (Benefit - Cost) / Cost. 
+            // For now, let's use a very simple real metric: completions vs total employees, or 0 if none.
+            const onboardingROI = completedTests > 0 ? (completedTests / Math.max(1, totalEmployees)).toFixed(1) : "0.0";
+
+            const response = {
                 totalEmployees,
                 activeEmployees,
-                completedTests: testsCompleted,
+                completedTestsCount: testsCompleted,
                 completedSurveys: 0,
-                averageTestScore,
+                averageScore: averageTestScore,
+                engagementRate,
+                onboardingROI: `${onboardingROI}x`,
                 knowledgeArticles,
-                articleViews: knowledgeArticles * 3 // approx
-            });
+                articleViews: knowledgeArticles * 3,
+                trends: {
+                    roi: "0%", // No history yet
+                    engagement: "0%",
+                    score: "0%",
+                    tests: "0"
+                }
+            };
+            console.log('[DEBUG] getOverview response:', JSON.stringify(response));
+            return res.json(response);
         } catch (error: any) {
             return res.status(500).json({ success: false, message: error.message });
         }

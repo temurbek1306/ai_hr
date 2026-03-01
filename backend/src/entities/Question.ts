@@ -13,7 +13,7 @@ export class Question {
     @Column({ default: "SINGLE" })
     type!: string; // SINGLE, MULTIPLE
 
-    @ManyToOne(() => Test, (test) => test.questions)
+    @ManyToOne(() => Test, (test) => test.questions, { onDelete: "CASCADE" })
     test!: Test;
 
     @OneToMany(() => Option, (option) => option.question)

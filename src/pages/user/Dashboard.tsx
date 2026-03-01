@@ -157,7 +157,10 @@ export default function UserDashboard() {
 
                 {/* Quick Actions Grid */}
                 <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Tezkor O'tish</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-3">
+                        <span className="w-1 h-4 rounded-full bg-emerald-500 inline-block"></span>
+                        Tezkor O'tish
+                    </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         {quickLinks.map((link, index) => (
                             <motion.button
@@ -165,7 +168,7 @@ export default function UserDashboard() {
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => navigate(link.path)}
-                                className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center gap-3 hover:shadow-md transition-all"
+                                className="bg-white/90 p-6 rounded-xl shadow-sm border border-gray-100 hover:border-emerald-200 hover:shadow-md hover:bg-emerald-50/30 hover:-translate-y-0.5 flex flex-col items-center gap-3 transition-all duration-200"
                             >
                                 <div className={`p-3 rounded-full bg-${link.color}-50`}>
                                     <link.icon className={`w-6 h-6 text-${link.color}-600`} />
@@ -179,8 +182,11 @@ export default function UserDashboard() {
                 {/* Real Test Results + Activities */}
                 <div className="grid md:grid-cols-2 gap-6">
                     {/* Real test results */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Mening Natijalarim</h3>
+                    <div className="bg-white/90 rounded-xl shadow-sm border border-emerald-100 border-t-2 border-t-emerald-400 p-6">
+                        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-3">
+                            <span className="w-1 h-4 rounded-full bg-emerald-500 inline-block"></span>
+                            Mening Natijalarim
+                        </h3>
                         {testResults.length === 0 ? (
                             <div className="text-center py-6 text-gray-400">
                                 <BarChart className="w-10 h-10 mx-auto mb-2 opacity-40" />

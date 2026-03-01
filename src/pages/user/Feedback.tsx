@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Send, MessageSquare, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
+import { Send, MessageSquare, CheckCircle2, AlertCircle, Loader2, ArrowLeft } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import Layout from '../../components/Layout'
 import { feedbackService } from '../../services/feedback.service'
 import { analyticsService } from '../../services/analytics.service'
 
 export default function Feedback() {
+    const navigate = useNavigate()
     const [message, setMessage] = useState('')
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
@@ -67,11 +69,19 @@ export default function Feedback() {
         <Layout role="user">
             <div className="max-w-4xl mx-auto p-4 md:p-8 space-y-8">
                 <header className="space-y-2">
-                    <h1 className="text-3xl font-display font-bold text-gray-900 flex items-center gap-3">
-                        <MessageSquare className="text-primary-500 w-8 h-8" />
-                        Fikr va Mulohazalar
-                    </h1>
-                    <p className="text-gray-600">
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => navigate('/user/dashboard')}
+                            className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
+                        >
+                            <ArrowLeft size={22} />
+                        </button>
+                        <h1 className="text-3xl font-display font-bold text-gray-900 flex items-center gap-3">
+                            <MessageSquare className="text-primary-500 w-8 h-8" />
+                            Fikr va Mulohazalar
+                        </h1>
+                    </div>
+                    <p className="text-gray-600 ml-11">
                         Platformamizni yanada yaxshilash uchun o'z fikringiz, shikoyat yoki takliflaringizni qoldiring.
                     </p>
                 </header>

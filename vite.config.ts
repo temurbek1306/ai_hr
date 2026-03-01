@@ -15,11 +15,11 @@ export default defineConfig({
     open: true,
     proxy: {
       '/api': {
-        target: 'http://94.241.141.229:8000',
+        target: 'http://localhost:8000',
         changeOrigin: true,
       },
       '/auth': {
-        target: 'http://94.241.141.229:8000',
+        target: 'http://localhost:8000',
         changeOrigin: true,
       },
     },

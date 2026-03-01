@@ -58,55 +58,59 @@ export default function SurveyResults() {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-emerald-100 border-t-2 border-t-emerald-400">
                             <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
-                                <PieChart size={20} className="text-primary-500" />
+                                <PieChart size={20} className="text-emerald-500" />
                                 Ishtirokchi javoblari
                             </h3>
-                            <div className="space-y-4">
+                            <div className="space-y-3">
                                 {results.length === 0 ? (
                                     <p className="text-gray-500 text-center py-8">Hozircha javoblar yo'q</p>
                                 ) : (
-                                    results.slice(0, 5).map((resp, i) => (
-                                        <div key={i} className="p-3 bg-gray-50 rounded-lg">
-                                            <p className="text-sm font-medium text-gray-800">Xodim ID: {resp.employeeId}</p>
-                                            <p className="text-xs text-gray-500 mt-1">Javob: {resp.answer}</p>
+                                    results.slice(0, 6).map((resp: any, i: number) => (
+                                        <div key={i} className="p-3 bg-gray-50 hover:bg-emerald-50 rounded-xl transition-colors">
+                                            <p className="text-sm font-medium text-gray-800">
+                                                {resp.employeeName || resp.employee?.fullName || resp.employee?.username || `Xodim #${resp.employeeId}`}
+                                            </p>
+                                            {resp.answer && (
+                                                <p className="text-xs text-gray-500 mt-1 line-clamp-2">Javob: {resp.answer}</p>
+                                            )}
+                                            {resp.submittedAt && (
+                                                <p className="text-xs text-gray-400 mt-0.5">{new Date(resp.submittedAt).toLocaleDateString('uz-UZ')}</p>
+                                            )}
                                         </div>
                                     ))
                                 )}
                             </div>
                         </div>
 
-                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                            <h3 className="font-semibold text-lg mb-4">Ishtirok Etish Ko'rsatkichi</h3>
+                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-blue-100 border-t-2 border-t-blue-400">
+                            <h3 className="font-semibold text-lg mb-4">Umumiy Ko'rsatkichlar</h3>
                             <div className="space-y-4">
-                                <div>
-                                    <div className="flex justify-between text-sm mb-1">
-                                        <span className="text-gray-600">IT Bo'limi</span>
-                                        <span className="font-medium">95%</span>
-                                    </div>
-                                    <div className="w-full bg-gray-100 rounded-full h-2">
-                                        <div className="bg-green-500 h-2 rounded-full" style={{ width: '95%' }}></div>
-                                    </div>
+                                <div className="flex flex-col gap-1">
+                                    <span className="text-sm text-gray-500">Jami javoblar</span>
+                                    <span className="text-3xl font-bold text-gray-900">{results.length}</span>
                                 </div>
-                                <div>
-                                    <div className="flex justify-between text-sm mb-1">
-                                        <span className="text-gray-600">Sotuv Bo'limi</span>
-                                        <span className="font-medium">82%</span>
-                                    </div>
-                                    <div className="w-full bg-gray-100 rounded-full h-2">
-                                        <div className="bg-blue-500 h-2 rounded-full" style={{ width: '82%' }}></div>
-                                    </div>
+                                <div className="flex flex-col gap-1">
+                                    <span className="text-sm text-gray-500">Noyob ishtirokchilar</span>
+                                    <span className="text-2xl font-bold text-emerald-600">
+                                        {new Set(results.map((r: any) => r.employeeId)).size}
+                                    </span>
                                 </div>
-                                <div>
-                                    <div className="flex justify-between text-sm mb-1">
-                                        <span className="text-gray-600">HR Bo'limi</span>
-                                        <span className="font-medium">100%</span>
+                                {results.length > 0 && (
+                                    <div className="pt-2 border-t border-gray-100">
+                                        <p className="text-xs text-gray-400">
+                                            So'nggi javob: {(() => {
+                                                const dates = results
+                                                    .map((r: any) => r.submittedAt)
+                                                    .filter(Boolean)
+                                                    .map((d: string) => new Date(d))
+                                                if (!dates.length) return '—'
+                                                return new Date(Math.max(...dates.map((d: Date) => d.getTime()))).toLocaleDateString('uz-UZ')
+                                            })()}
+                                        </p>
                                     </div>
-                                    <div className="w-full bg-gray-100 rounded-full h-2">
-                                        <div className="bg-purple-500 h-2 rounded-full" style={{ width: '100%' }}></div>
-                                    </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </div>

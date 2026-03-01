@@ -16,6 +16,7 @@ import analyticsRoutes from "./routes/analytics.routes";
 import calendarRoutes from "./routes/calendar.routes";
 import notificationRoutes from "./routes/notification.routes";
 import miscRoutes from "./routes/misc.routes";
+import surveyTriggerRoutes from "./routes/survey-trigger.routes";
 
 dotenv.config();
 
@@ -50,6 +51,7 @@ app.use("/api/v1/analytics", analyticsRoutes);
 app.use("/api/v1/admin/analytics", analyticsRoutes); // Compatibility mount
 app.use("/api/v1", calendarRoutes);
 app.use("/api/v1/notifications", notificationRoutes);
+app.use("/api/v1", surveyTriggerRoutes);
 app.use("/api/v1", dashboardRoutes);
 app.use("/api/v1", miscRoutes);
 

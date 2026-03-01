@@ -52,6 +52,9 @@
         "employee": "Xodim"
     },
     "common": {
+        "language": "Til",
+        "unknownError": "Noma'lum xatolik",
+        "importError": "Import xatoligi",
         "adminPanel": "Admin Paneli",
         "employeePanel": "Xodim Paneli",
         "welcome": "Xush kelibsiz!",
@@ -126,7 +129,7 @@
         "description": "Kompaniya ichki bilimlari va o'quv materiallari boshqaruvi",
         "modules": {
             "articles": {
-                "title": "Maqolalar",
+                "title": "Materiallar",
                 "desc": "Barcha o'quv materiallari"
             },
             "editor": {

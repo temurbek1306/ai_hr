@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '../../components/Layout'
-import { Book, FileText, Lock, BarChart2 } from 'lucide-react'
+import { Book, FileText, BarChart2, ArrowLeft } from 'lucide-react'
 
 export default function ContentManagement() {
     const { t } = useTranslation()
@@ -21,13 +21,6 @@ export default function ContentManagement() {
             color: 'bg-green-100 text-green-600'
         },
         {
-            id: 'permissions',
-            title: t('content.modules.permissions.title'),
-            description: t('content.modules.permissions.desc'),
-            icon: Lock,
-            color: 'bg-red-100 text-red-600'
-        },
-        {
             id: 'stats',
             title: t('content.modules.stats.title'),
             description: t('content.modules.stats.desc'),
@@ -45,8 +38,25 @@ export default function ContentManagement() {
     return (
         <Layout>
             <div className="p-6">
-                <h1 className="text-2xl font-bold mb-6">{t('content.title')}</h1>
-                <p className="text-gray-600 mb-8">{t('content.description')}</p>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => navigate('/admin/dashboard')}
+                            className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
+                        >
+                            <ArrowLeft size={22} />
+                        </button>
+                        <h1 className="text-2xl font-bold">{t('content.title')}</h1>
+                    </div>
+                    <button
+                        onClick={() => navigate('/admin/content/new')}
+                        className="btn btn-primary flex items-center gap-2"
+                    >
+                        <FileText size={20} />
+                        Yangi Material Qo'shish
+                    </button>
+                </div>
+                <p className="text-gray-600 mb-8 ml-11">{t('content.description')}</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {modules.map((module, index) => (

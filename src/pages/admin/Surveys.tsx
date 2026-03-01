@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '../../components/Layout'
-import { Book, Edit3, Zap, BarChart2 } from 'lucide-react'
+import { Book, Edit3, Zap, BarChart2, ArrowLeft } from 'lucide-react'
 
 export default function Surveys() {
     const { t } = useTranslation()
@@ -45,8 +45,16 @@ export default function Surveys() {
     return (
         <Layout>
             <div className="p-6">
-                <h1 className="text-2xl font-bold mb-6">{t('surveys.title')}</h1>
-                <p className="text-gray-600 mb-8">{t('surveys.description')}</p>
+                <div className="flex items-center gap-3 mb-2">
+                    <button
+                        onClick={() => navigate('/admin/dashboard')}
+                        className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
+                    >
+                        <ArrowLeft size={22} />
+                    </button>
+                    <h1 className="text-2xl font-bold">{t('surveys.title')}</h1>
+                </div>
+                <p className="text-gray-600 mb-8 ml-11">{t('surveys.description')}</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {modules.map((module, index) => (

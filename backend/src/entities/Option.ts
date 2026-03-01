@@ -12,7 +12,7 @@ export class Option {
     @Column({ default: false })
     isCorrect!: boolean;
 
-    @ManyToOne(() => Question, (question) => question.options)
+    @ManyToOne(() => Question, (question) => question.options, { onDelete: "CASCADE" })
     question!: Question;
 }
 

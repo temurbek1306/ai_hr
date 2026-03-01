@@ -112,5 +112,18 @@ export const surveyService = {
             console.error('Failed to fetch survey responses:', error);
             throw new Error(error.response?.data?.message || 'Failed to fetch survey responses');
         }
+    },
+
+    /**
+     * Delete survey
+     * DELETE /api/v1/surveys/{id}
+     */
+    delete: async (id: string): Promise<void> => {
+        try {
+            await api.delete(`/surveys/${id}`);
+        } catch (error: any) {
+            console.error('Failed to delete survey:', error);
+            throw new Error(error.response?.data?.message || 'Failed to delete survey');
+        }
     }
 };

@@ -10,8 +10,11 @@ import {
     Key,
     Save,
     Camera,
-    Loader2
+    Loader2,
+    Lock,
+    ArrowLeft
 } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '../components/Layout'
 import Input from '../components/Input'
@@ -26,6 +29,7 @@ interface ProfileProps {
 
 export default function Profile({ role = 'admin' }: ProfileProps) {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     const [activeTab, setActiveTab] = useState('personal')
     const [isLoading, setIsLoading] = useState(true)
     const [isSaving, setIsSaving] = useState(false)
@@ -111,7 +115,15 @@ export default function Profile({ role = 'admin' }: ProfileProps) {
     return (
         <Layout role={role}>
             <div className="max-w-4xl mx-auto space-y-6">
-                <h1 className="text-2xl font-display font-bold text-gray-900">{t('profile.title')}</h1>
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={() => navigate(role === 'admin' ? '/admin/dashboard' : '/user/dashboard')}
+                        className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
+                    >
+                        <ArrowLeft size={22} />
+                    </button>
+                    <h1 className="text-2xl font-display font-bold text-gray-900">{t('profile.title')}</h1>
+                </div>
 
                 <div className="flex flex-col lg:flex-row gap-6">
                     {/* Sidebar / Tabs */}
@@ -225,6 +237,21 @@ export default function Profile({ role = 'admin' }: ProfileProps) {
                                                 <Button type="submit" variant="primary" icon={<Save size={18} />} isLoading={isLoading}>
                                                     {t('profile.security.updateButton')}
                                                 </Button>
+                                            </div>
+
+                                            {/* Ruxsatlar card */}
+                                            <div
+                                                onClick={() => window.location.href = '/admin/content/permissions'}
+                                                className="flex items-center gap-4 p-4 bg-gray-50 hover:bg-red-50 border border-gray-100 hover:border-red-200 rounded-xl cursor-pointer transition-all duration-200 group"
+                                            >
+                                                <div className="w-10 h-10 bg-red-100 text-red-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+                                                    <Lock className="w-5 h-5" />
+                                                </div>
+                                                <div>
+                                                    <h4 className="font-semibold text-gray-900">Ruxsatlar</h4>
+                                                    <p className="text-sm text-gray-500">Ko'rish huquqlarini boshqarish</p>
+                                                </div>
+                                                <div className="ml-auto text-gray-300 group-hover:text-red-400 transition-colors">→</div>
                                             </div>
                                         </form>
                                     )}

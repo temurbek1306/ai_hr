@@ -87,12 +87,12 @@ export default function Layout({ children, role = 'admin' }: LayoutProps) {
         <div className="min-h-screen bg-gray-50">
             {/* Sidebar */}
             <aside
-                className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 shadow-sm transition-transform duration-300 ease-in-out lg:translate-x-0 lg:block ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+                className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-100 shadow-md transition-transform duration-300 ease-in-out lg:translate-x-0 lg:block ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
                     }`}
             >
                 <div className="flex flex-col h-full">
                     {/* Logo */}
-                    <div className="p-4 border-b border-gray-200">
+                    <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-emerald-50 to-white">
                         <div className="flex items-center justify-center">
                             <ITParkLogo className="w-40 h-auto" />
                         </div>
@@ -110,12 +110,12 @@ export default function Layout({ children, role = 'admin' }: LayoutProps) {
                                     key={item.href}
                                     to={item.href}
                                     onClick={() => setSidebarOpen(false)}
-                                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 ${isActive
-                                        ? 'bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-md shadow-primary-500/30'
-                                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group/nav-item ${isActive
+                                        ? 'bg-gradient-to-r from-emerald-600 to-green-500 text-white shadow-sm shadow-green-500/20'
+                                        : 'text-gray-500 hover:bg-emerald-50 hover:text-emerald-700'
                                         }`}
                                 >
-                                    <item.icon className="w-5 h-5" />
+                                    <item.icon className={`w-5 h-5 transition-all duration-200 ${isActive ? 'text-white' : 'text-gray-400 group-hover/nav-item:text-emerald-600'}`} />
                                     <span className="font-medium text-sm">{item.name}</span>
                                 </Link>
                             )
@@ -123,11 +123,12 @@ export default function Layout({ children, role = 'admin' }: LayoutProps) {
                     </nav>
 
                     {/* Language Switcher */}
-                    <div className="px-5 py-2">
+                    <div className="px-4 py-3 border-t border-gray-100">
+                        <div className="text-[10px] font-semibold text-gray-300 uppercase tracking-wider mb-2">{t('common.language')}</div>
                         <select
                             value={i18n.language}
                             onChange={(e) => i18n.changeLanguage(e.target.value)}
-                            className="w-full bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block p-2.5"
+                            className="w-full bg-gray-50 hover:bg-emerald-50 border border-gray-200 hover:border-emerald-300 text-gray-700 text-sm rounded-lg focus:ring-emerald-400/30 focus:border-emerald-400 block p-2.5 transition-all duration-200 outline-none"
                         >
                             <option value="uz">O'zbekcha</option>
                             <option value="ru">Русский</option>
@@ -135,17 +136,17 @@ export default function Layout({ children, role = 'admin' }: LayoutProps) {
                     </div>
 
                     {/* User Profile */}
-                    <div className="p-3 border-t border-gray-200">
-                        <div className="flex items-center gap-2 p-2.5 rounded-lg bg-gray-50 group">
-                            <Link to={role === 'admin' ? '/admin/profile' : '/user/profile'} className="flex items-center gap-2 flex-1 hover:bg-gray-100 rounded-lg transition-colors">
-                                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-400 to-secondary-400 flex items-center justify-center text-white font-semibold shadow-sm text-sm group-hover:shadow-md transition-all">
+                    <div className="p-3 border-t border-gray-100">
+                        <div className="flex items-center gap-2 p-2.5 rounded-xl bg-gray-50/80 hover:bg-gray-100/80 transition-colors duration-200 group">
+                            <Link to={role === 'admin' ? '/admin/profile' : '/user/profile'} className="flex items-center gap-2 flex-1 rounded-lg transition-colors">
+                                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center text-white font-semibold shadow-sm text-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-200">
                                     {currentUser?.name?.charAt(0)?.toUpperCase() || (role === 'admin' ? 'A' : 'F')}
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <p className="font-medium text-sm text-gray-900 truncate">
                                         {currentUser?.name || (role === 'admin' ? 'Admin' : 'Foydalanuvchi')}
                                     </p>
-                                    <p className="text-xs text-gray-500 truncate">
+                                    <p className="text-xs text-gray-400 truncate">
                                         {currentUser?.email || `${role}@aihr.uz`}
                                     </p>
                                 </div>
@@ -156,7 +157,7 @@ export default function Layout({ children, role = 'admin' }: LayoutProps) {
                                     localStorage.removeItem('user')
                                     navigate('/login')
                                 }}
-                                className="text-gray-400 hover:text-red-500 transition-colors p-2 hover:bg-gray-100 rounded-lg"
+                                className="text-gray-300 hover:text-red-500 transition-colors duration-200 p-2 hover:bg-red-50 rounded-lg"
                                 title="Chiqish"
                             >
                                 <LogOut className="w-4 h-4" />

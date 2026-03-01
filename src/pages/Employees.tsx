@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
-import { Search, Plus, Grid3x3, List, Mail, Phone, Briefcase, Loader2, FileDown, FileUp, ClipboardList, Video } from 'lucide-react'
+import { Search, Plus, Grid3x3, List, Mail, Phone, Briefcase, Loader2, FileDown, FileUp, ClipboardList, Video, ArrowLeft } from 'lucide-react'
 import Layout from '../components/Layout'
 import Button from '../components/Button'
 import Input from '../components/Input'
@@ -137,10 +137,20 @@ export default function Employees() {
                     onChange={handleFileChange}
                 />
                 {/* Header */}
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-2xl font-display font-bold text-gray-900">{t('employees.title')}</h1>
-                        <p className="text-gray-600 mt-0.5 text-sm">{t('employees.subtitle', { count: filteredEmployees.length })}</p>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div className="flex items-center gap-4 bg-white/50 backdrop-blur-md p-2 pr-6 rounded-2xl border border-gray-100 shadow-sm">
+                        <button
+                            onClick={() => navigate('/admin/dashboard')}
+                            className="p-3 bg-white hover:bg-gray-50 rounded-xl text-gray-600 shadow-sm border border-gray-100 transition-all hover:-translate-x-1"
+                        >
+                            <ArrowLeft size={20} />
+                        </button>
+                        <div>
+                            <h1 className="text-2xl font-display font-black text-gray-900 tracking-tight">{t('employees.title')}</h1>
+                            <p className="text-emerald-600 font-medium text-sm mt-0.5 bg-emerald-50 inline-block px-2 py-0.5 rounded-md">
+                                {filteredEmployees.length} ta Xodimlar
+                            </p>
+                        </div>
                     </div>
                     <div className="flex items-center gap-3">
                         <Button

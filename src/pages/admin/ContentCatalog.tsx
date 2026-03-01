@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Plus, Search, FileText, Eye, Trash2, Edit } from 'lucide-react'
+import { Plus, Search, FileText, Eye, Trash2, Edit, ArrowLeft } from 'lucide-react'
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
 import Input from '../../components/Input'
@@ -24,7 +24,7 @@ export default function ContentCatalog() {
             const response = await knowledgeService.getArticles()
             setArticles(response || [])
         } catch (err: any) {
-            setError('Maqolalarni yuklashda xatolik yuz berdi')
+            setError('Materiallarni yuklashda xatolik yuz berdi')
             console.error(err)
         } finally {
             setIsLoading(false)
@@ -51,9 +51,17 @@ export default function ContentCatalog() {
         <Layout>
             <div className="p-6 space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <h1 className="text-2xl font-display font-bold text-gray-900">Bilimlar Bazasi</h1>
-                        <p className="text-gray-500 text-sm">Barcha o'quv materiallari va maqolalar</p>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => navigate('/admin/content')}
+                            className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
+                        >
+                            <ArrowLeft size={22} />
+                        </button>
+                        <div>
+                            <h1 className="text-2xl font-display font-bold text-gray-900">Bilimlar Bazasi</h1>
+                            <p className="text-gray-500 text-sm">Barcha o'quv materiallari va maqolalar</p>
+                        </div>
                     </div>
                     <Button icon={<Plus size={20} />} onClick={() => navigate('/admin/content/new')}>
                         Yangi Maqola
@@ -67,13 +75,13 @@ export default function ContentCatalog() {
                 ) : isLoading ? (
                     <div className="flex flex-col items-center justify-center py-20">
                         <Loader2 className="w-10 h-10 text-primary-500 animate-spin mb-4" />
-                        <p className="text-gray-500 font-medium">Maqolalar yuklanmoqda...</p>
+                        <p className="text-gray-500 font-medium">Materiallar yuklanmoqda...</p>
                     </div>
                 ) : (
                     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
                         <div className="p-4 border-b border-gray-200">
                             <Input
-                                placeholder="Maqolalarni qidirish..."
+                                placeholder="Materiallarni qidirish..."
                                 icon={<Search size={20} />}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}

@@ -1,0 +1,125 @@
+﻿ЁЯФН Serverga ulanmoqda...
+тЬЕ Ulandi!
+
+=== 1. PM2 PROTSESSLAR ===
+тФМтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФмтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФР
+тФВ id тФВ name             тФВ namespace   тФВ version тФВ mode    тФВ pid      тФВ uptime тФВ тЖ║    тФВ status    тФВ cpu      тФВ mem      тФВ user     тФВ watching тФВ
+тФЬтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ╝тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФд
+тФВ 0  тФВ ai-hr-backend    тФВ default     тФВ N/A     тФВ fork    тФВ 15502    тФВ 17m    тФВ 0    тФВ online    тФВ 0%       тФВ 65.9mb   тФВ root     тФВ disabled тФВ
+тФФтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФ┤тФАтФАтФАтФАтФАтФАтФАтФАтФАтФАтФШ
+
+=== 2. PORTLAR (8000, 9090, 80) ===
+LISTEN    0         511                0.0.0.0:80               0.0.0.0:*        users:(("nginx",pid=15483,fd=6),("nginx",pid=15482,fd=6),("nginx",pid=15481,fd=6))
+LISTEN    0         511                   [::]:80                  [::]:*        users:(("nginx",pid=15483,fd=7),("nginx",pid=15482,fd=7),("nginx",pid=15481,fd=7))
+LISTEN    0         100                      *:8000                   *:*        users:(("java",pid=2297,fd=19))                                                
+LISTEN    0         511                      *:9090                   *:*        users:(("node",pid=15525,fd=20))
+
+=== 3. NGINX ENABLED SAYTLAR ===
+total 8
+drwxr-xr-x 2 root root 4096 Feb 22 04:46 .
+drwxr-xr-x 9 root root 4096 Feb 21 17:46 ..
+lrwxrwxrwx 1 root root   32 Feb 22 04:46 default -> /etc/nginx/sites-available/ai-hr
+
+=== 3b. NGINX AKTIV KONFIGURATSIYA ===
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name _;
+
+    root /var/www/ai_hr/dist;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api {
+        proxy_pass http://localhost:9090;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection upgrade;
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+=== 4. NGINX TEST ===
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+=== 5. SERVERDAGI BACKEND .ENV ===
+PORT=8000
+JWT_SECRET=ai_hr_secret_key_2026
+NODE_ENV=development
+
+=== 6. FRONTEND DIST BORMII? ===
+-rw-r--r-- 1 root root 897 Feb 22 04:46 /var/www/ai_hr/dist/index.html
+Frontend dist MAVJUD
+-rw-r--r-- 1 root root 897 Feb 19 00:06 /var/www/ai-hr/index.html
+/var/www/ai-hr da ham bor!
+
+=== 7. GIT COMMIT (SERVERDA) ===
+Git repo topilmadi
+
+=== 8. BACKEND HEALTH CHECK ===
+Port 8000 /ping: 403
+Port 9090 /ping: 200
+
+=== 9. LOGIN TEST ===
+Port 8000 login: {"message":"User not found","success":false,"status":"NOT_FOUND","body":null}
+Port 9090 login: {"success":true,"body":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc1ODRiNTcxLWVhZWUtNDNlZi05OGZjLWE3MWVlOTYzM2NjMyIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MTcyNTg0NCwiZXhwIjoxNzcxODEyMjQ0fQ.bJoI6a5C0jGEFYEBOuQCA82yo0j1cSddUg_EiJo6jJI","role":"ROLE_ADMIN","usern
+
+=== 10. NGINX ORQALI (80-port) TEST ===
+Nginx login: {"success":true,"body":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc1ODRiNTcxLWVhZWUtNDNlZi05OGZjLWE3MWVlOTYzM2NjMyIsInVzZXJuYW1lIjoiYWRtaW4iLCJyb2xlIjoiUk9MRV9BRE1JTiIsImlhdCI6MTc3MTcyNTg0NSwiZXhwIjoxNzcxODEyMjQ1fQ.FkgHTCFJ9rEQ3W0I3idYi0DNlDsQ7CUaLY66MfVLo-0","role":"ROLE_ADMIN","usern
+Nginx frontend: 200
+
+=== 11. NODE/NPM VERSIYA ===
+Node: v18.17.1 | NPM: 10.4.0
+
+=== 12. PM2 BACKEND LOGLAR (oxirgi 20 qator) ===
+[TAILING] Tailing last 20 lines for [ai-hr-backend] process (change the value with --lines option)
+/root/.pm2/logs/ai-hr-backend-error.log last 20 lines:
+0|ai-hr-ba |     at Object.require.extensions.<computed> [as .ts] (/root/.npm/_npx/1bf7c3c15bf47d04/node_modules/ts-node/src/index.ts:1621:12)
+0|ai-hr-ba |     at Module.load (node:internal/modules/cjs/loader:1119:32)
+0|ai-hr-ba |     at Function.Module._load (node:internal/modules/cjs/loader:960:12)
+0|ai-hr-ba |     at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:81:12) {
+0|ai-hr-ba |   diagnosticCodes: [
+0|ai-hr-ba |     2307, 2307, 2307, 2580,
+0|ai-hr-ba |     7006, 7006, 7006, 2584,
+0|ai-hr-ba |     7006, 7006, 2584, 2584,
+0|ai-hr-ba |     2584, 7006, 2584
+0|ai-hr-ba |   ]
+0|ai-hr-ba | }
+0|ai-hr-ba | npm ERR! code ENOENT
+0|ai-hr-ba | npm ERR! syscall spawn sh
+0|ai-hr-ba | npm ERR! path /var/www/ai_hr/backend
+0|ai-hr-ba | npm ERR! errno -2
+0|ai-hr-ba | npm ERR! enoent spawn sh ENOENT
+0|ai-hr-ba | npm ERR! enoent This is related to npm not being able to find a file.
+0|ai-hr-ba | npm ERR! enoent 
+0|ai-hr-ba | 
+0|ai-hr-ba | npm ERR! A complete log of this run can be found in: /root/.npm/_logs/2026-02-22T01_45_27_385Z-debug-0.log
+
+/root/.pm2/logs/ai-hr-backend-out.log last 20 lines:
+0|ai-hr-ba | ЁЯФЧ Health check: http://localhost:9090/ping
+0|ai-hr-ba | [dotenv@17.3.1] injecting env (2) from .env -- tip: ЁЯФР prevent committing .env to code: https://dotenvx.com/precommit
+0|ai-hr-ba | тЬЕ Data Source initialized!
+0|ai-hr-ba | ЁЯЪА Server running on port 9090
+0|ai-hr-ba | ЁЯФЧ Health check: http://localhost:9090/ping
+0|ai-hr-ba | [dotenv@17.3.1] injecting env (3) from .env -- tip: тЪЩя╕П  override existing env vars with { override: true }
+0|ai-hr-ba | тЬЕ Data Source initialized!
+0|ai-hr-ba | ЁЯЪА Server running on port 9090
+0|ai-hr-ba | ЁЯФЧ Health check: http://localhost:9090/ping
+0|ai-hr-ba | [dotenv@17.3.1] injecting env (2) from .env -- tip: ЁЯФР prevent building .env in docker: https://dotenvx.com/prebuild
+0|ai-hr-ba | тЬЕ Data Source initialized!
+0|ai-hr-ba | тЬЕ Admin seeded: admin / admin123
+0|ai-hr-ba | ЁЯЪА Server running on port 9090
+0|ai-hr-ba | ЁЯФЧ Health check: http://localhost:9090/ping
+0|ai-hr-ba | [REQ] 2026-02-22T02:03:42.311Z GET /ping
+0|ai-hr-ba | [REQ] 2026-02-22T02:03:43.176Z POST /api/v1/auth/login
+0|ai-hr-ba | [REQ] 2026-02-22T02:03:43.685Z POST /api/v1/auth/login
+0|ai-hr-ba | [REQ] 2026-02-22T02:04:03.826Z GET /ping
+0|ai-hr-ba | [REQ] 2026-02-22T02:04:04.676Z POST /api/v1/auth/login
+0|ai-hr-ba | [REQ] 2026-02-22T02:04:05.116Z POST /api/v1/auth/login
+
+тЬЕ DIAGNOSTIKA TUGADI

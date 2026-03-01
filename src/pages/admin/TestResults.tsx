@@ -35,16 +35,9 @@ export default function TestResults() {
         fetchResults()
     }, [testId])
 
-    // Mock Results Data (fallback if no testId)
-    const mockResults = [
-        { id: 1, employeeName: 'Aziz Rahimov', score: 85, passed: true, completedAt: '2024-01-20' },
-        { id: 2, employeeName: 'Madina Aliyeva', score: 92, passed: true, completedAt: '2024-01-19' },
-        { id: 3, employeeName: 'Jamshid Tursunov', score: 45, passed: false, completedAt: '2024-01-18' },
-        { id: 4, employeeName: 'Laylo Karimova', score: 78, passed: true, completedAt: '2024-01-18' },
-        { id: 5, employeeName: 'Bobur Sobirov', score: 60, passed: false, completedAt: '2024-01-15' },
-    ]
-
-    const displayResults = results.length > 0 ? results : mockResults
+    const filteredResults = results.filter(r =>
+        !searchQuery || (r.employeeName || '').toLowerCase().includes(searchQuery.toLowerCase())
+    )
 
     return (
         <Layout>
@@ -69,22 +62,33 @@ export default function TestResults() {
                     </Button>
                 </div>
 
-                {/* Stats Cards Mock */}
+                {/* Real computed stats */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-emerald-100 border-t-2 border-t-emerald-400">
                         <p className="text-gray-500 text-sm font-medium">O'rtacha Ball</p>
-                        <p className="text-3xl font-bold text-gray-900 mt-2">72%</p>
-                        <p className="text-green-600 text-sm mt-1">↑ 5% o'tgan oyga nisbatan</p>
+                        <p className="text-3xl font-bold text-gray-900 mt-2">
+                            {results.length > 0
+                                ? Math.round(results.reduce((sum: number, r: any) => sum + (r.score || 0), 0) / results.length)
+                                : 0}%
+                        </p>
+                        <p className="text-green-600 text-sm mt-1">{results.length} ta natija</p>
                     </div>
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <p className="text-gray-500 text-sm font-medium">Muvaffaqiyatli Topshirganlar</p>
-                        <p className="text-3xl font-bold text-gray-900 mt-2">60%</p>
-                        <p className="text-gray-400 text-sm mt-1">Jami 125 testdan</p>
+                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-green-100 border-t-2 border-t-green-400">
+                        <p className="text-gray-500 text-sm font-medium">O'tganlar / Yiqilganlar</p>
+                        <p className="text-3xl font-bold text-gray-900 mt-2">
+                            {results.filter((r: any) => r.passed).length}
+                            <span className="text-gray-400 text-xl"> / {results.filter((r: any) => !r.passed).length}</span>
+                        </p>
+                        <p className="text-gray-400 text-sm mt-1">Jami {results.length} ta</p>
                     </div>
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <p className="text-gray-500 text-sm font-medium">Eng Faol Bo'lim</p>
-                        <p className="text-3xl font-bold text-gray-900 mt-2">Sotuv</p>
-                        <p className="text-gray-400 text-sm mt-1">34 ta test topshirilgan</p>
+                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-blue-100 border-t-2 border-t-blue-400">
+                        <p className="text-gray-500 text-sm font-medium">O'tish darajasi</p>
+                        <p className="text-3xl font-bold text-gray-900 mt-2">
+                            {results.length > 0
+                                ? Math.round((results.filter((r: any) => r.passed).length / results.length) * 100)
+                                : 0}%
+                        </p>
+                        <p className="text-gray-400 text-sm mt-1">70% dan yuqori = o'tgan</p>
                     </div>
                 </div>
 
@@ -122,14 +126,14 @@ export default function TestResults() {
                                             Yuklanmoqda...
                                         </td>
                                     </tr>
-                                ) : displayResults.length === 0 ? (
+                                ) : filteredResults.length === 0 ? (
                                     <tr>
                                         <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
-                                            Natijalar topilmadi
+                                            {results.length === 0 ? 'Hali natijalar yo\'q' : 'Qidiruv bo\'yicha natija topilmadi'}
                                         </td>
                                     </tr>
                                 ) : (
-                                    displayResults.map((res, index) => (
+                                    filteredResults.map((res: any, index: number) => (
                                         <tr key={res.id || index} className="hover:bg-gray-50 transition-colors">
                                             <td className="px-6 py-4 font-medium text-gray-900">{res.employeeName}</td>
                                             <td className="px-6 py-4 text-gray-600">{res.completedAt}</td>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Loader2, Sparkles } from 'lucide-react'
+import { Loader2, Sparkles, ArrowLeft } from 'lucide-react'
 import Layout from '../../components/Layout'
 import TestCard from '../../components/TestCard'
 import { testService } from '../../services/test.service'
@@ -85,9 +85,17 @@ export default function Tests() {
     return (
         <Layout role="user">
             <div className="p-4 space-y-6">
-                <header>
-                    <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">Testlar</h1>
-                    <p className="text-gray-600">Bilim darajangizni oshirish uchun mavjud testlarni topshiring.</p>
+                <header className="flex items-center gap-4">
+                    <button
+                        onClick={() => navigate('/user/dashboard')}
+                        className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
+                    >
+                        <ArrowLeft size={22} />
+                    </button>
+                    <div>
+                        <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">Testlar</h1>
+                        <p className="text-gray-600">Bilim darajangizni oshirish uchun mavjud testlarni topshiring.</p>
+                    </div>
                 </header>
 
                 {error ? (

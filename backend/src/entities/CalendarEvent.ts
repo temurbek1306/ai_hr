@@ -18,7 +18,7 @@ export class CalendarEvent {
     @Column({ default: "EVENT" })
     type!: string; // MEETING, BIRTHDAY, etc.
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, { onDelete: "CASCADE" })
     createdBy!: User;
 
     @CreateDateColumn()

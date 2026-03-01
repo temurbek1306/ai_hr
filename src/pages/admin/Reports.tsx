@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FileText, Download, Calendar, Filter, BarChart } from 'lucide-react'
+import { FileText, Download, Calendar, Filter, BarChart, ArrowLeft } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
 import { reportService } from '../../services/report.service'
+import { useNavigate } from 'react-router-dom'
 
 import type { ReportDto } from '../../types/api.types'
 
 export default function Reports() {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     const [selectedType, setSelectedType] = useState('all')
     const [reports, setReports] = useState<ReportDto[]>([])
     const [isLoading, setIsLoading] = useState(true)
@@ -52,9 +54,17 @@ export default function Reports() {
         <Layout>
             <div className="p-6 space-y-6">
                 <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <h1 className="text-2xl font-display font-bold text-gray-900">{t('reports.title')}</h1>
-                        <p className="text-gray-500 text-sm">{t('reports.subtitle')}</p>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => navigate('/admin/dashboard')}
+                            className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
+                        >
+                            <ArrowLeft size={22} />
+                        </button>
+                        <div>
+                            <h1 className="text-2xl font-display font-bold text-gray-900">{t('reports.title')}</h1>
+                            <p className="text-gray-500 text-sm">{t('reports.subtitle')}</p>
+                        </div>
                     </div>
                     <div className="flex gap-2">
                         <Button variant="secondary" icon={<Filter size={20} />}>

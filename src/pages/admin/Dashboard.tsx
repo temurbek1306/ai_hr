@@ -198,10 +198,11 @@ export default function AdminDashboard() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.4 }}
-                        className="lg:col-span-2 card bg-white border border-gray-200 shadow-sm"
+                        className="lg:col-span-2 card bg-white/90 border border-emerald-100 shadow-sm border-t-2 border-t-emerald-400"
                     >
                         <div className="flex items-center justify-between mb-6">
-                            <h3 className="text-lg font-display font-semibold text-gray-900">
+                            <h3 className="text-lg font-display font-semibold text-gray-900 flex items-center gap-3">
+                                <span className="w-1 h-5 rounded-full bg-emerald-500 inline-block flex-shrink-0"></span>
                                 {t('dashboard.chart.title')}
                             </h3>
                         </div>
@@ -213,7 +214,7 @@ export default function AdminDashboard() {
                                         initial={{ height: 0 }}
                                         animate={{ height: `${height}%` }}
                                         transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
-                                        className="w-full bg-gradient-to-t from-primary-500 to-primary-300 rounded-t-lg relative group cursor-pointer"
+                                        className="w-full bg-gradient-to-t from-emerald-600 to-emerald-300 rounded-t-lg relative group cursor-pointer shadow-sm hover:from-emerald-700 hover:to-emerald-400 transition-colors duration-300"
                                     >
                                         <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white px-2 py-1 rounded text-xs whitespace-nowrap">
                                             {height}%
@@ -231,9 +232,10 @@ export default function AdminDashboard() {
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.5 }}
-                        className="card bg-white border border-gray-200 shadow-sm"
+                        className="card bg-white/90 border border-indigo-100 shadow-sm border-t-2 border-t-indigo-400"
                     >
-                        <h3 className="text-lg font-display font-semibold mb-6 text-gray-900">
+                        <h3 className="text-lg font-display font-semibold mb-6 text-gray-900 flex items-center gap-3">
+                            <span className="w-1 h-5 rounded-full bg-indigo-500 inline-block flex-shrink-0"></span>
                             {t('dashboard.activity.title')}
                         </h3>
                         <RecentActivity activities={activities} />
@@ -248,9 +250,10 @@ export default function AdminDashboard() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 }}
-                    className="card bg-white border border-gray-200 shadow-sm"
+                    className="card bg-white/90 border border-amber-100 shadow-sm border-t-2 border-t-amber-400"
                 >
-                    <h3 className="text-lg font-display font-semibold mb-6 text-gray-900">
+                    <h3 className="text-lg font-display font-semibold mb-6 text-gray-900 flex items-center gap-3">
+                        <span className="w-1 h-5 rounded-full bg-amber-500 inline-block flex-shrink-0"></span>
                         {t('dashboard.quickActions.title')}
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -258,7 +261,7 @@ export default function AdminDashboard() {
                             <button
                                 key={index}
                                 onClick={() => navigate(action.path)}
-                                className="card-hover text-center p-6 border border-gray-100 rounded-xl hover:border-primary-100 hover:bg-primary-50/30 transition-all"
+                                className="text-center p-6 border border-gray-100 rounded-xl hover:border-emerald-200 hover:bg-emerald-50/40 hover:-translate-y-0.5 transition-all duration-200 group"
                             >
                                 <action.icon className={`w-8 h-8 mx-auto mb-3 text-${action.color}-500`} />
                                 <p className="text-sm font-medium text-gray-700">{action.label}</p>

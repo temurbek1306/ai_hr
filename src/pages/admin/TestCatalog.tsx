@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Plus, Search, Edit, Trash2, Loader2 } from 'lucide-react'
+import { Plus, Search, Edit, Trash2, Loader2, ArrowLeft } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
@@ -53,9 +53,17 @@ export default function TestCatalog() {
         <Layout>
             <div className="p-6 space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <h1 className="text-2xl font-display font-bold text-gray-900">{t('tests.title')}</h1>
-                        <p className="text-gray-500 text-sm">{t('tests.subtitle')}</p>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => navigate('/admin/testing')}
+                            className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
+                        >
+                            <ArrowLeft size={22} />
+                        </button>
+                        <div>
+                            <h1 className="text-2xl font-display font-bold text-gray-900">{t('tests.title')}</h1>
+                            <p className="text-gray-500 text-sm">{t('tests.subtitle')}</p>
+                        </div>
                     </div>
                     <Button icon={<Plus size={20} />} onClick={() => navigate('/admin/testing/new')}>
                         {t('tests.add')}

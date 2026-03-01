@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { toast } from 'react-hot-toast'
-import { User, Mail, Phone, Calendar, MapPin, Briefcase, Edit2, Save, X, Camera, Lock, Bell, Globe, Loader2 } from 'lucide-react'
+import { User, Mail, Phone, Calendar, MapPin, Briefcase, Edit2, Save, X, Camera, Lock, Bell, Globe, Loader2, ArrowLeft } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import Layout from '../../components/Layout'
 import { profileService } from '../../services/profile.service'
 
 export default function UserProfile() {
+    const navigate = useNavigate()
     const [isEditing, setIsEditing] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [isSaving, setIsSaving] = useState(false)
@@ -125,9 +127,17 @@ export default function UserProfile() {
             <div className="p-4 md:p-8 space-y-8">
                 {/* Header */}
                 <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">Shaxsiy Profil</h1>
-                        <p className="text-gray-600">Shaxsiy ma'lumotlaringizni boshqaring</p>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => navigate('/user/dashboard')}
+                            className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
+                        >
+                            <ArrowLeft size={22} />
+                        </button>
+                        <div>
+                            <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">Shaxsiy Profil</h1>
+                            <p className="text-gray-600">Shaxsiy ma'lumotlaringizni boshqaring</p>
+                        </div>
                     </div>
                 </div>
 

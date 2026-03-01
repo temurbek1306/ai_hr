@@ -213,10 +213,33 @@ export const employeeController = {
 
     delete: async (req: Request, res: Response) => {
         try {
+            const { employeeId } = req.params;
             const employeeRepository = AppDataSource.getRepository(Employee);
-            await employeeRepository.delete(req.params.employeeId as any);
-            return res.json({ success: true, message: "Xodim o'chirildi" });
+            const userRepository = AppDataSource.getRepository(User);
+
+            // 1. Find employee with user relation
+            const employee = await employeeRepository.findOne({
+                where: { id: employeeId as any },
+                relations: ["user"]
+            });
+
+            if (!employee) {
+                return res.status(404).json({ success: false, message: "Xodim topilmadi" });
+            }
+
+            const userId = employee.user?.id;
+
+            // 2. Delete employee first
+            await employeeRepository.remove(employee);
+
+            // 3. Delete associated user if exists
+            if (userId) {
+                await userRepository.delete(userId);
+            }
+
+            return res.json({ success: true, message: "Xodim va uning akkaunti muvaffaqiyatli o'chirildi" });
         } catch (error: any) {
+            console.error('Delete Employee Error:', error);
             return res.status(500).json({ success: false, message: error.message });
         }
     },

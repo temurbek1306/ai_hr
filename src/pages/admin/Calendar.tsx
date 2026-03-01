@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, Gift, Trash2 } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, Gift, Trash2, ArrowLeft } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '../../components/Layout'
 import Button from '../../components/Button'
@@ -9,6 +10,7 @@ import { toast } from 'react-hot-toast'
 
 export default function Calendar() {
     const { t } = useTranslation()
+    const navigate = useNavigate()
     const [currentDate, setCurrentDate] = useState(new Date())
     const [events, setEvents] = useState<CalendarEvent[]>([])
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -75,7 +77,11 @@ export default function Calendar() {
     const month = currentDate.getMonth()
     const daysInMonth = getDaysInMonth(year, month)
     const firstDay = getFirstDayOfMonth(year, month)
-    const monthName = currentDate.toLocaleString('default', { month: 'long' }) // Or localized via i18n
+
+    // Uzbek month names (uz-UZ locale not supported in all browsers)
+    const uzMonths = ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr', 'Noyabr', 'Dekabr']
+    const monthName = uzMonths[month]
+
     const days = Array.from({ length: daysInMonth }, (_, i) => i + 1)
 
     // Dynamic empty slots
@@ -98,9 +104,17 @@ export default function Calendar() {
         <Layout>
             <div className="p-6 space-y-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <h1 className="text-2xl font-display font-bold text-gray-900">{t('calendar.title')}</h1>
-                        <p className="text-gray-500 text-sm">{t('calendar.subtitle')}</p>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => navigate('/admin/dashboard')}
+                            className="p-2 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
+                        >
+                            <ArrowLeft size={22} />
+                        </button>
+                        <div>
+                            <h1 className="text-2xl font-display font-bold text-gray-900">{t('calendar.title')}</h1>
+                            <p className="text-gray-500 text-sm">{t('calendar.subtitle')}</p>
+                        </div>
                     </div>
                     <div className="flex gap-2">
                         <Button variant="secondary" icon={<ChevronLeft size={20} />} onClick={prevMonth}>
@@ -221,7 +235,9 @@ export default function Calendar() {
                         <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-6 rounded-2xl text-white shadow-lg">
                             <div className="flex justify-between items-start mb-4">
                                 <div>
-                                    <h3 className="font-bold text-lg">{new Date().toLocaleDateString('uz-UZ', { day: 'numeric', month: 'long' })}</h3>
+                                    <h3 className="font-bold text-lg">
+                                        {`${new Date().getDate()} ${uzMonths[new Date().getMonth()]}`}
+                                    </h3>
                                     <p className="text-indigo-100 text-sm">Bugungi kun</p>
                                 </div>
                                 <div className="bg-white/20 p-2 rounded-lg backdrop-blur-sm">

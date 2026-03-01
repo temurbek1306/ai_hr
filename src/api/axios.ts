@@ -33,7 +33,11 @@ api.interceptors.response.use(
 
         if (error.response?.status === 401) {
             console.warn('Authentication error: Token expired or invalid');
-        } else if (error.response?.status && error.response.status >= 400) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            localStorage.removeItem('user');
+            window.location.href = '/login';
+        } else if (error.response?.status && error.response?.status >= 400) {
             toast.error(message);
         }
 

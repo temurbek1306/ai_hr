@@ -63,58 +63,63 @@ export default function Login() {
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="hidden lg:block"
+                    className="hidden lg:block relative"
                 >
-                    <div className="space-y-6">
+                    <div className="space-y-8 relative z-10">
+                        {/* Brand badge */}
                         <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
                             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                            className="inline-flex items-center gap-3 glass px-6 py-3 rounded-2xl"
+                            className="inline-flex items-center gap-3 bg-white/70 backdrop-blur-sm border border-emerald-200/60 px-5 py-2.5 rounded-full shadow-sm"
                         >
-                            <Bot className="w-8 h-8 text-primary-400" />
-                            <span className="text-3xl font-display font-bold gradient-text">
-                                AI HR
+                            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                            <Bot className="w-6 h-6 text-emerald-600" />
+                            <span className="text-xl font-display font-bold text-gray-800 tracking-tight">
+                                AI HR <span className="text-emerald-500">by IT Park</span>
                             </span>
                         </motion.div>
 
-                        <motion.h1
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4 }}
-                            className="text-5xl font-display font-bold leading-tight"
                         >
-                            <Trans i18nKey="auth.login.heroTitle" components={{ br: <br />, span: <span className="gradient-text" /> }} />
-                        </motion.h1>
+                            <h1 className="text-[3.25rem] font-display font-black leading-[1.1] tracking-tight">
+                                <Trans i18nKey="auth.login.heroTitle" components={{ br: <br />, span: <span className="gradient-text" /> }} />
+                            </h1>
+                        </motion.div>
 
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.6 }}
-                            className="text-xl text-dark-400 leading-relaxed"
+                            className="text-lg text-gray-500 leading-relaxed max-w-sm"
                         >
                             {t('auth.login.heroSubtitle')}
                         </motion.p>
 
+                        {/* Stats — varied accent colors */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.8 }}
-                            className="grid grid-cols-3 gap-4 pt-8"
+                            className="flex gap-3 pt-4"
                         >
                             {[
-                                { label: t('auth.login.stats.employees'), value: '500+' },
-                                { label: t('auth.login.stats.companies'), value: '50+' },
-                                { label: t('auth.login.stats.timeSaved'), value: '80%' },
+                                { label: t('auth.login.stats.employees'), value: '500+', accent: 'border-l-emerald-500', num: 'text-emerald-600' },
+                                { label: t('auth.login.stats.companies'), value: '50+', accent: 'border-l-green-500', num: 'text-green-600' },
+                                { label: t('auth.login.stats.timeSaved'), value: '80%', accent: 'border-l-teal-500', num: 'text-teal-600' },
                             ].map((stat, index) => (
-                                <div key={index} className="glass-dark rounded-xl p-4 text-center">
-                                    <div className="text-2xl font-bold gradient-text">{stat.value}</div>
-                                    <div className="text-sm text-dark-400 mt-1">{stat.label}</div>
+                                <div key={index} className={`flex-1 bg-white/60 backdrop-blur-sm border border-gray-100 border-l-4 ${stat.accent} rounded-xl p-4 shadow-sm`}>
+                                    <div className={`text-2xl font-black ${stat.num}`}>{stat.value}</div>
+                                    <div className="text-xs text-gray-500 mt-0.5 leading-tight">{stat.label}</div>
                                 </div>
                             ))}
                         </motion.div>
                     </div>
                 </motion.div>
+
 
                 {/* Right side - Login Form */}
                 <motion.div
@@ -123,120 +128,125 @@ export default function Login() {
                     transition={{ duration: 0.8 }}
                     className="w-full"
                 >
-                    <div className="card max-w-md mx-auto relative">
-                        {/* Language Switcher */}
-                        <div className="absolute top-4 right-4">
-                            <select
-                                value={i18n.language}
-                                onChange={(e) => i18n.changeLanguage(e.target.value)}
-                                className="bg-transparent border-none text-gray-500 text-sm font-medium focus:ring-0 cursor-pointer hover:text-primary-600 transition-colors"
-                            >
-                                <option value="uz">UZ</option>
-                                <option value="ru">RU</option>
-                            </select>
-                        </div>
-                        {/* Mobile logo */}
-                        <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
-                            <Bot className="w-8 h-8 text-primary-400" />
-                            <span className="text-2xl font-display font-bold gradient-text">
-                                AI HR
-                            </span>
-                        </div>
-
-                        <div className="text-center mb-8">
-                            <h2 className="text-3xl font-display font-bold mb-2">
-                                {t('auth.login.welcome')} 👋
-                            </h2>
-                            <p className="text-dark-400">
-                                {t('auth.login.subtitle')}
-                            </p>
-                        </div>
-
-                        {error && (
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex items-center gap-3"
-                            >
-                                <AlertCircle className="w-5 h-5 shrink-0" />
-                                {error}
-                            </motion.div>
-                        )}
-
-                        <form onSubmit={handleLogin} className="space-y-6">
-                            {/* Email/Username Input */}
-                            <div className="space-y-2">
-                                <label className="block text-sm font-medium text-dark-300">
-                                    Email yoki Username
-                                </label>
-                                <div className="relative">
-                                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-500" />
-                                    <input
-                                        type="text"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="email@example.com yoki username"
-                                        className="input pl-12"
-                                        required
-                                    />
-                                </div>
+                    {/* Login Card with top accent */}
+                    <div className="relative max-w-md mx-auto">
+                        {/* Accent bar */}
+                        <div className="absolute top-0 left-8 right-8 h-1 bg-gradient-to-r from-emerald-500 via-green-400 to-teal-400 rounded-b-full z-10" />
+                        <div className="card pt-8 relative shadow-xl shadow-green-500/5 border-gray-100/80">
+                            {/* Language Switcher */}
+                            <div className="absolute top-4 right-4">
+                                <select
+                                    value={i18n.language}
+                                    onChange={(e) => i18n.changeLanguage(e.target.value)}
+                                    className="bg-transparent border-none text-gray-500 text-sm font-medium focus:ring-0 cursor-pointer hover:text-primary-600 transition-colors"
+                                >
+                                    <option value="uz">UZ</option>
+                                    <option value="ru">RU</option>
+                                </select>
+                            </div>
+                            {/* Mobile logo */}
+                            <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
+                                <Bot className="w-8 h-8 text-primary-400" />
+                                <span className="text-2xl font-display font-bold gradient-text">
+                                    AI HR
+                                </span>
                             </div>
 
-                            {/* Password Input */}
-                            <div className="space-y-2">
-                                <label className="block text-sm font-medium text-dark-300">
-                                    {t('auth.login.password')}
-                                </label>
-                                <div className="relative">
-                                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-500" />
-                                    <input
-                                        type="password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        placeholder="••••••••"
-                                        className="input pl-12"
-                                        required
-                                    />
-                                </div>
+                            <div className="text-center mb-8">
+                                <h2 className="text-3xl font-display font-bold mb-2">
+                                    {t('auth.login.welcome')} 👋
+                                </h2>
+                                <p className="text-dark-400">
+                                    {t('auth.login.subtitle')}
+                                </p>
                             </div>
 
-                            {/* Remember & Forgot */}
-                            <div className="flex items-center justify-between text-sm">
-                                <label className="flex items-center gap-2 cursor-pointer">
-                                    <input
-                                        type="checkbox"
-                                        className="w-4 h-4 rounded border-dark-700 bg-dark-800 text-primary-500 focus:ring-2 focus:ring-primary-500"
-                                    />
-                                    <span className="text-dark-400">{t('auth.login.remember')}</span>
-                                </label>
-                                <Link to="/forgot-password" title={t('auth.login.forgotPassword')} className="text-primary-400 hover:text-primary-300 transition-colors">
-                                    {t('auth.login.forgotPassword')}
+                            {error && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm flex items-center gap-3"
+                                >
+                                    <AlertCircle className="w-5 h-5 shrink-0" />
+                                    {error}
+                                </motion.div>
+                            )}
+
+                            <form onSubmit={handleLogin} className="space-y-6">
+                                {/* Email/Username Input */}
+                                <div className="space-y-2">
+                                    <label className="block text-sm font-medium text-dark-300">
+                                        Email yoki Username
+                                    </label>
+                                    <div className="relative">
+                                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-500" />
+                                        <input
+                                            type="text"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            placeholder="email@example.com yoki username"
+                                            className="input pl-12"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Password Input */}
+                                <div className="space-y-2">
+                                    <label className="block text-sm font-medium text-dark-300">
+                                        {t('auth.login.password')}
+                                    </label>
+                                    <div className="relative">
+                                        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-500" />
+                                        <input
+                                            type="password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            placeholder="••••••••"
+                                            className="input pl-12"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Remember & Forgot */}
+                                <div className="flex items-center justify-between text-sm">
+                                    <label className="flex items-center gap-2 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            className="w-4 h-4 rounded border-dark-700 bg-dark-800 text-primary-500 focus:ring-2 focus:ring-primary-500"
+                                        />
+                                        <span className="text-dark-400">{t('auth.login.remember')}</span>
+                                    </label>
+                                    <Link to="/forgot-password" title={t('auth.login.forgotPassword')} className="text-primary-400 hover:text-primary-300 transition-colors">
+                                        {t('auth.login.forgotPassword')}
+                                    </Link>
+                                </div>
+
+                                {/* Submit Button */}
+                                <button
+                                    type="submit"
+                                    disabled={isLoading}
+                                    className="btn btn-primary w-full py-4 relative overflow-hidden group"
+                                >
+                                    <span className="relative z-10 flex items-center justify-center gap-2 text-lg font-medium">
+                                        {isLoading ? (
+                                            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                        ) : (
+                                            <LogIn className="w-5 h-5" />
+                                        )}
+                                        {t('auth.login.submit')}
+                                    </span>
+                                </button>
+                            </form>
+
+                            {/* Footer */}
+                            <div className="mt-8 text-center text-sm text-dark-500">
+                                {t('auth.login.noAccount')}{' '}
+                                <Link to="/register" className="text-primary-400 hover:text-primary-300 font-medium transition-colors">
+                                    {t('auth.login.register')}
                                 </Link>
                             </div>
-
-                            {/* Submit Button */}
-                            <button
-                                type="submit"
-                                disabled={isLoading}
-                                className="btn btn-primary w-full py-4 relative overflow-hidden group"
-                            >
-                                <span className="relative z-10 flex items-center justify-center gap-2 text-lg font-medium">
-                                    {isLoading ? (
-                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                    ) : (
-                                        <LogIn className="w-5 h-5" />
-                                    )}
-                                    {t('auth.login.submit')}
-                                </span>
-                            </button>
-                        </form>
-
-                        {/* Footer */}
-                        <div className="mt-8 text-center text-sm text-dark-500">
-                            {t('auth.login.noAccount')}{' '}
-                            <Link to="/register" className="text-primary-400 hover:text-primary-300 font-medium transition-colors">
-                                {t('auth.login.register')}
-                            </Link>
                         </div>
                     </div>
                 </motion.div>
